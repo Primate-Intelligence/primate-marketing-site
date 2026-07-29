@@ -1,0 +1,249 @@
+{
+  "$comment": "PRI-504 \u2014 301 map from legacy apex docs URLs to www docs URLs. PREPARED, NOT ACTIVE. P4 (PRI-505) flips these on the apex/SPA Vercel project after the agent-fetch checks pass on www. DO NOT APPLY before the launch gate. error-registry docs_url anchors (#<code>) survive automatically: 301s preserve fragments. PRI-475 OpenAI-submission URLs must be byte-identical-audited before flip (P4 owns that check).",
+  "activation": {
+    "owner": "PRI-505 (P4 launch gate)",
+    "where": "apex project primate-intelligence-website (prod) vercel.json \u2014 add the vercel_redirects block below AND REMOVE the SPA /docs/* rewrites + routes at the same time",
+    "precondition": "www docs verified: full agent-fetch check (GPTBot/ClaudeBot UAs) green on the www preview; PRI-475 pinned URLs enumerated and audited"
+  },
+  "redirects": [
+    {
+      "source": "/docs",
+      "destination": "https://www.primateintelligence.ai/docs",
+      "status": 301,
+      "note": "docs landing"
+    },
+    {
+      "source": "/docs/reference",
+      "destination": "https://www.primateintelligence.ai/docs/reference",
+      "status": 301,
+      "note": "API reference (was Scalar embed)"
+    },
+    {
+      "source": "/docs/reference.md",
+      "destination": "https://www.primateintelligence.ai/docs/reference.md",
+      "status": 301,
+      "note": "generated reference markdown twin (new page; mapped for completeness)"
+    },
+    {
+      "source": "/docs/quickstart",
+      "destination": "https://www.primateintelligence.ai/docs/quickstart",
+      "status": 301,
+      "note": "docs page (path parity)"
+    },
+    {
+      "source": "/docs/quickstart.md",
+      "destination": "https://www.primateintelligence.ai/docs/quickstart.md",
+      "status": 301,
+      "note": "markdown twin (path parity)"
+    },
+    {
+      "source": "/docs/agents",
+      "destination": "https://www.primateintelligence.ai/docs/agents",
+      "status": 301,
+      "note": "docs page (path parity)"
+    },
+    {
+      "source": "/docs/agents.md",
+      "destination": "https://www.primateintelligence.ai/docs/agents.md",
+      "status": 301,
+      "note": "markdown twin (path parity)"
+    },
+    {
+      "source": "/docs/guides/uploading",
+      "destination": "https://www.primateintelligence.ai/docs/guides/uploading",
+      "status": 301,
+      "note": "docs page (path parity)"
+    },
+    {
+      "source": "/docs/guides/uploading.md",
+      "destination": "https://www.primateintelligence.ai/docs/guides/uploading.md",
+      "status": 301,
+      "note": "markdown twin (path parity)"
+    },
+    {
+      "source": "/docs/guides/prompts",
+      "destination": "https://www.primateintelligence.ai/docs/guides/prompts",
+      "status": 301,
+      "note": "docs page (path parity)"
+    },
+    {
+      "source": "/docs/guides/prompts.md",
+      "destination": "https://www.primateintelligence.ai/docs/guides/prompts.md",
+      "status": 301,
+      "note": "markdown twin (path parity)"
+    },
+    {
+      "source": "/docs/guides/waiting",
+      "destination": "https://www.primateintelligence.ai/docs/guides/waiting",
+      "status": 301,
+      "note": "docs page (path parity)"
+    },
+    {
+      "source": "/docs/guides/waiting.md",
+      "destination": "https://www.primateintelligence.ai/docs/guides/waiting.md",
+      "status": 301,
+      "note": "markdown twin (path parity)"
+    },
+    {
+      "source": "/docs/guides/webhooks",
+      "destination": "https://www.primateintelligence.ai/docs/guides/webhooks",
+      "status": 301,
+      "note": "docs page (path parity)"
+    },
+    {
+      "source": "/docs/guides/webhooks.md",
+      "destination": "https://www.primateintelligence.ai/docs/guides/webhooks.md",
+      "status": 301,
+      "note": "markdown twin (path parity)"
+    },
+    {
+      "source": "/docs/guides/errors-retries",
+      "destination": "https://www.primateintelligence.ai/docs/guides/errors-retries",
+      "status": 301,
+      "note": "docs page (path parity)"
+    },
+    {
+      "source": "/docs/guides/errors-retries.md",
+      "destination": "https://www.primateintelligence.ai/docs/guides/errors-retries.md",
+      "status": 301,
+      "note": "markdown twin (path parity)"
+    },
+    {
+      "source": "/docs/guides/rate-limits",
+      "destination": "https://www.primateintelligence.ai/docs/guides/rate-limits",
+      "status": 301,
+      "note": "docs page (path parity)"
+    },
+    {
+      "source": "/docs/guides/rate-limits.md",
+      "destination": "https://www.primateintelligence.ai/docs/guides/rate-limits.md",
+      "status": 301,
+      "note": "markdown twin (path parity)"
+    },
+    {
+      "source": "/docs/guides/test-mode",
+      "destination": "https://www.primateintelligence.ai/docs/guides/test-mode",
+      "status": 301,
+      "note": "docs page (path parity)"
+    },
+    {
+      "source": "/docs/guides/test-mode.md",
+      "destination": "https://www.primateintelligence.ai/docs/guides/test-mode.md",
+      "status": 301,
+      "note": "markdown twin (path parity)"
+    },
+    {
+      "source": "/docs/guides/versioning",
+      "destination": "https://www.primateintelligence.ai/docs/guides/versioning",
+      "status": 301,
+      "note": "docs page (path parity)"
+    },
+    {
+      "source": "/docs/guides/versioning.md",
+      "destination": "https://www.primateintelligence.ai/docs/guides/versioning.md",
+      "status": 301,
+      "note": "markdown twin (path parity)"
+    },
+    {
+      "source": "/docs/guides/security-model",
+      "destination": "https://www.primateintelligence.ai/docs/guides/security-model",
+      "status": 301,
+      "note": "docs page (path parity)"
+    },
+    {
+      "source": "/docs/guides/security-model.md",
+      "destination": "https://www.primateintelligence.ai/docs/guides/security-model.md",
+      "status": 301,
+      "note": "markdown twin (path parity)"
+    },
+    {
+      "source": "/docs/guides/billing",
+      "destination": "https://www.primateintelligence.ai/docs/guides/billing",
+      "status": 301,
+      "note": "docs page (path parity)"
+    },
+    {
+      "source": "/docs/guides/billing.md",
+      "destination": "https://www.primateintelligence.ai/docs/guides/billing.md",
+      "status": 301,
+      "note": "markdown twin (path parity)"
+    },
+    {
+      "source": "/docs/guides/streaming",
+      "destination": "https://www.primateintelligence.ai/docs/guides/streaming",
+      "status": 301,
+      "note": "docs page (path parity)"
+    },
+    {
+      "source": "/docs/guides/streaming.md",
+      "destination": "https://www.primateintelligence.ai/docs/guides/streaming.md",
+      "status": 301,
+      "note": "markdown twin (path parity)"
+    },
+    {
+      "source": "/docs/guides/build-from-scratch",
+      "destination": "https://www.primateintelligence.ai/docs/guides/build-from-scratch",
+      "status": 301,
+      "note": "docs page (path parity)"
+    },
+    {
+      "source": "/docs/guides/build-from-scratch.md",
+      "destination": "https://www.primateintelligence.ai/docs/guides/build-from-scratch.md",
+      "status": 301,
+      "note": "markdown twin (path parity)"
+    },
+    {
+      "source": "/docs/errors",
+      "destination": "https://www.primateintelligence.ai/docs/errors",
+      "status": 301,
+      "note": "docs page (path parity)"
+    },
+    {
+      "source": "/docs/errors.md",
+      "destination": "https://www.primateintelligence.ai/docs/errors.md",
+      "status": 301,
+      "note": "markdown twin (path parity)"
+    },
+    {
+      "source": "/docs/changelog",
+      "destination": "https://www.primateintelligence.ai/docs/changelog",
+      "status": 301,
+      "note": "docs page (path parity)"
+    },
+    {
+      "source": "/docs/changelog.md",
+      "destination": "https://www.primateintelligence.ai/docs/changelog.md",
+      "status": 301,
+      "note": "markdown twin (path parity)"
+    },
+    {
+      "source": "/docs/changelog.xml",
+      "destination": "https://www.primateintelligence.ai/docs/changelog.xml",
+      "status": 301,
+      "note": "changelog RSS (www proxies API canonical)"
+    },
+    {
+      "source": "/v2/docs",
+      "destination": "https://www.primateintelligence.ai/docs",
+      "status": 301,
+      "note": "legacy v2 alias"
+    }
+  ],
+  "vercel_redirects": [
+    {
+      "source": "/docs",
+      "destination": "https://www.primateintelligence.ai/docs",
+      "permanent": true
+    },
+    {
+      "source": "/docs/:path*",
+      "destination": "https://www.primateintelligence.ai/docs/:path*",
+      "permanent": true
+    },
+    {
+      "source": "/v2/docs",
+      "destination": "https://www.primateintelligence.ai/docs",
+      "permanent": true
+    }
+  ]
+}

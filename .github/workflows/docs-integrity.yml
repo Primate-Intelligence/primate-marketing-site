@@ -1,0 +1,41 @@
+# PRI-504 — docs integrity gates.
+#
+# build-and-twins: every push/PR — build must be clean and every docs HTML
+#   page must have a matching .md twin (title-checked).
+# spec-drift: daily + on demand — committed API snapshots vs the live API.
+#   Failure means the docs no longer match the contract; a human reviews and
+#   runs scripts/refresh-snapshots.mjs (the contract is FROZEN for MCP
+#   scoring, so unexpected drift is an escalation, not a routine bump).
+name: docs-integrity
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  schedule:
+    - cron: '17 9 * * *'
+  workflow_dispatch:
+
+jobs:
+  build-and-twins:
+    if: github.event_name != 'schedule'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: npm run build
+      - run: node scripts/check-docs-twins.mjs
+
+  spec-drift:
+    if: github.event_name == 'schedule' || github.event_name == 'workflow_dispatch'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - run: node scripts/check-spec-drift.mjs

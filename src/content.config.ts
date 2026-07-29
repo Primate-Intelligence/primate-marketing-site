@@ -19,4 +19,17 @@ const blog = defineCollection({
   }),
 });
 
-export const collections = { blog };
+// Developer docs migrated verbatim from primate-intelligence-website-dev
+// src/docs/content/** (PRI-504). Slugs come from file paths (quickstart,
+// guides/uploading, …) — 1:1 with the legacy /docs/* URLs, zero renames.
+const docs = defineCollection({
+  loader: glob({ pattern: '**/*.md', base: './src/content/docs' }),
+  schema: z.object({
+    title: z.string(),
+    description: z.string(),
+    order: z.number(),
+    section: z.string(),
+  }),
+});
+
+export const collections = { blog, docs };

@@ -1,0 +1,50 @@
+{
+  "headers": [
+    {
+      "source": "/llms.txt",
+      "headers": [{ "key": "Content-Type", "value": "text/plain; charset=utf-8" }]
+    },
+    {
+      "source": "/llms-full.txt",
+      "headers": [{ "key": "Content-Type", "value": "text/plain; charset=utf-8" }]
+    },
+    {
+      "source": "/.well-known/llms.txt",
+      "headers": [{ "key": "Content-Type", "value": "text/plain; charset=utf-8" }]
+    },
+    {
+      "source": "/docs/(.*)\\.md",
+      "headers": [{ "key": "Content-Type", "value": "text/markdown; charset=utf-8" }]
+    },
+    {
+      "source": "/docs/changelog.xml",
+      "headers": [{ "key": "Content-Type", "value": "application/rss+xml; charset=utf-8" }]
+    },
+    {
+      "source": "/agents.md",
+      "headers": [{ "key": "Content-Type", "value": "text/markdown; charset=utf-8" }]
+    },
+    {
+      "source": "/(.*)\\.md",
+      "headers": [{ "key": "Content-Type", "value": "text/markdown; charset=utf-8" }]
+    }
+  ],
+  "rewrites": [
+    {
+      "source": "/agents.md",
+      "destination": "https://api.primateintelligence.ai/docs/agents.md"
+    },
+    {
+      "source": "/docs/agents.md",
+      "destination": "https://api.primateintelligence.ai/docs/agents.md"
+    },
+    {
+      "source": "/docs/changelog.md",
+      "destination": "https://api.primateintelligence.ai/docs/changelog.md"
+    },
+    {
+      "source": "/docs/changelog.xml",
+      "destination": "https://api.primateintelligence.ai/docs/changelog.xml"
+    }
+  ]
+}

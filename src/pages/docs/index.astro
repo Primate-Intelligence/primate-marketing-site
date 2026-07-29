@@ -1,0 +1,25 @@
+---
+/**
+ * /docs — the docs landing page renders the Quickstart (same behavior as the
+ * SPA: /docs and /docs/quickstart are the same document; /docs is canonical).
+ */
+import Docs from '../../layouts/Docs.astro';
+import { getDocsPages } from '../../lib/docsCorpus';
+import { renderDocsMarkdown, extractHeadings } from '../../lib/docsRender';
+
+const pages = await getDocsPages();
+const page = pages.find((p) => p.slug === 'quickstart')!;
+const html = renderDocsMarkdown(page.body);
+const headings = extractHeadings(page.body);
+---
+
+<Docs
+  title={`${page.title} — Docs`}
+  description={page.description}
+  activeSlug="quickstart"
+  canonicalPath="/docs"
+  mdTwin="/docs/quickstart.md"
+  headings={headings}
+>
+  <div set:html={html} />
+</Docs>

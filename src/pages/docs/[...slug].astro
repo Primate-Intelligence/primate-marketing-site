@@ -1,0 +1,40 @@
+---
+/**
+ * /docs/:slug — every docs page (quickstart, guides/*, errors, agents,
+ * changelog) as static HTML. Slugs are 1:1 with the legacy SPA URLs.
+ *
+ * agents + changelog render from the committed API snapshots
+ * (src/snapshots/*, drift-gated in CI); their canonical raw-markdown URLs
+ * (/docs/agents.md, /docs/changelog.md) are PROXIED to the API deploy
+ * artifact via vercel.json — the one-clock rule (PRI-482 r8) is preserved.
+ */
+import Docs from '../../layouts/Docs.astro';
+import { getDocsPages, type DocPage } from '../../lib/docsCorpus';
+import { renderDocsMarkdown, extractHeadings } from '../../lib/docsRender';
+
+export async function getStaticPaths() {
+  const pages = await getDocsPages();
+  return pages.map((page) => ({ params: { slug: page.slug }, props: { page } }));
+}
+
+interface Props {
+  page: DocPage;
+}
+
+const { page } = Astro.props;
+const html = renderDocsMarkdown(page.body);
+const headings = extractHeadings(page.body);
+// /docs/quickstart exists for legacy deep links; /docs is the canonical URL.
+const canonicalPath = page.slug === 'quickstart' ? '/docs' : `/docs/${page.slug}`;
+---
+
+<Docs
+  title={`${page.title} — Docs`}
+  description={page.description}
+  activeSlug={page.slug}
+  canonicalPath={canonicalPath}
+  mdTwin={`/docs/${page.slug}.md`}
+  headings={headings}
+>
+  <div set:html={html} />
+</Docs>

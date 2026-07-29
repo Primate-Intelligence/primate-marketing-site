@@ -1,0 +1,34 @@
+---
+/**
+ * /docs/reference — the full API reference as static crawlable HTML,
+ * generated from the committed OpenAPI 3.1 snapshot (PRI-504).
+ *
+ * Replaces the SPA's CDN-loaded Scalar embed: agents and crawlers get the
+ * complete contract with zero JavaScript. The raw spec remains the source of
+ * truth and is linked prominently; snapshot drift vs the live spec fails CI
+ * (scripts/check-spec-drift.mjs) — the API contract is FROZEN and this page
+ * is presentation only.
+ */
+import Docs from '../../layouts/Docs.astro';
+import { referenceMarkdown, referenceToc } from '../../lib/openapiRef';
+import { renderDocsMarkdown } from '../../lib/docsRender';
+
+const md = referenceMarkdown();
+const html = renderDocsMarkdown(md);
+const toc = referenceToc();
+const headings = [
+  ...toc.map((s) => ({ depth: 2, text: s.title, id: s.title.toLowerCase().replace(/[^a-z0-9_\s-]/g, '').trim().replace(/\s+/g, '-') })),
+  { depth: 2, text: 'Object schemas', id: 'object-schemas' },
+];
+---
+
+<Docs
+  title="API reference — Docs"
+  description="Every Primate Vision API endpoint — generated from the OpenAPI 3.1 contract."
+  activeSlug="reference"
+  canonicalPath="/docs/reference"
+  mdTwin="/docs/reference.md"
+  headings={headings}
+>
+  <div set:html={html} />
+</Docs>

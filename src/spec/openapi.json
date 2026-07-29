@@ -1,0 +1,5040 @@
+{
+  "components": {
+    "parameters": {},
+    "schemas": {
+      "Analysis": {
+        "description": "A video analysis (\u00a713.2).",
+        "properties": {
+          "artifacts": {
+            "$ref": "#/components/schemas/Artifacts"
+          },
+          "completed_at": {
+            "example": "2026-07-08T14:00:00Z",
+            "format": "date-time",
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "created_at": {
+            "example": "2026-07-08T14:00:00Z",
+            "format": "date-time",
+            "type": "string"
+          },
+          "error": {
+            "$ref": "#/components/schemas/ErrorObject"
+          },
+          "id": {
+            "description": "Analysis resource id (prefixed ULID).",
+            "example": "an_01KX12XX3BNM688AWHX7406HCF",
+            "pattern": "^an_[0-9A-HJKMNP-TV-Z]{26}$",
+            "type": "string"
+          },
+          "livemode": {
+            "description": "true when the request used a live key; false for test keys and sandbox. Stripe-style.",
+            "type": "boolean"
+          },
+          "metadata": {
+            "additionalProperties": {
+              "maxLength": 500,
+              "type": "string"
+            },
+            "default": {},
+            "description": "Free-form key/value metadata. \u226416 keys, key \u226440 chars [a-zA-Z0-9_.-], value \u2264500 chars.",
+            "type": "object"
+          },
+          "model": {
+            "example": "darwin-1.3",
+            "type": "string"
+          },
+          "narrative": {
+            "$ref": "#/components/schemas/Narrative"
+          },
+          "object": {
+            "enum": [
+              "analysis"
+            ],
+            "type": "string"
+          },
+          "options": {
+            "properties": {
+              "narrative": {
+                "default": false,
+                "type": "boolean"
+              }
+            },
+            "type": "object"
+          },
+          "origin": {
+            "description": "`api` \u2014 submitted via the public API; `console` \u2014 uploaded via the dashboard; `system` \u2014 generated internally (e.g. auto-probe, fixture seeding, run_prompt). System analyses are never billed. Agents should normally only process api/console-origin analyses. (Renamed 2026-07-27: former value `user` is now `api`.)",
+            "enum": [
+              "api",
+              "console",
+              "system"
+            ],
+            "type": "string"
+          },
+          "parse_mode": {
+            "enum": [
+              "llm",
+              "heuristic",
+              "client"
+            ],
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "progress": {
+            "$ref": "#/components/schemas/Progress"
+          },
+          "prompt": {
+            "maxLength": 2000,
+            "minLength": 1,
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "query": {
+            "additionalProperties": {},
+            "description": "CompiledQuery (schema at /v1/schemas/compiled-query.json). Always populated in responses.",
+            "type": "object"
+          },
+          "queue_position": {
+            "minimum": 1,
+            "type": [
+              "integer",
+              "null"
+            ]
+          },
+          "result": {
+            "$ref": "#/components/schemas/Result"
+          },
+          "started_at": {
+            "example": "2026-07-08T14:00:00Z",
+            "format": "date-time",
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "status": {
+            "$ref": "#/components/schemas/AnalysisStatus"
+          },
+          "usage": {
+            "$ref": "#/components/schemas/AnalysisUsage"
+          },
+          "video_id": {
+            "description": "Video resource id (prefixed ULID). Immutable.",
+            "example": "video_01KX12XX3BNM688AWHX7406HCF",
+            "pattern": "^video_[0-9A-HJKMNP-TV-Z]{26}$",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "object",
+          "livemode",
+          "origin",
+          "status",
+          "video_id",
+          "prompt",
+          "query",
+          "parse_mode",
+          "model",
+          "options",
+          "progress",
+          "queue_position",
+          "result",
+          "narrative",
+          "artifacts",
+          "error",
+          "usage",
+          "created_at",
+          "started_at",
+          "completed_at"
+        ],
+        "type": "object"
+      },
+      "AnalysisBatch": {
+        "properties": {
+          "analyses": {
+            "items": {
+              "$ref": "#/components/schemas/Analysis"
+            },
+            "type": "array"
+          },
+          "id": {
+            "description": "Stable batch identifier.",
+            "type": "string"
+          },
+          "object": {
+            "enum": [
+              "analysis_batch"
+            ],
+            "type": "string"
+          },
+          "pricing": {
+            "$ref": "#/components/schemas/AnalysisBatchPricing"
+          },
+          "video_id": {
+            "description": "Video resource id (prefixed ULID). Immutable.",
+            "example": "video_01KX12XX3BNM688AWHX7406HCF",
+            "pattern": "^video_[0-9A-HJKMNP-TV-Z]{26}$",
+            "type": "string"
+          }
+        },
+        "required": [
+          "object",
+          "id",
+          "video_id",
+          "analyses",
+          "pricing"
+        ],
+        "type": "object"
+      },
+      "AnalysisBatchPreview": {
+        "properties": {
+          "object": {
+            "enum": [
+              "analysis_batch_preview"
+            ],
+            "type": "string"
+          },
+          "pricing": {
+            "$ref": "#/components/schemas/AnalysisBatchPricing"
+          },
+          "prompts": {
+            "items": {
+              "$ref": "#/components/schemas/AnalysisBatchPreviewPrompt"
+            },
+            "type": "array"
+          },
+          "video_id": {
+            "description": "Video resource id (prefixed ULID). Immutable.",
+            "example": "video_01KX12XX3BNM688AWHX7406HCF",
+            "pattern": "^video_[0-9A-HJKMNP-TV-Z]{26}$",
+            "type": "string"
+          }
+        },
+        "required": [
+          "object",
+          "video_id",
+          "prompts",
+          "pricing"
+        ],
+        "type": "object"
+      },
+      "AnalysisBatchPreviewPrompt": {
+        "properties": {
+          "assessable": {
+            "description": "True when the query type can produce a yes/no/count answer.",
+            "type": "boolean"
+          },
+          "discount_pct": {
+            "anyOf": [
+              {
+                "enum": [
+                  0
+                ],
+                "type": "number"
+              },
+              {
+                "enum": [
+                  50
+                ],
+                "type": "number"
+              }
+            ],
+            "description": "0 for the first (full-price) prompt; 50 for additional prompts."
+          },
+          "estimated_cost_usd": {
+            "description": "Estimated cost in USD. Null when video has no known duration.",
+            "type": [
+              "number",
+              "null"
+            ]
+          },
+          "estimated_seconds": {
+            "description": "Estimated credit-seconds for this prompt. Null when video has no known duration.",
+            "type": [
+              "integer",
+              "null"
+            ]
+          },
+          "index": {
+            "description": "Zero-based prompt index.",
+            "type": "integer"
+          },
+          "parse_mode": {
+            "enum": [
+              "heuristic",
+              "llm",
+              "client"
+            ],
+            "type": "string"
+          },
+          "query": {
+            "additionalProperties": {},
+            "description": "Compiled query structure.",
+            "type": "object"
+          }
+        },
+        "required": [
+          "index",
+          "query",
+          "parse_mode",
+          "assessable",
+          "estimated_seconds",
+          "estimated_cost_usd",
+          "discount_pct"
+        ],
+        "type": "object"
+      },
+      "AnalysisBatchPricing": {
+        "properties": {
+          "discount_pct": {
+            "example": 50,
+            "type": "integer"
+          },
+          "discounted_prompts": {
+            "example": 1,
+            "type": "integer"
+          },
+          "estimated_total_cost_usd": {
+            "description": "Estimated total cost in USD. Null when duration unknown.",
+            "example": 0.15,
+            "type": [
+              "number",
+              "null"
+            ]
+          },
+          "estimated_total_seconds": {
+            "description": "Estimated total credit-seconds for all prompts combined (full + discounted). Null when the video has no known duration.",
+            "example": 15,
+            "type": [
+              "integer",
+              "null"
+            ]
+          },
+          "full_price_prompts": {
+            "example": 1,
+            "type": "integer"
+          }
+        },
+        "required": [
+          "full_price_prompts",
+          "discounted_prompts",
+          "discount_pct",
+          "estimated_total_seconds",
+          "estimated_total_cost_usd"
+        ],
+        "type": "object"
+      },
+      "AnalysisList": {
+        "properties": {
+          "data": {
+            "items": {
+              "$ref": "#/components/schemas/Analysis"
+            },
+            "type": "array"
+          },
+          "has_more": {
+            "type": "boolean"
+          },
+          "object": {
+            "enum": [
+              "list"
+            ],
+            "type": "string"
+          }
+        },
+        "required": [
+          "object",
+          "data",
+          "has_more"
+        ],
+        "type": "object"
+      },
+      "AnalysisPreview": {
+        "properties": {
+          "assessable": {
+            "description": "False for open_ended queries \u2014 the model cannot score them, so detections will be empty.",
+            "type": "boolean"
+          },
+          "estimated_cost_usd": {
+            "description": "Estimated cost at current pricing. Null when duration is unknown.",
+            "type": [
+              "number",
+              "null"
+            ]
+          },
+          "estimated_seconds": {
+            "description": "Billable seconds this analysis would consume. Null when duration is unknown.",
+            "type": [
+              "integer",
+              "null"
+            ]
+          },
+          "object": {
+            "enum": [
+              "analysis_preview"
+            ],
+            "type": "string"
+          },
+          "parse_mode": {
+            "description": "How the prompt was compiled. \"client\" means you supplied query directly.",
+            "enum": [
+              "llm",
+              "heuristic",
+              "client"
+            ],
+            "type": "string"
+          },
+          "query": {
+            "additionalProperties": {},
+            "description": "The compiled query the analysis would run.",
+            "type": "object"
+          },
+          "video_duration_s": {
+            "description": "Null when duration is not yet known (probe pending).",
+            "type": [
+              "number",
+              "null"
+            ]
+          }
+        },
+        "required": [
+          "object",
+          "query",
+          "parse_mode",
+          "assessable",
+          "video_duration_s",
+          "estimated_seconds",
+          "estimated_cost_usd"
+        ],
+        "type": "object"
+      },
+      "AnalysisStatus": {
+        "description": "Analysis lifecycle state (\u00a714.2). Clients MUST tolerate unknown future non-terminal values.",
+        "enum": [
+          "queued",
+          "preparing",
+          "analyzing",
+          "rendering",
+          "completed",
+          "failed",
+          "canceled"
+        ],
+        "type": "string"
+      },
+      "AnalysisUsage": {
+        "description": "Terminal only. fps-independent clock seconds (pricing doc). credit_balance_after is the balance immediately after THIS analysis settled \u2014 an immutable point-in-time snapshot; it does not change as later analyses run. Null when the account row is unavailable (e.g. free-grant exhausted before settlement).",
+        "properties": {
+          "billed_seconds": {
+            "minimum": 0,
+            "type": "integer"
+          },
+          "credit_balance_after": {
+            "type": [
+              "integer",
+              "null"
+            ]
+          }
+        },
+        "required": [
+          "billed_seconds",
+          "credit_balance_after"
+        ],
+        "type": [
+          "object",
+          "null"
+        ]
+      },
+      "Artifacts": {
+        "description": "Signed URL TTL 1h; re-fetch GET analysis for a fresh URL.",
+        "properties": {
+          "annotated_video_url": {
+            "format": "uri",
+            "type": "string"
+          },
+          "expires_at": {
+            "example": "2026-07-08T14:00:00Z",
+            "format": "date-time",
+            "type": "string"
+          }
+        },
+        "required": [
+          "annotated_video_url",
+          "expires_at"
+        ],
+        "type": [
+          "object",
+          "null"
+        ]
+      },
+      "ClientToken": {
+        "properties": {
+          "expires_at": {
+            "type": "string"
+          },
+          "id": {
+            "type": "string"
+          },
+          "object": {
+            "enum": [
+              "client_token"
+            ],
+            "type": "string"
+          },
+          "scopes": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array"
+          },
+          "stream_id": {
+            "type": "string"
+          },
+          "token": {
+            "description": "256-bit CSPRNG bearer, SHA-256 at rest \u2014 shown exactly once. Browser-safe: accepted on product-plane endpoints (CORS *).",
+            "example": "pvct_\u2026",
+            "type": "string"
+          },
+          "video_id": {
+            "description": "Video resource id (prefixed ULID). Immutable.",
+            "example": "video_01KX12XX3BNM688AWHX7406HCF",
+            "pattern": "^video_[0-9A-HJKMNP-TV-Z]{26}$",
+            "type": "string"
+          }
+        },
+        "required": [
+          "object",
+          "id",
+          "token",
+          "scopes",
+          "expires_at"
+        ],
+        "type": "object"
+      },
+      "Clip": {
+        "properties": {
+          "confidence": {
+            "maximum": 1,
+            "minimum": 0,
+            "type": "number"
+          },
+          "end_s": {
+            "type": "number"
+          },
+          "start_s": {
+            "minimum": 0,
+            "type": "number"
+          },
+          "terms": {
+            "additionalProperties": {
+              "maximum": 1,
+              "minimum": 0,
+              "type": "number"
+            },
+            "type": "object"
+          }
+        },
+        "required": [
+          "start_s",
+          "end_s",
+          "confidence",
+          "terms"
+        ],
+        "type": "object"
+      },
+      "CreateAnalysisBatchRequest": {
+        "properties": {
+          "metadata": {
+            "additionalProperties": {
+              "maxLength": 500,
+              "type": "string"
+            },
+            "description": "Free-form key/value metadata. \u226416 keys, key \u226440 chars [a-zA-Z0-9_.-], value \u2264500 chars.",
+            "type": "object"
+          },
+          "model": {
+            "example": "darwin-1.3",
+            "type": "string"
+          },
+          "options": {
+            "properties": {
+              "narrative": {
+                "default": false,
+                "type": "boolean"
+              }
+            },
+            "type": "object"
+          },
+          "prompts": {
+            "description": "2\u201310 prompts to run against the video. First prompt is full price; each additional is 50%.",
+            "items": {
+              "maxLength": 2000,
+              "minLength": 1,
+              "type": "string"
+            },
+            "maxItems": 10,
+            "minItems": 2,
+            "type": "array"
+          },
+          "validate_only": {
+            "default": false,
+            "description": "Dry-run mode. When true, parses all prompts and returns an analysis_batch_preview (HTTP 200) with per-prompt cost estimates. No credits are reserved and no jobs are created.",
+            "type": "boolean"
+          },
+          "video_id": {
+            "description": "Video resource id (prefixed ULID). Immutable.",
+            "example": "video_01KX12XX3BNM688AWHX7406HCF",
+            "pattern": "^video_[0-9A-HJKMNP-TV-Z]{26}$",
+            "type": "string"
+          }
+        },
+        "required": [
+          "video_id",
+          "prompts"
+        ],
+        "type": "object"
+      },
+      "CreateAnalysisRequest": {
+        "properties": {
+          "metadata": {
+            "additionalProperties": {
+              "maxLength": 500,
+              "type": "string"
+            },
+            "description": "Free-form key/value metadata. \u226416 keys, key \u226440 chars [a-zA-Z0-9_.-], value \u2264500 chars.",
+            "type": "object"
+          },
+          "model": {
+            "description": "Defaults to latest; response always echoes the concrete version.",
+            "example": "darwin-1.3",
+            "type": "string"
+          },
+          "options": {
+            "properties": {
+              "narrative": {
+                "default": false,
+                "type": "boolean"
+              }
+            },
+            "type": "object"
+          },
+          "prompt": {
+            "description": "Free text \u2014 compiled server-side. Exactly one of prompt/query.",
+            "maxLength": 2000,
+            "minLength": 1,
+            "type": "string"
+          },
+          "query": {
+            "additionalProperties": {},
+            "description": "Structured CompiledQuery JSON (schema at /v1/schemas/compiled-query.json).",
+            "type": "object"
+          },
+          "validate_only": {
+            "description": "Dry run (PRI-480). Compiles the prompt, reports whether the query is assessable, and estimates duration/cost \u2014 WITHOUT creating an analysis, touching the GPU, or burning credits. Returns an AnalysisPreview (object: \"analysis_preview\") with 200, not an Analysis. Use it to check a prompt before paying for it.",
+            "example": true,
+            "type": "boolean"
+          },
+          "video_id": {
+            "description": "Video resource id (prefixed ULID). Immutable.",
+            "example": "video_01KX12XX3BNM688AWHX7406HCF",
+            "pattern": "^video_[0-9A-HJKMNP-TV-Z]{26}$",
+            "type": "string"
+          },
+          "webhook": {
+            "description": "Per-request webhook override (delivery ships P7). Write-only \u2014 never echoed.",
+            "properties": {
+              "events": {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              },
+              "url": {
+                "format": "uri",
+                "type": "string"
+              }
+            },
+            "required": [
+              "url",
+              "events"
+            ],
+            "type": "object"
+          }
+        },
+        "required": [
+          "video_id"
+        ],
+        "type": "object"
+      },
+      "CreateClientTokenRequest": {
+        "properties": {
+          "scopes": {
+            "description": "Non-empty subset of the \u00a74.9 scope set. Must also be a subset of the minting key\u2019s scopes.",
+            "items": {
+              "enum": [
+                "videos:write",
+                "analyses:read",
+                "analyses:write",
+                "streams:create",
+                "streams:signal"
+              ],
+              "type": "string"
+            },
+            "minItems": 1,
+            "type": "array"
+          },
+          "stream_id": {
+            "description": "Optional resource binding to one stream (WS acceptance ships P6).",
+            "type": "string"
+          },
+          "ttl_s": {
+            "default": 900,
+            "description": "Token lifetime in seconds (60\u2013900, default 900). Tokens are never refreshable \u2014 mint a new one.",
+            "maximum": 900,
+            "minimum": 60,
+            "type": "integer"
+          },
+          "video_id": {
+            "description": "Optional resource binding: narrows the token to this one video. Mutually exclusive with stream_id.",
+            "example": "video_01KX12XX3BNM688AWHX7406HCF",
+            "pattern": "^video_[0-9A-HJKMNP-TV-Z]{26}$",
+            "type": "string"
+          }
+        },
+        "required": [
+          "scopes"
+        ],
+        "type": "object"
+      },
+      "CreateStreamRequest": {
+        "description": "Requires positive credit balance. One queued|ready|live stream per account by default (409 stream_already_active otherwise).",
+        "properties": {
+          "metadata": {
+            "additionalProperties": {
+              "maxLength": 500,
+              "type": "string"
+            },
+            "description": "Free-form key/value metadata. \u226416 keys, key \u226440 chars [a-zA-Z0-9_.-], value \u2264500 chars.",
+            "type": "object"
+          },
+          "model": {
+            "example": "darwin-1.3",
+            "type": "string"
+          },
+          "prompt": {
+            "description": "Free text \u2014 compiled server-side. Exactly one of prompt/query.",
+            "maxLength": 2000,
+            "minLength": 1,
+            "type": "string"
+          },
+          "query": {
+            "additionalProperties": {},
+            "description": "Structured CompiledQuery JSON.",
+            "type": "object"
+          },
+          "webhook": {
+            "description": "Per-request webhook override (delivery ships P7). Write-only.",
+            "properties": {
+              "events": {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              },
+              "url": {
+                "format": "uri",
+                "type": "string"
+              }
+            },
+            "required": [
+              "url",
+              "events"
+            ],
+            "type": "object"
+          }
+        },
+        "type": "object"
+      },
+      "CreateVideoRequest": {
+        "description": "Exactly one mode: presigned ({filename?, content_type, size_bytes?}) or ingest ({url}). Unknown fields are rejected.",
+        "properties": {
+          "content_type": {
+            "description": "Required in presigned mode.",
+            "enum": [
+              "video/mp4",
+              "video/quicktime"
+            ],
+            "type": "string"
+          },
+          "filename": {
+            "maxLength": 255,
+            "type": "string"
+          },
+          "metadata": {
+            "additionalProperties": {
+              "maxLength": 500,
+              "type": "string"
+            },
+            "description": "Free-form key/value metadata. \u226416 keys, key \u226440 chars [a-zA-Z0-9_.-], value \u2264500 chars.",
+            "type": "object"
+          },
+          "size_bytes": {
+            "maximum": 2147483648,
+            "minimum": 1,
+            "type": "integer"
+          },
+          "url": {
+            "description": "URL-ingest mode: https-only, SSRF-guarded (\u00a718.2). Mutually exclusive with filename/size_bytes.",
+            "format": "uri",
+            "maxLength": 2048,
+            "type": "string"
+          }
+        },
+        "type": "object"
+      },
+      "CreateWebhookEndpointRequest": {
+        "properties": {
+          "description": {
+            "maxLength": 500,
+            "type": "string"
+          },
+          "events": {
+            "description": "Subscribed event types \u2014 a non-empty subset of the closed v1 vocabulary.",
+            "items": {
+              "$ref": "#/components/schemas/WebhookEventType"
+            },
+            "minItems": 1,
+            "type": "array"
+          },
+          "url": {
+            "description": "HTTPS delivery URL.",
+            "format": "uri",
+            "maxLength": 2048,
+            "type": "string"
+          }
+        },
+        "required": [
+          "url",
+          "events"
+        ],
+        "type": "object"
+      },
+      "CreditPricing": {
+        "description": "Current pricing configuration. Data-driven \u2014 a price change is a config update, not a schema change.",
+        "properties": {
+          "allowed_purchase_cents": {
+            "description": "Preset purchase amounts, in cents.",
+            "items": {
+              "type": "integer"
+            },
+            "type": "array"
+          },
+          "auto_refill_threshold_seconds": {
+            "description": "Balance below which auto-refill (if enabled) triggers.",
+            "type": "integer"
+          },
+          "card_grant_seconds": {
+            "description": "Bonus credit-seconds granted when a card is added.",
+            "example": 0,
+            "type": "integer"
+          },
+          "custom_purchase_enabled": {
+            "type": "boolean"
+          },
+          "min_purchase_cents": {
+            "type": "integer"
+          },
+          "price_per_second_cents": {
+            "description": "Price per billed video-second, in cents. Cost of an analysis = usage.billed_seconds \u00d7 this value.",
+            "example": 1,
+            "type": "number"
+          },
+          "signup_grant_seconds": {
+            "description": "Free credit-seconds granted on signup / free-grant upgrade.",
+            "example": 6000,
+            "type": "integer"
+          }
+        },
+        "required": [
+          "price_per_second_cents",
+          "signup_grant_seconds",
+          "card_grant_seconds",
+          "auto_refill_threshold_seconds",
+          "allowed_purchase_cents",
+          "custom_purchase_enabled",
+          "min_purchase_cents"
+        ],
+        "type": "object"
+      },
+      "CreditTransaction": {
+        "properties": {
+          "balance_after_seconds": {
+            "type": "number"
+          },
+          "created_at": {
+            "type": "string"
+          },
+          "id": {
+            "type": "string"
+          },
+          "kind": {
+            "description": "e.g. signup_grant, analysis_debit, stream_debit, purchase.",
+            "example": "signup_grant",
+            "type": "string"
+          },
+          "seconds_delta": {
+            "description": "Signed: negative debits, positive credits.",
+            "type": "number"
+          },
+          "source_id": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "source_type": {
+            "type": [
+              "string",
+              "null"
+            ]
+          }
+        },
+        "required": [
+          "id",
+          "kind",
+          "seconds_delta",
+          "balance_after_seconds",
+          "source_type",
+          "source_id",
+          "created_at"
+        ],
+        "type": "object"
+      },
+      "CreditsResponse": {
+        "properties": {
+          "balance_seconds": {
+            "description": "Seconds of analysis remaining. The authoritative balance.",
+            "type": "number"
+          },
+          "grant_seconds": {
+            "description": "Original signup grant, when one exists.",
+            "type": [
+              "number",
+              "null"
+            ]
+          },
+          "has_more": {
+            "type": "boolean"
+          },
+          "object": {
+            "enum": [
+              "credits"
+            ],
+            "type": "string"
+          },
+          "transactions": {
+            "items": {
+              "$ref": "#/components/schemas/CreditTransaction"
+            },
+            "type": "array"
+          },
+          "used_seconds": {
+            "description": "Consumed against the signup grant (grant minus balance).",
+            "type": [
+              "number",
+              "null"
+            ]
+          }
+        },
+        "required": [
+          "object",
+          "balance_seconds",
+          "grant_seconds",
+          "used_seconds",
+          "transactions",
+          "has_more"
+        ],
+        "type": "object"
+      },
+      "DeletedVideo": {
+        "properties": {
+          "deleted": {
+            "enum": [
+              true
+            ],
+            "type": "boolean"
+          },
+          "id": {
+            "description": "Video resource id (prefixed ULID). Immutable.",
+            "example": "video_01KX12XX3BNM688AWHX7406HCF",
+            "pattern": "^video_[0-9A-HJKMNP-TV-Z]{26}$",
+            "type": "string"
+          },
+          "object": {
+            "enum": [
+              "video"
+            ],
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "object",
+          "deleted"
+        ],
+        "type": "object"
+      },
+      "DeviceCodeRequest": {
+        "properties": {
+          "claim_url": {
+            "description": "Open in browser for the user to approve.",
+            "format": "uri",
+            "type": "string"
+          },
+          "device_code": {
+            "description": "Opaque code; use as path param when polling.",
+            "type": "string"
+          },
+          "expires_at": {
+            "format": "date-time",
+            "type": "string"
+          },
+          "instructions": {
+            "type": "string"
+          },
+          "object": {
+            "enum": [
+              "device_code_request"
+            ],
+            "type": "string"
+          },
+          "poll_interval": {
+            "description": "Seconds between polls.",
+            "example": 5,
+            "type": "integer"
+          }
+        },
+        "required": [
+          "object",
+          "device_code",
+          "claim_url",
+          "expires_at",
+          "poll_interval"
+        ],
+        "type": "object"
+      },
+      "DeviceCodeStatus": {
+        "properties": {
+          "object": {
+            "enum": [
+              "device_code_request"
+            ],
+            "type": "string"
+          },
+          "status": {
+            "enum": [
+              "pending",
+              "consumed"
+            ],
+            "type": "string"
+          }
+        },
+        "required": [
+          "object",
+          "status"
+        ],
+        "type": "object"
+      },
+      "ErrorEnvelope": {
+        "properties": {
+          "error": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ErrorObject"
+              },
+              {
+                "properties": {
+                  "status": {
+                    "type": "integer"
+                  }
+                },
+                "required": [
+                  "status"
+                ],
+                "type": "object"
+              }
+            ]
+          }
+        },
+        "required": [
+          "error"
+        ],
+        "type": "object"
+      },
+      "ErrorObject": {
+        "properties": {
+          "code": {
+            "example": "video_unreadable",
+            "type": "string"
+          },
+          "message": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "code",
+          "message"
+        ],
+        "type": [
+          "object",
+          "null"
+        ]
+      },
+      "ErrorRegistryEntry": {
+        "properties": {
+          "code": {
+            "type": "string"
+          },
+          "docs_url": {
+            "format": "uri",
+            "type": "string"
+          },
+          "idem": {
+            "type": "boolean"
+          },
+          "kind": {
+            "enum": [
+              "http",
+              "resource"
+            ],
+            "type": "string"
+          },
+          "message": {
+            "type": "string"
+          },
+          "retryable": {
+            "type": "boolean"
+          },
+          "status": {
+            "type": [
+              "integer",
+              "null"
+            ]
+          }
+        },
+        "required": [
+          "code",
+          "kind",
+          "status",
+          "retryable",
+          "idem",
+          "message",
+          "docs_url"
+        ],
+        "type": "object"
+      },
+      "Meter": {
+        "description": "One named usage meter (\u00a74.6). The list is data-driven \u2014 pricing changes add/change rows, never the schema.",
+        "properties": {
+          "balance": {
+            "description": "Balance-shaped meters (e.g. credit_seconds).",
+            "type": "number"
+          },
+          "limit": {
+            "description": "null = unlimited/PAYG.",
+            "type": [
+              "number",
+              "null"
+            ]
+          },
+          "meter": {
+            "example": "credit_seconds",
+            "type": "string"
+          },
+          "resets_at": {
+            "description": "Omitted for non-period meters.",
+            "example": "2026-07-08T14:00:00Z",
+            "format": "date-time",
+            "type": "string"
+          },
+          "unit": {
+            "example": "seconds",
+            "type": "string"
+          },
+          "used": {
+            "description": "Period-shaped meters.",
+            "type": "number"
+          }
+        },
+        "required": [
+          "meter",
+          "unit"
+        ],
+        "type": "object"
+      },
+      "Model": {
+        "properties": {
+          "capabilities": {
+            "properties": {
+              "narrative": {
+                "type": "boolean"
+              },
+              "prompt": {
+                "type": "boolean"
+              },
+              "streaming": {
+                "type": "boolean"
+              },
+              "structured_query": {
+                "type": "boolean"
+              }
+            },
+            "required": [
+              "prompt",
+              "structured_query",
+              "narrative",
+              "streaming"
+            ],
+            "type": "object"
+          },
+          "created_at": {
+            "type": "string"
+          },
+          "default": {
+            "type": "boolean"
+          },
+          "id": {
+            "example": "darwin-1.3",
+            "type": "string"
+          },
+          "object": {
+            "enum": [
+              "model"
+            ],
+            "type": "string"
+          },
+          "status": {
+            "enum": [
+              "stable",
+              "preview",
+              "deprecated"
+            ],
+            "type": "string"
+          },
+          "sunset_at": {
+            "type": [
+              "string",
+              "null"
+            ]
+          }
+        },
+        "required": [
+          "id",
+          "object",
+          "status",
+          "default",
+          "capabilities",
+          "sunset_at",
+          "created_at"
+        ],
+        "type": "object"
+      },
+      "Narrative": {
+        "properties": {
+          "entries": {
+            "items": {
+              "properties": {
+                "t_s": {
+                  "type": "number"
+                },
+                "text": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "t_s",
+                "text"
+              ],
+              "type": "object"
+            },
+            "type": "array"
+          },
+          "status": {
+            "enum": [
+              "generating",
+              "ready",
+              "failed"
+            ],
+            "type": "string"
+          }
+        },
+        "required": [
+          "status",
+          "entries"
+        ],
+        "type": [
+          "object",
+          "null"
+        ]
+      },
+      "ParseRequest": {
+        "properties": {
+          "prompt": {
+            "description": "Free-text video question. Must be a non-empty string.",
+            "example": "Is there a dog in this video?",
+            "minLength": 1,
+            "type": "string"
+          }
+        },
+        "required": [
+          "prompt"
+        ],
+        "type": "object"
+      },
+      "ParseResponse": {
+        "properties": {
+          "compiled_query": {
+            "additionalProperties": {},
+            "description": "CompiledQuery \u2014 canonical JSON Schema served at /v1/schemas/compiled-query.json. Same structure accepted by POST /v1/analyses `query`.",
+            "type": "object"
+          },
+          "parse_mode": {
+            "description": "How the prompt was compiled: \"haiku\" = LLM parser; \"heuristic\" = deterministic fallback (used when the LLM is unavailable).",
+            "enum": [
+              "haiku",
+              "heuristic"
+            ],
+            "type": "string"
+          }
+        },
+        "required": [
+          "compiled_query",
+          "parse_mode"
+        ],
+        "type": "object"
+      },
+      "Progress": {
+        "description": "Non-terminal only. percent is monotonic non-decreasing per analysis.",
+        "properties": {
+          "percent": {
+            "maximum": 100,
+            "minimum": 0,
+            "type": "number"
+          },
+          "stage": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "stage",
+          "percent"
+        ],
+        "type": [
+          "object",
+          "null"
+        ]
+      },
+      "Result": {
+        "description": "Analysis result \u2014 the product (\u00a713.3). Reserved (always absent in v1): masks, bounding_boxes, events.",
+        "properties": {
+          "answer": {
+            "enum": [
+              "yes",
+              "no",
+              "indeterminate"
+            ],
+            "type": "string"
+          },
+          "clips": {
+            "items": {
+              "$ref": "#/components/schemas/Clip"
+            },
+            "maxItems": 500,
+            "type": "array"
+          },
+          "confidence": {
+            "maximum": 1,
+            "minimum": 0,
+            "type": "number"
+          },
+          "detected_count": {
+            "minimum": 0,
+            "type": [
+              "integer",
+              "null"
+            ]
+          },
+          "indeterminate_reason": {
+            "enum": [
+              "low_confidence",
+              "nothing_detected",
+              "unsupported_query_form",
+              "duration_mismatch"
+            ],
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "query_type": {
+            "enum": [
+              "object",
+              "action",
+              "compound",
+              "attribute",
+              "open_ended"
+            ],
+            "type": "string"
+          },
+          "term_confidences": {
+            "additionalProperties": {
+              "maximum": 1,
+              "minimum": 0,
+              "type": "number"
+            },
+            "type": "object"
+          },
+          "video_duration_s": {
+            "exclusiveMinimum": 0,
+            "type": [
+              "number",
+              "null"
+            ]
+          }
+        },
+        "required": [
+          "answer",
+          "confidence",
+          "clips",
+          "term_confidences",
+          "query_type",
+          "video_duration_s"
+        ],
+        "type": [
+          "object",
+          "null"
+        ]
+      },
+      "SandboxKey": {
+        "properties": {
+          "api_key": {
+            "description": "Shown exactly once \u2014 store it now. Fixture-only test mode: no GPU, no credits.",
+            "example": "pv_test_\u2026",
+            "type": "string"
+          },
+          "docs_url": {
+            "type": "string"
+          },
+          "expected_answer": {
+            "description": "Deterministic canned answer for the fixture prompt \u2014 assert this in CI.",
+            "type": "string"
+          },
+          "expires_at": {
+            "description": "Keys expire 7 days after issuance.",
+            "type": "string"
+          },
+          "fixture_prompt": {
+            "type": "string"
+          },
+          "fixture_video_id": {
+            "description": "Pre-seeded ready video for immediate POST /v1/analyses.",
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "mode": {
+            "enum": [
+              "test"
+            ],
+            "type": "string"
+          },
+          "note": {
+            "type": "string"
+          },
+          "object": {
+            "enum": [
+              "sandbox_key"
+            ],
+            "type": "string"
+          }
+        },
+        "required": [
+          "object",
+          "api_key",
+          "mode",
+          "expires_at",
+          "fixture_video_id",
+          "fixture_prompt",
+          "expected_answer",
+          "docs_url",
+          "note"
+        ],
+        "type": "object"
+      },
+      "Stream": {
+        "description": "A real-time analysis stream (\u00a74.8).",
+        "properties": {
+          "created_at": {
+            "example": "2026-07-08T14:00:00Z",
+            "format": "date-time",
+            "type": "string"
+          },
+          "duration_s": {
+            "description": "Live-clock duration. Terminal only.",
+            "minimum": 0,
+            "type": [
+              "integer",
+              "null"
+            ]
+          },
+          "end_reason": {
+            "$ref": "#/components/schemas/StreamEndReason"
+          },
+          "ended_at": {
+            "example": "2026-07-08T14:00:00Z",
+            "format": "date-time",
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "estimated_start_s": {
+            "minimum": 0,
+            "type": [
+              "integer",
+              "null"
+            ]
+          },
+          "failure_diagnostic": {
+            "additionalProperties": {},
+            "description": "Present when end_reason is ice_failed (and some media_timeout cases): ICE candidate summary from the server side \u2014 {local_candidates: string[], hint}. Use it to distinguish \"server advertised only private/host candidates\" from \"client could not reach relay\".",
+            "type": [
+              "object",
+              "null"
+            ]
+          },
+          "ice_servers": {
+            "items": {
+              "additionalProperties": {},
+              "type": "object"
+            },
+            "type": [
+              "array",
+              "null"
+            ]
+          },
+          "id": {
+            "description": "Stream resource id (prefixed ULID). P6 \u00a74.8.",
+            "example": "st_01KX12XX3BNM688AWHX7406HCF",
+            "pattern": "^st_[0-9A-HJKMNP-TV-Z]{26}$",
+            "type": "string"
+          },
+          "limits": {
+            "$ref": "#/components/schemas/StreamLimits"
+          },
+          "live_started_at": {
+            "example": "2026-07-08T14:00:00Z",
+            "format": "date-time",
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "metadata": {
+            "additionalProperties": {
+              "maxLength": 500,
+              "type": "string"
+            },
+            "default": {},
+            "description": "Free-form key/value metadata. \u226416 keys, key \u226440 chars [a-zA-Z0-9_.-], value \u2264500 chars.",
+            "type": "object"
+          },
+          "model": {
+            "example": "darwin-1.3",
+            "type": "string"
+          },
+          "object": {
+            "enum": [
+              "stream"
+            ],
+            "type": "string"
+          },
+          "prompt": {
+            "maxLength": 2000,
+            "minLength": 1,
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "query": {
+            "additionalProperties": {},
+            "type": [
+              "object",
+              "null"
+            ]
+          },
+          "queue_position": {
+            "minimum": 1,
+            "type": [
+              "integer",
+              "null"
+            ]
+          },
+          "results_summary": {
+            "additionalProperties": {},
+            "description": "Terminal summary: {result_frames, frames (deprecated alias of result_frames \u2014 removed ~2026-08-28), last_detections}. result_frames counts result EVENTS emitted (results are sampled, not per-source-frame). Detection rows use the same enums/casing as the file-API result contract (answer: yes|no|indeterminate, lowercase; prompt echoed exactly as submitted).",
+            "type": [
+              "object",
+              "null"
+            ]
+          },
+          "signaling": {
+            "$ref": "#/components/schemas/StreamSignaling"
+          },
+          "status": {
+            "$ref": "#/components/schemas/StreamStatus"
+          },
+          "usage": {
+            "$ref": "#/components/schemas/StreamUsage"
+          }
+        },
+        "required": [
+          "id",
+          "object",
+          "status",
+          "end_reason",
+          "prompt",
+          "query",
+          "model",
+          "queue_position",
+          "estimated_start_s",
+          "signaling",
+          "ice_servers",
+          "limits",
+          "duration_s",
+          "results_summary",
+          "failure_diagnostic",
+          "usage",
+          "created_at",
+          "live_started_at",
+          "ended_at"
+        ],
+        "type": "object"
+      },
+      "StreamEndReason": {
+        "description": "Why the stream ended. completed \u2014 normal end after live. canceled \u2014 ended before going live (client action). insufficient_credits \u2014 balance exhausted. error \u2014 server-side failure. timeout \u2014 max_session_s cutoff. ice_failed \u2014 WebRTC ICE never connected (see failure_diagnostic). media_timeout \u2014 connected but no media/results within the first-frame window. A stream that never went live is never `completed`.",
+        "enum": [
+          "completed",
+          "canceled",
+          "insufficient_credits",
+          "error",
+          "timeout",
+          "ice_failed",
+          "media_timeout"
+        ],
+        "type": [
+          "string",
+          "null"
+        ]
+      },
+      "StreamLimits": {
+        "properties": {
+          "max_session_s": {
+            "description": "Plan entitlement (max_session_s) \u2014 hard session cutoff.",
+            "exclusiveMinimum": 0,
+            "type": "integer"
+          },
+          "warn_at_remaining_s": {
+            "description": "The `warning {remaining_s}` threshold surfaced mid-stream.",
+            "exclusiveMinimum": 0,
+            "type": "integer"
+          }
+        },
+        "required": [
+          "max_session_s",
+          "warn_at_remaining_s"
+        ],
+        "type": [
+          "object",
+          "null"
+        ]
+      },
+      "StreamList": {
+        "properties": {
+          "data": {
+            "items": {
+              "$ref": "#/components/schemas/Stream"
+            },
+            "type": "array"
+          },
+          "has_more": {
+            "type": "boolean"
+          },
+          "object": {
+            "enum": [
+              "list"
+            ],
+            "type": "string"
+          }
+        },
+        "required": [
+          "object",
+          "data",
+          "has_more"
+        ],
+        "type": "object"
+      },
+      "StreamSignaling": {
+        "description": "Present while the stream is joinable; null once ended.",
+        "properties": {
+          "expires_at": {
+            "example": "2026-07-08T14:00:00Z",
+            "format": "date-time",
+            "type": "string"
+          },
+          "url": {
+            "description": "Versioned signaling WS. Auth: ?token= accepts a client token (pvct_) or first-party Clerk JWT \u2014 NEVER a secret key.",
+            "example": "wss://api.primateintelligence.ai/v1/streams/st_01KX\u2026/signal",
+            "type": "string"
+          }
+        },
+        "required": [
+          "url",
+          "expires_at"
+        ],
+        "type": [
+          "object",
+          "null"
+        ]
+      },
+      "StreamStatus": {
+        "description": "Stream lifecycle state (\u00a74.8): queued \u2192 ready \u2192 live \u2192 ended. Terminal immutable.",
+        "enum": [
+          "queued",
+          "ready",
+          "live",
+          "ended"
+        ],
+        "type": "string"
+      },
+      "StreamUsage": {
+        "description": "Terminal only. Same ledger as uploads \u2014 one balance.",
+        "properties": {
+          "billed_seconds": {
+            "description": "LIVE-clock seconds (join/negotiation free). fps-independent by construction.",
+            "minimum": 0,
+            "type": "integer"
+          },
+          "credit_balance_after": {
+            "type": [
+              "integer",
+              "null"
+            ]
+          }
+        },
+        "required": [
+          "billed_seconds",
+          "credit_balance_after"
+        ],
+        "type": [
+          "object",
+          "null"
+        ]
+      },
+      "UpgradeKeyResponse": {
+        "properties": {
+          "api_key": {
+            "description": "The raw `pv_live_` key \u2014 store securely, shown only once.",
+            "type": "string"
+          },
+          "claim_flow": {
+            "properties": {
+              "endpoint": {
+                "type": "string"
+              },
+              "how": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "endpoint",
+              "how"
+            ],
+            "type": "object"
+          },
+          "expires_at": {
+            "format": "date-time",
+            "type": "string"
+          },
+          "grant_seconds": {
+            "example": 6000,
+            "type": "integer"
+          },
+          "livemode": {
+            "enum": [
+              true
+            ],
+            "type": "boolean"
+          },
+          "note": {
+            "type": "string"
+          },
+          "object": {
+            "enum": [
+              "api_key"
+            ],
+            "type": "string"
+          },
+          "tier": {
+            "enum": [
+              "free_grant"
+            ],
+            "type": "string"
+          }
+        },
+        "required": [
+          "object",
+          "livemode",
+          "api_key",
+          "tier",
+          "expires_at",
+          "grant_seconds"
+        ],
+        "type": "object"
+      },
+      "UsageResponse": {
+        "description": "Usage meters + legacy dashboard fields (the flat fields are deprecated in favor of meters[]; they remain during the web-client migration).",
+        "properties": {
+          "meters": {
+            "description": "Data-driven meter list (\u00a74.6 invariant #1). At launch: credit_seconds (balance) + seconds_processed.period (used/resets_at). Pricing changes add/change rows \u2014 never the schema. quota_exceeded errors carry details.meter naming which meter tripped.",
+            "items": {
+              "$ref": "#/components/schemas/Meter"
+            },
+            "type": "array"
+          }
+        },
+        "required": [
+          "meters"
+        ],
+        "type": "object"
+      },
+      "Video": {
+        "description": "A source video (\u00a713.1).",
+        "properties": {
+          "content_type": {
+            "enum": [
+              "video/mp4",
+              "video/quicktime"
+            ],
+            "type": "string"
+          },
+          "created_at": {
+            "example": "2026-07-08T14:00:00Z",
+            "format": "date-time",
+            "type": "string"
+          },
+          "duration_s": {
+            "exclusiveMinimum": 0,
+            "type": [
+              "number",
+              "null"
+            ]
+          },
+          "error": {
+            "$ref": "#/components/schemas/ErrorObject"
+          },
+          "expires_at": {
+            "example": "2026-07-08T14:00:00Z",
+            "format": "date-time",
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "filename": {
+            "maxLength": 255,
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "fps": {
+            "type": [
+              "number",
+              "null"
+            ]
+          },
+          "height": {
+            "type": [
+              "integer",
+              "null"
+            ]
+          },
+          "id": {
+            "description": "Video resource id (prefixed ULID). Immutable.",
+            "example": "video_01KX12XX3BNM688AWHX7406HCF",
+            "pattern": "^video_[0-9A-HJKMNP-TV-Z]{26}$",
+            "type": "string"
+          },
+          "livemode": {
+            "description": "true when the request used a live key; false for test keys and sandbox. Stripe-style.",
+            "type": "boolean"
+          },
+          "metadata": {
+            "additionalProperties": {
+              "maxLength": 500,
+              "type": "string"
+            },
+            "default": {},
+            "description": "Free-form key/value metadata. \u226416 keys, key \u226440 chars [a-zA-Z0-9_.-], value \u2264500 chars.",
+            "type": "object"
+          },
+          "object": {
+            "enum": [
+              "video"
+            ],
+            "type": "string"
+          },
+          "size_bytes": {
+            "maximum": 2147483648,
+            "minimum": 1,
+            "type": [
+              "integer",
+              "null"
+            ]
+          },
+          "source": {
+            "enum": [
+              "upload",
+              "url"
+            ],
+            "type": "string"
+          },
+          "status": {
+            "$ref": "#/components/schemas/VideoStatus"
+          },
+          "upload": {
+            "$ref": "#/components/schemas/VideoUpload"
+          },
+          "width": {
+            "type": [
+              "integer",
+              "null"
+            ]
+          }
+        },
+        "required": [
+          "id",
+          "object",
+          "livemode",
+          "status",
+          "filename",
+          "size_bytes",
+          "duration_s",
+          "width",
+          "height",
+          "fps",
+          "content_type",
+          "source",
+          "upload",
+          "error",
+          "expires_at",
+          "created_at"
+        ],
+        "type": "object"
+      },
+      "VideoList": {
+        "properties": {
+          "data": {
+            "items": {
+              "$ref": "#/components/schemas/Video"
+            },
+            "type": "array"
+          },
+          "has_more": {
+            "type": "boolean"
+          },
+          "object": {
+            "enum": [
+              "list"
+            ],
+            "type": "string"
+          }
+        },
+        "required": [
+          "object",
+          "data",
+          "has_more"
+        ],
+        "type": "object"
+      },
+      "VideoStatus": {
+        "description": "Video lifecycle state (\u00a714.1).",
+        "enum": [
+          "awaiting_upload",
+          "processing",
+          "ready",
+          "failed"
+        ],
+        "type": "string"
+      },
+      "VideoUpload": {
+        "description": "Presigned upload instructions. Present only while awaiting_upload. URL TTL 1h.",
+        "properties": {
+          "expires_at": {
+            "example": "2026-07-08T14:00:00Z",
+            "format": "date-time",
+            "type": "string"
+          },
+          "headers": {
+            "additionalProperties": {
+              "type": "string"
+            },
+            "type": "object"
+          },
+          "method": {
+            "enum": [
+              "PUT"
+            ],
+            "type": "string"
+          },
+          "url": {
+            "format": "uri",
+            "type": "string"
+          }
+        },
+        "required": [
+          "method",
+          "url",
+          "headers",
+          "expires_at"
+        ],
+        "type": [
+          "object",
+          "null"
+        ]
+      },
+      "WebhookDelivery": {
+        "description": "One event\u2192endpoint delivery record (\u00a716.3). Dead-lettered rows visible 30 days.",
+        "properties": {
+          "attempt_count": {
+            "minimum": 0,
+            "type": "integer"
+          },
+          "created_at": {
+            "example": "2026-07-08T14:00:00Z",
+            "format": "date-time",
+            "type": "string"
+          },
+          "delivered_at": {
+            "example": "2026-07-08T14:00:00Z",
+            "format": "date-time",
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "event_id": {
+            "description": "Stable across retries \u2014 consumers dedupe on this.",
+            "example": "evt_01KX12XX3BNM688AWHX7406HCF",
+            "type": "string"
+          },
+          "event_type": {
+            "$ref": "#/components/schemas/WebhookEventType"
+          },
+          "id": {
+            "description": "Webhook delivery id (prefixed ULID).",
+            "example": "whd_01KX12XX3BNM688AWHX7406HCF",
+            "pattern": "^whd_[0-9A-HJKMNP-TV-Z]{26}$",
+            "type": "string"
+          },
+          "last_attempt_at": {
+            "example": "2026-07-08T14:00:00Z",
+            "format": "date-time",
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "last_error": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "last_response_status": {
+            "type": [
+              "integer",
+              "null"
+            ]
+          },
+          "next_attempt_at": {
+            "description": "Null once delivered or dead-lettered.",
+            "example": "2026-07-08T14:00:00Z",
+            "format": "date-time",
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "object": {
+            "enum": [
+              "webhook_delivery"
+            ],
+            "type": "string"
+          },
+          "status": {
+            "enum": [
+              "pending",
+              "delivering",
+              "delivered",
+              "failed",
+              "dead"
+            ],
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "object",
+          "event_id",
+          "event_type",
+          "status",
+          "attempt_count",
+          "last_response_status",
+          "last_error",
+          "next_attempt_at",
+          "last_attempt_at",
+          "delivered_at",
+          "created_at"
+        ],
+        "type": "object"
+      },
+      "WebhookDeliveryList": {
+        "properties": {
+          "data": {
+            "items": {
+              "$ref": "#/components/schemas/WebhookDelivery"
+            },
+            "type": "array"
+          },
+          "has_more": {
+            "type": "boolean"
+          },
+          "object": {
+            "enum": [
+              "list"
+            ],
+            "type": "string"
+          }
+        },
+        "required": [
+          "object",
+          "data",
+          "has_more"
+        ],
+        "type": "object"
+      },
+      "WebhookEndpoint": {
+        "description": "A customer webhook endpoint (\u00a74.5). Standard Webhooks signing.",
+        "properties": {
+          "created_at": {
+            "example": "2026-07-08T14:00:00Z",
+            "format": "date-time",
+            "type": "string"
+          },
+          "description": {
+            "maxLength": 500,
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "disabled_reason": {
+            "description": "auto_failure = 72h of 100% delivery failure (\u00a716.3). Re-enable via POST \u2026/enable.",
+            "enum": [
+              "auto_failure",
+              "user"
+            ],
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "events": {
+            "items": {
+              "$ref": "#/components/schemas/WebhookEventType"
+            },
+            "minItems": 1,
+            "type": "array"
+          },
+          "id": {
+            "description": "Webhook endpoint id (prefixed ULID).",
+            "example": "we_01KX12XX3BNM688AWHX7406HCF",
+            "pattern": "^we_[0-9A-HJKMNP-TV-Z]{26}$",
+            "type": "string"
+          },
+          "last_success_at": {
+            "example": "2026-07-08T14:00:00Z",
+            "format": "date-time",
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "object": {
+            "enum": [
+              "webhook_endpoint"
+            ],
+            "type": "string"
+          },
+          "secret": {
+            "description": "Signing secret \u2014 returned EXACTLY ONCE (create / rotate_secret), never readable again.",
+            "pattern": "^whsec_",
+            "type": "string"
+          },
+          "status": {
+            "enum": [
+              "enabled",
+              "disabled"
+            ],
+            "type": "string"
+          },
+          "url": {
+            "format": "uri",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "object",
+          "url",
+          "events",
+          "description",
+          "status",
+          "disabled_reason",
+          "last_success_at",
+          "created_at"
+        ],
+        "type": "object"
+      },
+      "WebhookEndpointList": {
+        "properties": {
+          "data": {
+            "items": {
+              "$ref": "#/components/schemas/WebhookEndpoint"
+            },
+            "type": "array"
+          },
+          "has_more": {
+            "type": "boolean"
+          },
+          "object": {
+            "enum": [
+              "list"
+            ],
+            "type": "string"
+          }
+        },
+        "required": [
+          "object",
+          "data",
+          "has_more"
+        ],
+        "type": "object"
+      },
+      "WebhookEventType": {
+        "description": "Closed v1 event vocabulary (\u00a74.5). Payload = the full resource DTO.",
+        "enum": [
+          "video.ready",
+          "video.failed",
+          "analysis.completed",
+          "analysis.failed",
+          "analysis.canceled",
+          "stream.ended"
+        ],
+        "type": "string"
+      }
+    },
+    "securitySchemes": {
+      "bearerAuth": {
+        "description": "API key (pv_live_\u2026 / pv_test_\u2026). Clerk session JWTs are accepted on the same endpoints for first-party clients.",
+        "scheme": "bearer",
+        "type": "http"
+      }
+    }
+  },
+  "info": {
+    "contact": {
+      "email": "support@primateintelligence.ai"
+    },
+    "description": "Public API v1 for Primate Vision \u2014 video understanding for the agentic web. P1 (PRI-430) publishes resource schemas; endpoints ship from P3 onward.",
+    "title": "Primate Vision API",
+    "version": "1.0.0-alpha"
+  },
+  "openapi": "3.1.0",
+  "paths": {
+    "/v1/analyses": {
+      "get": {
+        "parameters": [
+          {
+            "in": "query",
+            "name": "limit",
+            "schema": {
+              "default": 20,
+              "maximum": 100,
+              "minimum": 1,
+              "type": "integer"
+            }
+          },
+          {
+            "description": "Cursor \u2014 mutually exclusive with ending_before.",
+            "in": "query",
+            "name": "starting_after",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "ending_before",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "created_after",
+            "schema": {
+              "format": "date-time",
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "created_before",
+            "schema": {
+              "format": "date-time",
+              "type": "string"
+            }
+          },
+          {
+            "description": "Filter by public analysis status (\u00a713.2 vocabulary): queued | preparing | analyzing | rendering | completed | failed | canceled. E.g. status=analyzing returns currently-running analyses. Unknown values \u2192 400 validation_failed.",
+            "in": "query",
+            "name": "status",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "video_id",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "model",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AnalysisList"
+                }
+              }
+            },
+            "description": "List envelope (\u00a713.4)."
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "validation_failed / url_forbidden / prompt errors (\u00a715)"
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "invalid_api_key / key_revoked / key_expired"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "resource_not_found (account-scoped; no existence oracle)"
+          },
+          "409": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "resource_conflict / idempotency_key_reused / idempotency_unavailable"
+          },
+          "429": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "rate_limit_exceeded / concurrency_limit_exceeded / quota_exceeded (always with Retry-After)"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "summary": "List analyses (filters: status, video_id, model, created_*)",
+        "tags": [
+          "analyses"
+        ]
+      },
+      "post": {
+        "description": "Async by default: 202 + poll. `Prefer: wait=<s>` (\u2264120) blocks and returns the terminal resource when it finishes in time. Test-mode keys (pv_test_) return deterministic canned results with no GPU time and no credit burn. Set `validate_only: true` to dry-run a prompt \u2014 returns an AnalysisPreview with cost/assessability and creates nothing.",
+        "parameters": [
+          {
+            "description": "\u00a716.1: first request wins; 24h replay window; same key + different body \u2192 409 idempotency_key_reused.",
+            "in": "header",
+            "name": "Idempotency-Key",
+            "required": false,
+            "schema": {
+              "maxLength": 255,
+              "minLength": 1,
+              "type": "string"
+            }
+          },
+          {
+            "description": "wait=<seconds> (cap 120)",
+            "in": "header",
+            "name": "Prefer",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateAnalysisRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "anyOf": [
+                    {
+                      "$ref": "#/components/schemas/Analysis"
+                    },
+                    {
+                      "$ref": "#/components/schemas/AnalysisPreview"
+                    }
+                  ]
+                }
+              }
+            },
+            "description": "Terminal resource (Prefer: wait satisfied, or test mode) \u2014 OR an AnalysisPreview when validate_only:true was sent. Discriminate on the `object` field."
+          },
+          "202": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Analysis"
+                }
+              }
+            },
+            "description": "Queued. Response echoes the compiled query and honest queue_position."
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "validation_failed / url_forbidden / prompt errors (\u00a715)"
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "invalid_api_key / key_revoked / key_expired"
+          },
+          "402": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "insufficient_credits (details.meter = credit_seconds)"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "resource_not_found (account-scoped; no existence oracle)"
+          },
+          "409": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "resource_conflict / idempotency_key_reused / idempotency_unavailable"
+          },
+          "429": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "rate_limit_exceeded / concurrency_limit_exceeded / quota_exceeded (always with Retry-After)"
+          },
+          "503": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "inference_unavailable / capacity_exhausted (with Retry-After)"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "summary": "Create an analysis (video \u00d7 prompt \u00d7 model)",
+        "tags": [
+          "analyses"
+        ]
+      }
+    },
+    "/v1/analyses/batch": {
+      "post": {
+        "description": "Pricing: first prompt billed at full price; each additional prompt billed at 50%. Credits are reserved per-prompt at the discounted rate so the ledger shows the discount directly. Returns an `analysis_batch` containing all analysis DTOs plus a `pricing` summary. Each analysis can be polled individually via `GET /v1/analyses/{id}`. Pass `validate_only: true` for a cost-estimate dry-run (HTTP 200, no credits reserved).",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateAnalysisBatchRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AnalysisBatchPreview"
+                }
+              }
+            },
+            "description": "Dry-run preview (validate_only: true). Prompts parsed; cost estimated; no credits reserved, no jobs created."
+          },
+          "202": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AnalysisBatch"
+                }
+              }
+            },
+            "description": "Batch queued. All analyses dispatched; poll each `id` individually."
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "validation_failed / url_forbidden / prompt errors (\u00a715)"
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "invalid_api_key / key_revoked / key_expired"
+          },
+          "402": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "insufficient_credits / grant_exhausted"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "resource_not_found (account-scoped; no existence oracle)"
+          },
+          "409": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "resource_conflict / idempotency_key_reused / idempotency_unavailable"
+          },
+          "429": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "rate_limit_exceeded / concurrency_limit_exceeded / quota_exceeded (always with Retry-After)"
+          },
+          "503": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "capacity_exhausted / inference_unavailable"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "summary": "Submit 2\u201310 prompts against the same video (batch discount)",
+        "tags": [
+          "analyses"
+        ]
+      }
+    },
+    "/v1/analyses/{id}": {
+      "get": {
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Analysis"
+                }
+              }
+            },
+            "description": "The analysis. progress uses the canonical stage set queued\u2192preparing\u2192analyzing\u2192rendering."
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "validation_failed / url_forbidden / prompt errors (\u00a715)"
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "invalid_api_key / key_revoked / key_expired"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "resource_not_found (account-scoped; no existence oracle)"
+          },
+          "409": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "resource_conflict / idempotency_key_reused / idempotency_unavailable"
+          },
+          "429": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "rate_limit_exceeded / concurrency_limit_exceeded / quota_exceeded (always with Retry-After)"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "summary": "Fetch an analysis (live progress while running)",
+        "tags": [
+          "analyses"
+        ]
+      }
+    },
+    "/v1/analyses/{id}/cancel": {
+      "post": {
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Analysis"
+                }
+              }
+            },
+            "description": "Canceled (or best-effort race documented in \u00a714.2)."
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "validation_failed / url_forbidden / prompt errors (\u00a715)"
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "invalid_api_key / key_revoked / key_expired"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "resource_not_found (account-scoped; no existence oracle)"
+          },
+          "409": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "resource_conflict / idempotency_key_reused / idempotency_unavailable"
+          },
+          "429": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "rate_limit_exceeded / concurrency_limit_exceeded / quota_exceeded (always with Retry-After)"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "summary": "Cancel an analysis (best-effort once analyzing)",
+        "tags": [
+          "analyses"
+        ]
+      }
+    },
+    "/v1/client_tokens": {
+      "post": {
+        "description": "Server-side token exchange (\u00a74.9): authenticate with a secret key (or first-party session), receive a short-lived scoped pvct_ bearer for the browser. The browser then calls Primate directly \u2014 your secret key never leaves your server. Tokens are revoked implicitly when the minting key is revoked (\u22645s). Rate class: 120/min per key. Client tokens can never mint tokens.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateClientTokenRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ClientToken"
+                }
+              }
+            },
+            "description": "Token minted. The raw token appears only in this response."
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "validation_failed \u2014 scopes/ttl_s/binding violations, all listed at once."
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "insufficient_scope \u2014 requested scopes exceed the minting key\u2019s, or the caller is itself a client token."
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "resource_not_found \u2014 video_id binding does not resolve to an owned video."
+          },
+          "429": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "rate_limit_exceeded \u2014 client_tokens.create is 120/min per key."
+          }
+        },
+        "summary": "Mint an ephemeral browser-safe client token (pvct_)",
+        "tags": [
+          "client_tokens"
+        ]
+      }
+    },
+    "/v1/credit-pricing": {
+      "get": {
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CreditPricing"
+                }
+              }
+            },
+            "description": "Pricing config. Billing unit is source-clock video-seconds; analysis cost = usage.billed_seconds \u00d7 price_per_second_cents."
+          }
+        },
+        "summary": "Current credit pricing (public, no auth)",
+        "tags": [
+          "meta"
+        ]
+      }
+    },
+    "/v1/credits": {
+      "get": {
+        "description": "Agent-facing billing truth (PRI-480 A-5): remaining balance in billable seconds plus a paginated ledger. Check this before submitting work to avoid a 402. Requires the billing:read scope.",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "limit",
+            "required": false,
+            "schema": {
+              "description": "Transactions per page (1\u2013100, default 20).",
+              "example": 20,
+              "maximum": 100,
+              "minimum": 1,
+              "type": "integer"
+            }
+          },
+          {
+            "in": "query",
+            "name": "before",
+            "required": false,
+            "schema": {
+              "description": "Cursor \u2014 return transactions older than this id.",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CreditsResponse"
+                }
+              }
+            },
+            "description": "Balance plus one page of ledger entries."
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "validation_failed / url_forbidden / prompt errors (\u00a715)"
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "invalid_api_key / key_revoked / key_expired"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "resource_not_found (account-scoped; no existence oracle)"
+          },
+          "409": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "resource_conflict / idempotency_key_reused / idempotency_unavailable"
+          },
+          "429": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "rate_limit_exceeded / concurrency_limit_exceeded / quota_exceeded (always with Retry-After)"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "summary": "Credit balance and transaction history",
+        "tags": [
+          "billing"
+        ]
+      }
+    },
+    "/v1/errors": {
+      "get": {
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "data": {
+                      "items": {
+                        "$ref": "#/components/schemas/ErrorRegistryEntry"
+                      },
+                      "type": "array"
+                    },
+                    "has_more": {
+                      "type": "boolean"
+                    },
+                    "object": {
+                      "enum": [
+                        "list"
+                      ],
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "object",
+                    "data",
+                    "has_more"
+                  ],
+                  "type": "object"
+                }
+              }
+            },
+            "description": "Closed registry \u2014 codes are append-only; SDK retry policy generates from retryable/idem flags."
+          }
+        },
+        "summary": "Machine-readable error-code registry (\u00a715)",
+        "tags": [
+          "meta"
+        ]
+      }
+    },
+    "/v1/keys/request": {
+      "post": {
+        "description": "Stage 2 of the key lifecycle. Optional auth (test or live key accepted, or none). Returns a `device_code` and `claim_url`. Direct the user to `claim_url` to sign in; poll `GET /v1/keys/request/{code}` until status changes from `pending`. Key is delivered once in the claim response; subsequent polls return 410.",
+        "responses": {
+          "202": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DeviceCodeRequest"
+                }
+              }
+            },
+            "description": "Device code issued."
+          },
+          "503": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "db_unavailable"
+          }
+        },
+        "summary": "Start a device-code claim flow for a full billed key",
+        "tags": [
+          "provisioning"
+        ]
+      }
+    },
+    "/v1/keys/request/{code}": {
+      "get": {
+        "description": "Returns `{status: \"pending\"}` until the user approves in the browser. After approval, returns `status: \"consumed\"` (key was delivered in the claim response). Expired or already-consumed codes return 410.",
+        "parameters": [
+          {
+            "description": "The `device_code` from POST /v1/keys/request.",
+            "in": "path",
+            "name": "code",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DeviceCodeStatus"
+                }
+              }
+            },
+            "description": "Current status of the device code."
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "resource_not_found \u2014 code not found."
+          },
+          "410": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "device_code_expired \u2014 code consumed or expired. Start a new request."
+          }
+        },
+        "summary": "Poll a device-code claim request",
+        "tags": [
+          "provisioning"
+        ]
+      }
+    },
+    "/v1/keys/upgrade": {
+      "post": {
+        "description": "Stage 1 of the key lifecycle. Call with a `pv_test_` key in Authorization; receive a `pv_live_` key with `tier: free_grant` and a 6,000-second credit grant. No email, card, or human-in-the-loop required. IP-limited (3 upgrades / IP / 24h).",
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UpgradeKeyResponse"
+                }
+              }
+            },
+            "description": "Live key issued. The raw `api_key` appears only in this response."
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "test_mode_only \u2014 must call with a pv_test_ key."
+          },
+          "429": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "upgrade_limit_exceeded \u2014 per-IP or global daily cap reached."
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "summary": "Upgrade a test key to a live free-grant key (6,000s credit)",
+        "tags": [
+          "provisioning"
+        ]
+      }
+    },
+    "/v1/models": {
+      "get": {
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "data": {
+                      "items": {
+                        "$ref": "#/components/schemas/Model"
+                      },
+                      "type": "array"
+                    },
+                    "has_more": {
+                      "type": "boolean"
+                    },
+                    "object": {
+                      "enum": [
+                        "list"
+                      ],
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "object",
+                    "data",
+                    "has_more"
+                  ],
+                  "type": "object"
+                }
+              }
+            },
+            "description": "Model catalog. Requests may say model:\"latest\"; responses always name the concrete version."
+          }
+        },
+        "summary": "List available models",
+        "tags": [
+          "meta"
+        ]
+      }
+    },
+    "/v1/parse": {
+      "post": {
+        "description": "Stateless prompt compiler. Auth optional (anonymous allowed); rate-limited to 30 req/min per IP. Never touches the GPU and never burns credits \u2014 use POST /v1/analyses with validate_only:true when you also want cost/assessability estimates.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ParseRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ParseResponse"
+                }
+              }
+            },
+            "description": "The compiled query and which parser produced it."
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "empty_prompt \u2014 prompt missing, not a string, or blank."
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "parse_failed \u2014 prompt could not be compiled into a query."
+          },
+          "429": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "rate_limit_exceeded (30 req/min per IP)."
+          },
+          "503": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "parse_unavailable \u2014 parse service temporarily unavailable."
+          }
+        },
+        "summary": "Compile a free-text prompt into a CompiledQuery (no analysis created)",
+        "tags": [
+          "meta"
+        ]
+      }
+    },
+    "/v1/sandbox": {
+      "post": {
+        "description": "Anonymous zero-touch provisioning (A1). Issues a fixture-only test-mode key: analyses return deterministic canned results, never touch the GPU, and burn no credits. IP-limited; 7-day expiry. Live keys require signup (billing gate, not an integration gate).",
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SandboxKey"
+                }
+              }
+            },
+            "description": "Sandbox key issued. The raw key appears only in this response."
+          },
+          "429": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "sandbox_limit_exceeded \u2014 IP daily cap reached. Retry-After set."
+          },
+          "503": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "db_unavailable \u2014 transient; retry with backoff."
+          }
+        },
+        "summary": "Provision an instant sandbox (pv_test_) key \u2014 no auth, no card",
+        "tags": [
+          "provisioning"
+        ]
+      }
+    },
+    "/v1/streams": {
+      "get": {
+        "parameters": [
+          {
+            "in": "query",
+            "name": "limit",
+            "schema": {
+              "default": 20,
+              "maximum": 100,
+              "minimum": 1,
+              "type": "integer"
+            }
+          },
+          {
+            "description": "Cursor \u2014 mutually exclusive with ending_before.",
+            "in": "query",
+            "name": "starting_after",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "ending_before",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "status",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "created_after",
+            "schema": {
+              "format": "date-time",
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "created_before",
+            "schema": {
+              "format": "date-time",
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "status",
+            "schema": {
+              "enum": [
+                "queued",
+                "ready",
+                "live",
+                "ended"
+              ],
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StreamList"
+                }
+              }
+            },
+            "description": "List envelope (\u00a713.4)."
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "validation_failed / url_forbidden / prompt errors (\u00a715)"
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "invalid_api_key / key_revoked / key_expired"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "resource_not_found (account-scoped; no existence oracle)"
+          },
+          "409": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "resource_conflict / idempotency_key_reused / idempotency_unavailable"
+          },
+          "429": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "rate_limit_exceeded / concurrency_limit_exceeded / quota_exceeded (always with Retry-After)"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "summary": "List streams (cursor pagination, created_at desc)",
+        "tags": [
+          "streams"
+        ]
+      },
+      "post": {
+        "description": "Returns the signaling WS URL, ephemeral ICE servers, and session limits. Signaling protocol v1: join \u2192 ready|queued(position) \u2192 offer/answer/ice \u2192 live; mid-stream update_prompt, metering (5s ticks), warning, end {reason}. WS auth: ?token= accepts a client token (pvct_) or first-party session JWT \u2014 never a secret key. Billed per second of live clock time (join/negotiation free) from the same credit ledger as uploads.",
+        "parameters": [
+          {
+            "description": "\u00a716.1: first request wins; 24h replay window; same key + different body \u2192 409 idempotency_key_reused.",
+            "in": "header",
+            "name": "Idempotency-Key",
+            "required": false,
+            "schema": {
+              "maxLength": 255,
+              "minLength": 1,
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateStreamRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Stream"
+                }
+              }
+            },
+            "description": "Stream created (queued or ready). Response carries signaling.url + ice_servers + limits."
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "validation_failed / url_forbidden / prompt errors (\u00a715)"
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "invalid_api_key / key_revoked / key_expired"
+          },
+          "402": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "insufficient_credits \u2014 positive balance required."
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "resource_not_found (account-scoped; no existence oracle)"
+          },
+          "409": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "stream_already_active \u2014 one queued|ready|live stream per account (also the un-keyed-retry guard, \u00a731-F2) / idempotency_key_reused."
+          },
+          "429": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "rate_limit_exceeded / concurrency_limit_exceeded / quota_exceeded (always with Retry-After)"
+          },
+          "503": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "capacity_exhausted (with Retry-After) \u2014 slot queue beyond the hard cap."
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "summary": "Create a real-time analysis stream",
+        "tags": [
+          "streams"
+        ]
+      }
+    },
+    "/v1/streams/{id}": {
+      "get": {
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Stream"
+                }
+              }
+            },
+            "description": "The stream. Terminal streams carry usage {billed_seconds, credit_balance_after} + duration_s + results_summary."
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "validation_failed / url_forbidden / prompt errors (\u00a715)"
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "invalid_api_key / key_revoked / key_expired"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "resource_not_found (account-scoped; no existence oracle)"
+          },
+          "409": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "resource_conflict / idempotency_key_reused / idempotency_unavailable"
+          },
+          "429": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "rate_limit_exceeded / concurrency_limit_exceeded / quota_exceeded (always with Retry-After)"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "summary": "Fetch a stream (usage + results summary once ended)",
+        "tags": [
+          "streams"
+        ]
+      }
+    },
+    "/v1/streams/{id}/end": {
+      "post": {
+        "description": "Graceful end: settles the credit reservation for the billed live-clock seconds (releases it entirely when the stream never went live). Ending an already-ended stream returns the terminal resource unchanged.",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Stream"
+                }
+              }
+            },
+            "description": "The ended stream with final usage."
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "validation_failed / url_forbidden / prompt errors (\u00a715)"
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "invalid_api_key / key_revoked / key_expired"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "resource_not_found (account-scoped; no existence oracle)"
+          },
+          "409": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "resource_conflict / idempotency_key_reused / idempotency_unavailable"
+          },
+          "429": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "rate_limit_exceeded / concurrency_limit_exceeded / quota_exceeded (always with Retry-After)"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "summary": "End a stream (idempotent)",
+        "tags": [
+          "streams"
+        ]
+      }
+    },
+    "/v1/usage": {
+      "get": {
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UsageResponse"
+                }
+              }
+            },
+            "description": "Meters + legacy fields. Same numbers as the dashboard (shared service, reconciles with the credit ledger to the second)."
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "validation_failed / url_forbidden / prompt errors (\u00a715)"
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "invalid_api_key / key_revoked / key_expired"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "resource_not_found (account-scoped; no existence oracle)"
+          },
+          "409": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "resource_conflict / idempotency_key_reused / idempotency_unavailable"
+          },
+          "429": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "rate_limit_exceeded / concurrency_limit_exceeded / quota_exceeded (always with Retry-After)"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "summary": "Usage meters (credit balance, period consumption)",
+        "tags": [
+          "usage"
+        ]
+      }
+    },
+    "/v1/videos": {
+      "get": {
+        "parameters": [
+          {
+            "in": "query",
+            "name": "limit",
+            "schema": {
+              "default": 20,
+              "maximum": 100,
+              "minimum": 1,
+              "type": "integer"
+            }
+          },
+          {
+            "description": "Cursor \u2014 mutually exclusive with ending_before.",
+            "in": "query",
+            "name": "starting_after",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "ending_before",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "status",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "created_after",
+            "schema": {
+              "format": "date-time",
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "created_before",
+            "schema": {
+              "format": "date-time",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/VideoList"
+                }
+              }
+            },
+            "description": "List envelope (\u00a713.4)."
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "validation_failed / url_forbidden / prompt errors (\u00a715)"
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "invalid_api_key / key_revoked / key_expired"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "resource_not_found (account-scoped; no existence oracle)"
+          },
+          "409": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "resource_conflict / idempotency_key_reused / idempotency_unavailable"
+          },
+          "429": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "rate_limit_exceeded / concurrency_limit_exceeded / quota_exceeded (always with Retry-After)"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "summary": "List videos (cursor pagination, created_at desc)",
+        "tags": [
+          "videos"
+        ]
+      },
+      "post": {
+        "parameters": [
+          {
+            "description": "\u00a716.1: first request wins; 24h replay window; same key + different body \u2192 409 idempotency_key_reused.",
+            "in": "header",
+            "name": "Idempotency-Key",
+            "required": false,
+            "schema": {
+              "maxLength": 255,
+              "minLength": 1,
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateVideoRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Video"
+                }
+              }
+            },
+            "description": "Video created. Presigned mode \u2192 status awaiting_upload with upload instructions; URL mode \u2192 status processing (async fetch)."
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "validation_failed / url_forbidden / prompt errors (\u00a715)"
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "invalid_api_key / key_revoked / key_expired"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "resource_not_found (account-scoped; no existence oracle)"
+          },
+          "409": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "resource_conflict / idempotency_key_reused / idempotency_unavailable"
+          },
+          "429": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "rate_limit_exceeded / concurrency_limit_exceeded / quota_exceeded (always with Retry-After)"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "summary": "Create a video (presigned upload or URL ingest)",
+        "tags": [
+          "videos"
+        ]
+      }
+    },
+    "/v1/videos/{id}": {
+      "delete": {
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DeletedVideo"
+                }
+              }
+            },
+            "description": "Deleted."
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "validation_failed / url_forbidden / prompt errors (\u00a715)"
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "invalid_api_key / key_revoked / key_expired"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "resource_not_found (account-scoped; no existence oracle)"
+          },
+          "409": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "resource_conflict / idempotency_key_reused / idempotency_unavailable"
+          },
+          "429": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "rate_limit_exceeded / concurrency_limit_exceeded / quota_exceeded (always with Retry-After)"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "summary": "Delete a video (409 while analyses are non-terminal on it)",
+        "tags": [
+          "videos"
+        ]
+      },
+      "get": {
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Video"
+                }
+              }
+            },
+            "description": "The video."
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "validation_failed / url_forbidden / prompt errors (\u00a715)"
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "invalid_api_key / key_revoked / key_expired"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "resource_not_found (account-scoped; no existence oracle)"
+          },
+          "409": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "resource_conflict / idempotency_key_reused / idempotency_unavailable"
+          },
+          "429": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "rate_limit_exceeded / concurrency_limit_exceeded / quota_exceeded (always with Retry-After)"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "summary": "Fetch a video",
+        "tags": [
+          "videos"
+        ]
+      }
+    },
+    "/v1/videos/{id}/complete": {
+      "post": {
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Video"
+                }
+              }
+            },
+            "description": "Size verified (\u00b15% of declaration); video is ready."
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "validation_failed / url_forbidden / prompt errors (\u00a715)"
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "invalid_api_key / key_revoked / key_expired"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "resource_not_found (account-scoped; no existence oracle)"
+          },
+          "409": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "resource_conflict / idempotency_key_reused / idempotency_unavailable"
+          },
+          "429": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "rate_limit_exceeded / concurrency_limit_exceeded / quota_exceeded (always with Retry-After)"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "summary": "Signal that the presigned S3 PUT finished",
+        "tags": [
+          "videos"
+        ]
+      }
+    },
+    "/v1/webhook_endpoints": {
+      "get": {
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/WebhookEndpointList"
+                }
+              }
+            },
+            "description": "List envelope."
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "validation_failed / url_forbidden / prompt errors (\u00a715)"
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "invalid_api_key / key_revoked / key_expired"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "resource_not_found (account-scoped; no existence oracle)"
+          },
+          "409": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "resource_conflict / idempotency_key_reused / idempotency_unavailable"
+          },
+          "429": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "rate_limit_exceeded / concurrency_limit_exceeded / quota_exceeded (always with Retry-After)"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "summary": "List webhook endpoints (secrets never included)",
+        "tags": [
+          "webhook_endpoints"
+        ]
+      },
+      "post": {
+        "description": "Standard Webhooks signing (webhook-id / webhook-timestamp / webhook-signature). The secret appears ONLY in this response. Delivery contract: 10s timeout, retries 1m/5m/30m/2h/8h/24h with jitter, at-least-once, no ordering \u2014 dedupe on the evt_ id. Endpoints failing 100% for 72h are auto-disabled with an email notice. At most 10 endpoints per account.",
+        "parameters": [
+          {
+            "description": "\u00a716.1: first request wins; 24h replay window; same key + different body \u2192 409 idempotency_key_reused.",
+            "in": "header",
+            "name": "Idempotency-Key",
+            "required": false,
+            "schema": {
+              "maxLength": 255,
+              "minLength": 1,
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateWebhookEndpointRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/WebhookEndpoint"
+                }
+              }
+            },
+            "description": "Endpoint created. `secret` is returned exactly once."
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "validation_failed / webhook_endpoint_limit (10 per account)."
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "invalid_api_key / key_revoked / key_expired"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "resource_not_found (account-scoped; no existence oracle)"
+          },
+          "409": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "resource_conflict / idempotency_key_reused / idempotency_unavailable"
+          },
+          "429": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "rate_limit_exceeded / concurrency_limit_exceeded / quota_exceeded (always with Retry-After)"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "summary": "Create a webhook endpoint (returns the one-time whsec_ secret)",
+        "tags": [
+          "webhook_endpoints"
+        ]
+      }
+    },
+    "/v1/webhook_endpoints/{id}": {
+      "delete": {
+        "parameters": [
+          {
+            "description": "Webhook endpoint id (we_\u2026).",
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "{id, object, deleted: true}."
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "validation_failed / url_forbidden / prompt errors (\u00a715)"
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "invalid_api_key / key_revoked / key_expired"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "resource_not_found (account-scoped; no existence oracle)"
+          },
+          "409": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "resource_conflict / idempotency_key_reused / idempotency_unavailable"
+          },
+          "429": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "rate_limit_exceeded / concurrency_limit_exceeded / quota_exceeded (always with Retry-After)"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "summary": "Delete a webhook endpoint (effective immediately, \u00a717)",
+        "tags": [
+          "webhook_endpoints"
+        ]
+      },
+      "get": {
+        "parameters": [
+          {
+            "description": "Webhook endpoint id (we_\u2026).",
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/WebhookEndpoint"
+                }
+              }
+            },
+            "description": "The endpoint."
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "validation_failed / url_forbidden / prompt errors (\u00a715)"
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "invalid_api_key / key_revoked / key_expired"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "resource_not_found (account-scoped; no existence oracle)"
+          },
+          "409": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "resource_conflict / idempotency_key_reused / idempotency_unavailable"
+          },
+          "429": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "rate_limit_exceeded / concurrency_limit_exceeded / quota_exceeded (always with Retry-After)"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "summary": "Fetch a webhook endpoint (secret never included)",
+        "tags": [
+          "webhook_endpoints"
+        ]
+      }
+    },
+    "/v1/webhook_endpoints/{id}/deliveries": {
+      "get": {
+        "description": "Dead-lettered deliveries stay visible for 30 days. Deliveries carry the evt_ id (stable across retries), attempt count, last response status/error, and next retry time.",
+        "parameters": [
+          {
+            "description": "Webhook endpoint id (we_\u2026).",
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/WebhookDeliveryList"
+                }
+              }
+            },
+            "description": "List envelope (newest first)."
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "validation_failed / url_forbidden / prompt errors (\u00a715)"
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "invalid_api_key / key_revoked / key_expired"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "resource_not_found (account-scoped; no existence oracle)"
+          },
+          "409": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "resource_conflict / idempotency_key_reused / idempotency_unavailable"
+          },
+          "429": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "rate_limit_exceeded / concurrency_limit_exceeded / quota_exceeded (always with Retry-After)"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "summary": "List recent deliveries (last 100, with response codes)",
+        "tags": [
+          "webhook_endpoints"
+        ]
+      }
+    },
+    "/v1/webhook_endpoints/{id}/deliveries/{delivery_id}/redeliver": {
+      "post": {
+        "parameters": [
+          {
+            "description": "Webhook endpoint id (we_\u2026).",
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "description": "Delivery id (whd_\u2026).",
+            "in": "path",
+            "name": "delivery_id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "202": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/WebhookDelivery"
+                }
+              }
+            },
+            "description": "Requeued for immediate delivery."
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "validation_failed / url_forbidden / prompt errors (\u00a715)"
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "invalid_api_key / key_revoked / key_expired"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "resource_not_found (account-scoped; no existence oracle)"
+          },
+          "409": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "resource_conflict / idempotency_key_reused / idempotency_unavailable"
+          },
+          "429": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "rate_limit_exceeded / concurrency_limit_exceeded / quota_exceeded (always with Retry-After)"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "summary": "Redeliver a delivery now (works on failed/dead rows)",
+        "tags": [
+          "webhook_endpoints"
+        ]
+      }
+    },
+    "/v1/webhook_endpoints/{id}/enable": {
+      "post": {
+        "parameters": [
+          {
+            "description": "Webhook endpoint id (we_\u2026).",
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/WebhookEndpoint"
+                }
+              }
+            },
+            "description": "The re-enabled endpoint."
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "validation_failed / url_forbidden / prompt errors (\u00a715)"
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "invalid_api_key / key_revoked / key_expired"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "resource_not_found (account-scoped; no existence oracle)"
+          },
+          "409": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "resource_conflict / idempotency_key_reused / idempotency_unavailable"
+          },
+          "429": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "rate_limit_exceeded / concurrency_limit_exceeded / quota_exceeded (always with Retry-After)"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "summary": "Re-enable a disabled endpoint (clears auto-disable state)",
+        "tags": [
+          "webhook_endpoints"
+        ]
+      }
+    },
+    "/v1/webhook_endpoints/{id}/rotate_secret": {
+      "post": {
+        "description": "Returns the NEW secret exactly once. The previous secret keeps signing deliveries for 24h so receivers can migrate without dropped verifications \u2014 the signature header carries one signature per active secret.",
+        "parameters": [
+          {
+            "description": "Webhook endpoint id (we_\u2026).",
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/WebhookEndpoint"
+                }
+              }
+            },
+            "description": "Endpoint with the new one-time `secret`."
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "validation_failed / url_forbidden / prompt errors (\u00a715)"
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "invalid_api_key / key_revoked / key_expired"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "resource_not_found (account-scoped; no existence oracle)"
+          },
+          "409": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "resource_conflict / idempotency_key_reused / idempotency_unavailable"
+          },
+          "429": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "description": "rate_limit_exceeded / concurrency_limit_exceeded / quota_exceeded (always with Retry-After)"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "summary": "Rotate the signing secret (24h dual-secret overlap)",
+        "tags": [
+          "webhook_endpoints"
+        ]
+      }
+    }
+  },
+  "servers": [
+    {
+      "description": "Production",
+      "url": "https://api.primateintelligence.ai"
+    },
+    {
+      "description": "Development",
+      "url": "https://api.dev.primateintelligence.ai"
+    }
+  ],
+  "webhooks": {}
+}
