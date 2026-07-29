@@ -1,0 +1,15 @@
+# Primate Intelligence
+
+> Real-time video intelligence for the physical world. Point Primate Vision at any camera and ask questions in plain language — live answers, structured data, and alerts with no training or labeling.
+
+NOTE: P0 scaffold stub. The canonical /llms.txt served in production today lives on the
+existing site (primateintelligence.ai/llms.txt) and is pinned byte-identical for the
+OpenAI submission. This file must be replaced with the canonical content before any
+cutover — see PRI-501 URL map (IMMOVABLE URLs).
+
+## Pages
+
+- [Home](https://primateintelligence.ai/): Product overview
+- [Pricing](https://primateintelligence.ai/pricing): Plans and pricing
+- [Use Cases](https://primateintelligence.ai/use-cases): Industry applications
+- [Docs](https://primateintelligence.ai/docs): Developer documentation

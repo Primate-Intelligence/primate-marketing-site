@@ -1,0 +1,112 @@
+---
+import '../styles/tokens.css';
+
+interface Props {
+  title: string;
+  description?: string;
+}
+
+const { title, description = 'Primate Intelligence — real-time video intelligence.' } = Astro.props;
+const nav = [
+  { href: '/pricing', label: 'Pricing' },
+  { href: '/use-cases', label: 'Use cases' },
+  { href: '/blog', label: 'Blog' },
+  { href: '/team', label: 'Team' },
+  { href: '/careers', label: 'Careers' },
+];
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" type="image/png" href="/Darwin_v3_vinyl_transparent.png" />
+    <meta name="description" content={description} />
+    <meta name="generator" content={Astro.generator} />
+    <title>{title} · Primate Intelligence</title>
+  </head>
+  <body>
+    <header class="site-header">
+      <a class="brand" href="/">
+        <img src="/Darwin_v3_vinyl_transparent.png" alt="Primate Intelligence" width="36" height="36" />
+        <span class="brand-text"><strong>Primate</strong> Intelligence</span>
+      </a>
+      <nav>
+        {nav.map((item) => <a href={item.href}>{item.label}</a>)}
+      </nav>
+    </header>
+
+    <main>
+      <slot />
+    </main>
+
+    <footer class="site-footer">
+      <div class="footer-brand">
+        <img src="/Darwin_v3_vinyl_transparent.png" alt="" width="24" height="24" />
+        <span><strong>Primate</strong> Intelligence</span>
+      </div>
+      <nav>
+        <a href="/privacy">Privacy</a>
+        <a href="/terms">Terms</a>
+      </nav>
+      <p class="footnote">© {new Date().getFullYear()} Primate AI, Inc.</p>
+    </footer>
+  </body>
+</html>
+
+<style>
+  .site-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
+    padding: 16px 32px;
+    border-bottom: 1px solid var(--color-border);
+    background: var(--color-bg-surface);
+  }
+  .brand {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: var(--color-text-primary);
+    font-size: 18px;
+    letter-spacing: -0.01em;
+  }
+  .brand-text strong { font-weight: 700; }
+  .site-header nav {
+    display: flex;
+    gap: 20px;
+    font-size: 14px;
+    font-weight: 500;
+  }
+  .site-header nav a { color: var(--color-text-primary); }
+  .site-header nav a:hover { color: var(--color-signal); }
+
+  main {
+    flex: 1;
+    width: 100%;
+    max-width: 960px;
+    margin: 0 auto;
+    padding: 48px 32px 96px;
+  }
+
+  .site-footer {
+    border-top: 1px solid var(--color-border);
+    background: var(--color-bg-secondary);
+    padding: 32px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    font-size: 13px;
+    color: var(--color-text-muted);
+  }
+  .footer-brand {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: var(--color-text-primary);
+  }
+  .site-footer nav { display: flex; gap: 16px; }
+  .footnote { margin: 0; font-size: 12px; }
+</style>

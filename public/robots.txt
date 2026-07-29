@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://primateintelligence.ai/sitemap-index.xml

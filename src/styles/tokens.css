@@ -1,0 +1,80 @@
+/* ============================================================
+   Primate Intelligence — Design Tokens (ported from
+   primate-intelligence-website-dev src/styles/tokens.css v3.0)
+   LIGHT THEME IS THE DEFAULT on the marketing site.
+   ============================================================ */
+
+:root {
+  /* ── Light theme (default) ── */
+  --color-bg-primary:    #F2F0EB;  /* paper */
+  --color-bg-secondary:  #E8E5DE;  /* canvas */
+  --color-bg-code:       #E0DDD5;
+  --color-bg-surface:    #FAFAF7;
+  --color-border:        #D4D0C8;
+  --color-text-muted:    #7A7669;
+  --color-text-primary:  #1A1916;  /* ink */
+  --color-signal:        #1B4FE0;
+  --color-signal-hover:  #1340C8;
+  --color-signal-subtle: #DDE6FF;
+  --color-success:       #16A34A;
+  --color-warning:       #D97706;
+  --color-error:         #DC2626;
+
+  /* ── Border radius — v3.0 squared down ── */
+  --radius-sm:   2px;
+  --radius-md:   3px;
+  --radius-lg:   4px;
+  --radius-xl:   6px;
+  --radius-full: 9999px;
+
+  /* ── Motion ── */
+  --ease-standard:   cubic-bezier(0.4, 0, 0.2, 1);
+  --ease-decelerate: cubic-bezier(0, 0, 0.2, 1);
+  --duration-fast:   150ms;
+  --duration-base:   200ms;
+
+  /* ── Type ── */
+  --font-sans: 'Inter', 'Inter Variable', system-ui, -apple-system, sans-serif;
+  --font-mono: 'JetBrains Mono', 'Fira Code', ui-monospace, monospace;
+}
+
+[data-theme="dark"] {
+  --color-bg-primary:    #09090D;  /* void */
+  --color-bg-secondary:  #111318;  /* obsidian */
+  --color-bg-code:       #1A1C23;
+  --color-bg-surface:    #111318;
+  --color-border:        #1E2028;  /* carbon */
+  --color-text-muted:    #9BA4B5;  /* steel */
+  --color-text-primary:  #FFFFFF;
+  --color-signal:        #2058F0;
+  --color-signal-hover:  #0044E0;
+  --color-signal-subtle: #E8EEFF;
+}
+
+/* ── Base ── */
+* { box-sizing: border-box; }
+
+html {
+  font-family: var(--font-sans);
+  background: var(--color-bg-primary);
+  color: var(--color-text-primary);
+  -webkit-font-smoothing: antialiased;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+a { color: var(--color-signal); text-decoration: none; }
+a:hover { color: var(--color-signal-hover); }
+
+code {
+  font-family: var(--font-mono);
+  background: var(--color-bg-code);
+  border-radius: var(--radius-sm);
+  padding: 0.1em 0.35em;
+  font-size: 0.9em;
+}
