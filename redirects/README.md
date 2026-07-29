@@ -26,3 +26,8 @@ Activation checklist (P4 owns this):
    changes (contract is frozen).
 5. Re-verify MCP submission scoring 10/10 after the flip (llms.txt URLs
    change to www).
+
+
+## PRI-503 apex topology (ACTIVE in vercel.json)
+
+PRI-503 URL topology for the apex domain split. REDIRECTS: every product/auth/dashboard path 301s to app.primateintelligence.ai (path+query preserved). CARVE-OUTS (rewrites, NEVER redirect): /oauth/* + /assets/* transparently proxy to the product app until PUBLIC_WEB_ORIGIN flips at PRI-505 (live ChatGPT/Anthropic MCP OAuth depends on apex /oauth/consent — PRI-462/PRI-475); /agents.md + /docs/changelog.* proxy to the API host; /sitemap.xml aliases the Astro sitemap-index so the pinned URL keeps 200ing. IMMOVABLE assets (/demos/*.mp4, per PRI-505 sha256 baselines) are byte-identical files in public/ — no redirect touches them. Inert until apex/www point at this project (PRI-505 DNS flip).

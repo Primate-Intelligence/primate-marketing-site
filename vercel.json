@@ -1,73 +1,245 @@
 {
-  "$comment": "PRI-503 URL topology for the apex domain split. REDIRECTS: every product/auth/dashboard path 301s to app.primateintelligence.ai (path+query preserved). CARVE-OUTS (rewrites, NEVER redirect): /oauth/* + /assets/* transparently proxy to the product app until PUBLIC_WEB_ORIGIN flips at PRI-505 (live ChatGPT/Anthropic MCP OAuth depends on apex /oauth/consent — PRI-462/PRI-475); /agents.md + /docs/changelog.* proxy to the API host; /sitemap.xml aliases the Astro sitemap-index so the pinned URL keeps 200ing. IMMOVABLE assets (/demos/*.mp4, per PRI-505 sha256 baselines) are byte-identical files in public/ — no redirect touches them. Inert until apex/www point at this project (PRI-505 DNS flip).",
   "headers": [
     {
       "source": "/llms.txt",
-      "headers": [{ "key": "Content-Type", "value": "text/plain; charset=utf-8" }]
+      "headers": [
+        {
+          "key": "Content-Type",
+          "value": "text/plain; charset=utf-8"
+        }
+      ]
     },
     {
       "source": "/llms-full.txt",
-      "headers": [{ "key": "Content-Type", "value": "text/plain; charset=utf-8" }]
+      "headers": [
+        {
+          "key": "Content-Type",
+          "value": "text/plain; charset=utf-8"
+        }
+      ]
     },
     {
       "source": "/.well-known/llms.txt",
-      "headers": [{ "key": "Content-Type", "value": "text/plain; charset=utf-8" }]
+      "headers": [
+        {
+          "key": "Content-Type",
+          "value": "text/plain; charset=utf-8"
+        }
+      ]
     },
     {
       "source": "/docs/(.*)\\.md",
-      "headers": [{ "key": "Content-Type", "value": "text/markdown; charset=utf-8" }]
+      "headers": [
+        {
+          "key": "Content-Type",
+          "value": "text/markdown; charset=utf-8"
+        }
+      ]
     },
     {
       "source": "/docs/changelog.xml",
-      "headers": [{ "key": "Content-Type", "value": "application/rss+xml; charset=utf-8" }]
+      "headers": [
+        {
+          "key": "Content-Type",
+          "value": "application/rss+xml; charset=utf-8"
+        }
+      ]
     },
     {
       "source": "/agents.md",
-      "headers": [{ "key": "Content-Type", "value": "text/markdown; charset=utf-8" }]
+      "headers": [
+        {
+          "key": "Content-Type",
+          "value": "text/markdown; charset=utf-8"
+        }
+      ]
     },
     {
       "source": "/(.*)\\.md",
-      "headers": [{ "key": "Content-Type", "value": "text/markdown; charset=utf-8" }]
+      "headers": [
+        {
+          "key": "Content-Type",
+          "value": "text/markdown; charset=utf-8"
+        }
+      ]
     }
   ],
   "redirects": [
-    { "source": "/login", "destination": "https://app.primateintelligence.ai/login", "statusCode": 301 },
-    { "source": "/signup", "destination": "https://app.primateintelligence.ai/signup", "statusCode": 301 },
-    { "source": "/sign-in", "destination": "https://app.primateintelligence.ai/login", "statusCode": 301 },
-    { "source": "/sign-up", "destination": "https://app.primateintelligence.ai/signup", "statusCode": 301 },
-    { "source": "/onboarding", "destination": "https://app.primateintelligence.ai/onboarding", "statusCode": 301 },
-    { "source": "/dashboard", "destination": "https://app.primateintelligence.ai/dashboard", "statusCode": 301 },
-    { "source": "/dashboard/:path*", "destination": "https://app.primateintelligence.ai/dashboard/:path*", "statusCode": 301 },
-    { "source": "/admin/:path*", "destination": "https://app.primateintelligence.ai/admin/:path*", "statusCode": 301 },
-    { "source": "/claim", "destination": "https://app.primateintelligence.ai/claim", "statusCode": 301 },
-    { "source": "/claim/:code", "destination": "https://app.primateintelligence.ai/claim/:code", "statusCode": 301 },
-    { "source": "/invite", "destination": "https://app.primateintelligence.ai/invite", "statusCode": 301 },
-    { "source": "/waitlist", "destination": "https://app.primateintelligence.ai/signup", "statusCode": 301 },
-    { "source": "/primate-vision", "destination": "https://app.primateintelligence.ai/", "statusCode": 301 },
-    { "source": "/demo", "destination": "https://app.primateintelligence.ai/", "statusCode": 301 },
-    { "source": "/500", "destination": "https://app.primateintelligence.ai/500", "statusCode": 301 },
-
-    { "source": "/v2", "destination": "https://app.primateintelligence.ai/", "statusCode": 301 },
-    { "source": "/v2/login", "destination": "https://app.primateintelligence.ai/login", "statusCode": 301 },
-    { "source": "/v2/signup", "destination": "https://app.primateintelligence.ai/signup", "statusCode": 301 },
-    { "source": "/v2/onboarding", "destination": "https://app.primateintelligence.ai/onboarding", "statusCode": 301 },
-    { "source": "/v2/waitlist", "destination": "https://app.primateintelligence.ai/signup", "statusCode": 301 },
-    { "source": "/v2/invite", "destination": "https://app.primateintelligence.ai/invite", "statusCode": 301 },
-    { "source": "/v2/dashboard/admin/settings", "destination": "https://app.primateintelligence.ai/dashboard/admin/pricing", "statusCode": 301 },
-    { "source": "/v2/dashboard", "destination": "https://app.primateintelligence.ai/dashboard", "statusCode": 301 },
-    { "source": "/v2/dashboard/:path*", "destination": "https://app.primateintelligence.ai/dashboard/:path*", "statusCode": 301 },
-
-    { "source": "/v2/docs", "destination": "/docs", "statusCode": 301 },
-    { "source": "/v2/pricing", "destination": "/pricing", "statusCode": 301 },
-    { "source": "/v2/use-cases", "destination": "/use-cases", "statusCode": 301 },
-    { "source": "/v2/blog", "destination": "/blog", "statusCode": 301 },
-    { "source": "/v2/blog/:slug", "destination": "/blog/:slug", "statusCode": 301 },
-    { "source": "/v2/values", "destination": "/values", "statusCode": 301 },
-    { "source": "/v2/team", "destination": "/team", "statusCode": 301 },
-    { "source": "/v2/careers", "destination": "/careers", "statusCode": 301 },
-    { "source": "/v2/terms", "destination": "/terms", "statusCode": 301 },
-    { "source": "/v2/privacy", "destination": "/privacy", "statusCode": 301 },
-    { "source": "/v2/cookie-policy", "destination": "/cookie-policy", "statusCode": 301 }
+    {
+      "source": "/login",
+      "destination": "https://app.primateintelligence.ai/login",
+      "statusCode": 301
+    },
+    {
+      "source": "/signup",
+      "destination": "https://app.primateintelligence.ai/signup",
+      "statusCode": 301
+    },
+    {
+      "source": "/sign-in",
+      "destination": "https://app.primateintelligence.ai/login",
+      "statusCode": 301
+    },
+    {
+      "source": "/sign-up",
+      "destination": "https://app.primateintelligence.ai/signup",
+      "statusCode": 301
+    },
+    {
+      "source": "/onboarding",
+      "destination": "https://app.primateintelligence.ai/onboarding",
+      "statusCode": 301
+    },
+    {
+      "source": "/dashboard",
+      "destination": "https://app.primateintelligence.ai/dashboard",
+      "statusCode": 301
+    },
+    {
+      "source": "/dashboard/:path*",
+      "destination": "https://app.primateintelligence.ai/dashboard/:path*",
+      "statusCode": 301
+    },
+    {
+      "source": "/admin/:path*",
+      "destination": "https://app.primateintelligence.ai/admin/:path*",
+      "statusCode": 301
+    },
+    {
+      "source": "/claim",
+      "destination": "https://app.primateintelligence.ai/claim",
+      "statusCode": 301
+    },
+    {
+      "source": "/claim/:code",
+      "destination": "https://app.primateintelligence.ai/claim/:code",
+      "statusCode": 301
+    },
+    {
+      "source": "/invite",
+      "destination": "https://app.primateintelligence.ai/invite",
+      "statusCode": 301
+    },
+    {
+      "source": "/waitlist",
+      "destination": "https://app.primateintelligence.ai/signup",
+      "statusCode": 301
+    },
+    {
+      "source": "/primate-vision",
+      "destination": "https://app.primateintelligence.ai/",
+      "statusCode": 301
+    },
+    {
+      "source": "/demo",
+      "destination": "https://app.primateintelligence.ai/",
+      "statusCode": 301
+    },
+    {
+      "source": "/500",
+      "destination": "https://app.primateintelligence.ai/500",
+      "statusCode": 301
+    },
+    {
+      "source": "/v2",
+      "destination": "https://app.primateintelligence.ai/",
+      "statusCode": 301
+    },
+    {
+      "source": "/v2/login",
+      "destination": "https://app.primateintelligence.ai/login",
+      "statusCode": 301
+    },
+    {
+      "source": "/v2/signup",
+      "destination": "https://app.primateintelligence.ai/signup",
+      "statusCode": 301
+    },
+    {
+      "source": "/v2/onboarding",
+      "destination": "https://app.primateintelligence.ai/onboarding",
+      "statusCode": 301
+    },
+    {
+      "source": "/v2/waitlist",
+      "destination": "https://app.primateintelligence.ai/signup",
+      "statusCode": 301
+    },
+    {
+      "source": "/v2/invite",
+      "destination": "https://app.primateintelligence.ai/invite",
+      "statusCode": 301
+    },
+    {
+      "source": "/v2/dashboard/admin/settings",
+      "destination": "https://app.primateintelligence.ai/dashboard/admin/pricing",
+      "statusCode": 301
+    },
+    {
+      "source": "/v2/dashboard",
+      "destination": "https://app.primateintelligence.ai/dashboard",
+      "statusCode": 301
+    },
+    {
+      "source": "/v2/dashboard/:path*",
+      "destination": "https://app.primateintelligence.ai/dashboard/:path*",
+      "statusCode": 301
+    },
+    {
+      "source": "/v2/docs",
+      "destination": "/docs",
+      "statusCode": 301
+    },
+    {
+      "source": "/v2/pricing",
+      "destination": "/pricing",
+      "statusCode": 301
+    },
+    {
+      "source": "/v2/use-cases",
+      "destination": "/use-cases",
+      "statusCode": 301
+    },
+    {
+      "source": "/v2/blog",
+      "destination": "/blog",
+      "statusCode": 301
+    },
+    {
+      "source": "/v2/blog/:slug",
+      "destination": "/blog/:slug",
+      "statusCode": 301
+    },
+    {
+      "source": "/v2/values",
+      "destination": "/values",
+      "statusCode": 301
+    },
+    {
+      "source": "/v2/team",
+      "destination": "/team",
+      "statusCode": 301
+    },
+    {
+      "source": "/v2/careers",
+      "destination": "/careers",
+      "statusCode": 301
+    },
+    {
+      "source": "/v2/terms",
+      "destination": "/terms",
+      "statusCode": 301
+    },
+    {
+      "source": "/v2/privacy",
+      "destination": "/privacy",
+      "statusCode": 301
+    },
+    {
+      "source": "/v2/cookie-policy",
+      "destination": "/cookie-policy",
+      "statusCode": 301
+    }
   ],
   "rewrites": [
     {
