@@ -1,8 +1,269 @@
 ---
+/**
+ * Pricing — copy migrated verbatim from primate-intelligence-website-dev
+ * src/pages/Pricing.tsx (PRI-437 metered-credits page). The SPA fetches live
+ * config from GET /v1/credit-pricing; this static page renders the same launch
+ * defaults the SPA falls back to (rate 1¢/s, 6000s grants, $10/$25/$50/$100
+ * presets, 600s auto-refill threshold).
+ */
 import Base from '../layouts/Base.astro';
+
+const presets = [1000, 2500, 5000, 10000];
+const presetLabel = presets.map((c) => `$${c / 100}`).join(' · ');
+const refillMath = presets.map((c) => `$${c / 100}=${(c / 1).toLocaleString()}s`).join(' · ');
+
+const pricingLd = {
+  '@context': 'https://schema.org',
+  '@type': 'Product',
+  name: 'Primate Vision',
+  description: 'Metered video-intelligence credits. One balance for every video workflow.',
+  brand: { '@type': 'Brand', name: 'Primate Intelligence' },
+  offers: [
+    {
+      '@type': 'Offer',
+      name: 'Free Start',
+      price: '0',
+      priceCurrency: 'USD',
+      description: '6,000 seconds signup grant, no card required.',
+    },
+    {
+      '@type': 'Offer',
+      name: 'Self-Serve',
+      price: '0.01',
+      priceCurrency: 'USD',
+      description: '$0.01 per video second, metered credits with auto-refill.',
+    },
+  ],
+};
 ---
 
-<Base title="Pricing">
-  <h1>Pricing</h1>
-  <p><em>P0 scaffold — placeholder page. Content lands in P1.</em></p>
+<Base
+  title="Pricing"
+  description="One balance for every video workflow. $0.01 per video second — buy credits once, use them through the web app, API, agents, file uploads, or live streams."
+  canonicalPath="/pricing"
+  jsonLd={[pricingLd]}
+>
+  <div class="page">
+    <!-- ── Hero ── -->
+    <section class="hero-grid">
+      <div>
+        <h1>One balance for every video workflow.</h1>
+        <p class="lede">
+          Buy video processing credits once. Use them through the web app, API, agents,
+          file uploads, or live streams. A second is one second of source video clock
+          time, independent of frame rate.
+        </p>
+      </div>
+      <div class="rate-card">
+        <p class="eyebrow">Launch rate</p>
+        <p class="rate"><span class="rate-num">$0.01</span> <span class="rate-unit">/ video second</span></p>
+        <p class="muted small">
+          $0.60/min · $36/hr. Reviewed after benchmark and demand data; Enterprise is
+          custom above $20k/month.
+        </p>
+      </div>
+    </section>
+
+    <!-- ── Three cards ── -->
+    <section class="cards">
+      <div class="card">
+        <p class="eyebrow">Free start</p>
+        <h2>Try real processing without a card.</h2>
+        <p class="big-num">6,000s</p>
+        <p class="muted small">
+          $60 face value. Signup grant expires after 30 days. API keys are
+          available immediately after account creation.
+        </p>
+        <table class="mini-table">
+          <tbody>
+            <tr><td>Card grant</td><td>+6,000s / +$60</td></tr>
+            <tr><td>Card requirement</td><td>$0 setup</td></tr>
+            <tr><td>Total face value</td><td>$120</td></tr>
+          </tbody>
+        </table>
+        <a class="btn outline" href="https://primateintelligence.ai/signup">Create account</a>
+      </div>
+
+      <div class="card accent-signal">
+        <p class="eyebrow">Self-serve</p>
+        <h2>Metered credits for production work.</h2>
+        <p class="big-num">$0.01<span class="rate-unit"> / second</span></p>
+        <p class="muted small">
+          $0.60/min · $36/hr. Buy credits manually or auto-refill before your balance
+          drops below 600s ($6).
+        </p>
+        <table class="mini-table">
+          <tbody>
+            <tr><td>Refill presets</td><td>{presetLabel}</td></tr>
+            <tr><td>Custom amount</td><td>Yes</td></tr>
+            <tr><td>Paid credits</td><td>No expiry</td></tr>
+          </tbody>
+        </table>
+        <a class="btn primary" href="https://primateintelligence.ai/signup">Buy credits</a>
+      </div>
+
+      <div class="card accent-green">
+        <p class="eyebrow">Enterprise</p>
+        <h2>Custom pricing for committed volume.</h2>
+        <p class="big-num">Talk to us</p>
+        <p class="muted small">
+          For customers forecasting or committing to more than $20k/month. A nonstop
+          30-day stream is $25,920/mo self-serve.
+        </p>
+        <table class="mini-table">
+          <tbody>
+            <tr><td>Rate card</td><td>Custom</td></tr>
+            <tr><td>Terms</td><td>Volume commit</td></tr>
+            <tr><td>Support</td><td>SLA + dedicated</td></tr>
+          </tbody>
+        </table>
+        <a class="btn outline" href="mailto:sales@primateintelligence.ai">Contact sales</a>
+      </div>
+    </section>
+
+    <!-- ── Bottom panels ── -->
+    <section class="panels">
+      <div class="panel">
+        <h3>How metering works</h3>
+        <div class="steps">
+          <div class="step">
+            <div class="step-rule"></div>
+            <p class="step-title">1. Upload or stream</p>
+            <p class="muted small">We inspect source video duration, not processed frame count.</p>
+          </div>
+          <div class="step">
+            <div class="step-rule"></div>
+            <p class="step-title">2. Reserve seconds</p>
+            <p class="muted small">Uploads reserve upfront. Streams debit elapsed time while live.</p>
+          </div>
+          <div class="step">
+            <div class="step-rule"></div>
+            <p class="step-title">3. Settle ledger</p>
+            <p class="muted small">Every event records job, source, seconds, credit type, and balance.</p>
+          </div>
+        </div>
+      </div>
+      <div class="panel">
+        <h3>Same video, same charge</h3>
+        <div class="pills">
+          <span class="pill signal">10s at 1fps = 10s</span>
+          <span class="pill signal">10s at 60fps = 10s</span>
+          <span class="pill green">8m stream = 480s</span>
+          <span class="pill muted-pill">No queued-time charge</span>
+          <span class="pill muted-pill">Failed jobs not charged</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── Footer strip ── -->
+    <section class="footer-strip">
+      <span>
+        Refill math: {refillMath}. Enterprise:
+        <a href="mailto:sales@primateintelligence.ai">sales@primateintelligence.ai</a>
+      </span>
+      <span>Paid credits never expire</span>
+    </section>
+  </div>
 </Base>
+
+<style>
+  .page { max-width: 1120px; margin: 0 auto; padding: 64px 24px 80px; }
+  .hero-grid {
+    display: grid;
+    grid-template-columns: 3fr 2fr;
+    gap: 48px;
+    align-items: center;
+    margin-bottom: 48px;
+  }
+  h1 { font-size: 48px; font-weight: 800; letter-spacing: -0.03em; line-height: 1.1; margin: 0; }
+  .lede { font-size: 17px; line-height: 1.6; color: var(--color-text-muted); margin: 16px 0 0; max-width: 560px; }
+  .eyebrow {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: #a8a39a;
+    margin: 0 0 12px;
+  }
+  .rate-card { background: var(--color-bg-secondary); border-radius: 10px; padding: 28px; }
+  .rate { margin: 0; }
+  .rate-num { font-size: 30px; font-weight: 800; letter-spacing: -0.02em; }
+  .rate-unit { font-size: 18px; font-weight: 400; color: var(--color-text-muted); }
+  .muted { color: var(--color-text-muted); }
+  .small { font-size: 13px; line-height: 1.6; }
+
+  .cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; margin-bottom: 32px; }
+  .card {
+    background: var(--color-bg-surface);
+    border: 1px solid var(--color-border);
+    border-radius: 10px;
+    padding: 28px;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    overflow: hidden;
+  }
+  .card h2 { font-size: 18px; font-weight: 600; margin: 0 0 16px; line-height: 1.35; }
+  .accent-signal::before, .accent-green::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 4px;
+  }
+  .accent-signal::before { background: var(--color-signal); }
+  .accent-green::before { background: var(--color-success); }
+  .big-num { font-size: 42px; font-weight: 800; letter-spacing: -0.03em; margin: 0 0 12px; }
+  .mini-table { width: 100%; border-collapse: collapse; margin: auto 0 20px; }
+  .mini-table td { padding: 10px 0; border-bottom: 1px solid var(--color-border); font-size: 13px; }
+  .mini-table tr:first-child td { border-top: 1px solid var(--color-border); }
+  .mini-table td:first-child { color: var(--color-text-muted); }
+  .mini-table td:last-child { text-align: right; font-weight: 600; }
+  .btn {
+    font-size: 14px;
+    font-weight: 600;
+    border-radius: 6px;
+    padding: 10px 18px;
+    text-align: center;
+    display: block;
+  }
+  .btn.outline { color: var(--color-text-primary); background: var(--color-bg-surface); border: 1px solid var(--color-border); }
+  .btn.primary { color: #fff; background: var(--color-signal); border: 1px solid var(--color-signal); }
+  .btn.primary:hover { background: var(--color-signal-hover); color: #fff; }
+
+  .panels { display: grid; grid-template-columns: 3fr 2fr; gap: 24px; margin-bottom: 40px; }
+  .panel { background: var(--color-bg-secondary); border-radius: 10px; padding: 28px; }
+  .panel h3 { font-size: 18px; font-weight: 700; margin: 0 0 20px; }
+  .steps { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+  .step-rule { width: 32px; height: 2px; background: var(--color-text-primary); margin-bottom: 12px; }
+  .step-title { font-size: 14px; font-weight: 600; margin: 0 0 6px; }
+  .pills { display: flex; flex-wrap: wrap; gap: 10px; }
+  .pill {
+    font-size: 13px;
+    font-weight: 500;
+    border-radius: 999px;
+    padding: 6px 12px;
+    white-space: nowrap;
+    border: 1px solid;
+  }
+  .pill.signal { color: var(--color-signal); border-color: rgba(27, 79, 224, 0.33); }
+  .pill.green { color: var(--color-success); border-color: rgba(22, 163, 74, 0.33); }
+  .pill.muted-pill { color: var(--color-text-muted); border-color: rgba(122, 118, 105, 0.33); }
+
+  .footer-strip {
+    display: flex;
+    justify-content: space-between;
+    gap: 8px;
+    border-top: 1px solid var(--color-border);
+    padding-top: 20px;
+    font-size: 12px;
+    color: #a8a39a;
+    flex-wrap: wrap;
+  }
+  .footer-strip a { color: #a8a39a; text-decoration: underline; }
+
+  @media (max-width: 860px) {
+    .hero-grid, .cards, .panels, .steps { grid-template-columns: 1fr; }
+    h1 { font-size: 36px; }
+    .page { padding: 40px 20px 60px; }
+  }
+</style>

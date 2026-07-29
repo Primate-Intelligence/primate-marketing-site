@@ -1,0 +1,153 @@
+---
+/**
+ * Cookie Policy — content migrated VERBATIM from
+ * primate-intelligence-website-dev src/pages/CookiePolicy.tsx (last updated 2026-05-06).
+ */
+import Legal from '../layouts/Legal.astro';
+---
+
+<Legal
+  title="Cookie Policy"
+  description="How Primate AI, Inc. (dba Primate Intelligence) uses cookies and similar technologies on primateintelligence.ai — which cookies we use, why, and how you can control them."
+  canonicalPath="/cookie-policy"
+  dateLine="Last updated: May 6, 2026"
+>
+  <p>
+    This Cookie Policy explains how Primate AI, Inc. (doing business as "Primate Intelligence")
+    uses cookies and similar technologies on primateintelligence.ai.
+    It covers what cookies are, which ones we use, why we use them, and how you can control them.
+  </p>
+
+  <h2>What Are Cookies?</h2>
+  <p>
+    Cookies are small text files stored on your device when you visit a website. They help the site
+    remember your actions and preferences — like login status and display settings — so you don't
+    have to re-enter them each time you visit. Some cookies are set by us (first-party), and others
+    are set by services we use (third-party).
+  </p>
+
+  <h2>1. Strictly Necessary Cookies</h2>
+  <p>
+    These cookies are essential for the site to function. Without them, features like authentication
+    and security protections wouldn't work. You cannot opt out of these cookies.
+  </p>
+  <ul>
+    <li>
+      <code>__clerk_db_jwt</code>, <code>__session</code>, <code>__client_uat</code> — Set by
+      <strong>Clerk</strong> (our authentication provider).
+      These maintain your login session, verify your identity, and protect against unauthorized access.
+      Duration: session to 1 year.
+    </li>
+    <li>
+      <code>__cf_bm</code>, <code>__csrf_token</code> — CSRF protection and bot-detection cookies
+      that keep your session secure. Duration: session to 30 minutes.
+    </li>
+  </ul>
+
+  <h2>2. Functional Cookies</h2>
+  <p>
+    Functional cookies remember your preferences to provide a better experience.
+    They don't track you across other websites.
+  </p>
+  <ul>
+    <li>
+      <strong>Theme and display preferences</strong> — We may
+      store your preferred theme (light/dark) and UI settings locally so the site looks the way
+      you left it. These are typically stored in your browser's local storage rather than as cookies.
+    </li>
+    <li>
+      <strong>Supabase</strong> — Our database provider may set
+      functional cookies to manage authenticated API requests. Duration: session.
+    </li>
+  </ul>
+
+  <h2>3. Analytics Cookies</h2>
+  <p>
+    Analytics cookies help us understand how visitors use the site — which pages are popular, where
+    people drop off, and how we can improve. This data is aggregated and does not personally identify you.
+    You can opt out of these cookies (see below).
+  </p>
+  <ul>
+    <li>
+      <code>_ga</code>, <code>_ga_*</code>, <code>_gid</code> — Set by
+      <strong>Google Analytics 4 (GA4)</strong>.
+      These distinguish unique users and sessions, and track page views and interactions.
+      <code>_ga</code> persists for up to 2 years; <code>_gid</code> expires after 24 hours.
+    </li>
+    <li>
+      <code>ph_*</code> — Set by <strong>PostHog</strong> (product analytics).
+      These track feature usage, session replays, and product interactions to help us improve
+      the user experience. Duration: up to 1 year.
+    </li>
+  </ul>
+
+  <h2>4. Payment Processing Cookies</h2>
+  <p>
+    When you make a purchase or enter payment information, our payment processor sets cookies
+    to prevent fraud and ensure a smooth checkout.
+  </p>
+  <ul>
+    <li>
+      <code>__stripe_mid</code>, <code>__stripe_sid</code> — Set by <strong>Stripe</strong>.
+      These detect fraudulent payment activity and link your browser session to the checkout flow.
+      <code>__stripe_mid</code> persists for 1 year; <code>__stripe_sid</code> expires with your session.
+    </li>
+  </ul>
+
+  <h2>How to Control Cookies</h2>
+  <p>You have several options for managing cookies:</p>
+  <ul>
+    <li>
+      <strong>Browser settings</strong> — Most browsers let you
+      block or delete cookies through their privacy settings. Note that blocking strictly necessary
+      cookies will prevent you from logging in or using core features.
+    </li>
+    <li>
+      <strong>Google Analytics opt-out</strong> — Install the
+      <a href="https://tools.google.com/dlpage/gaoptout" target="_blank" rel="noopener noreferrer">Google Analytics Opt-out Browser Add-on</a>
+      to prevent GA4 from collecting your data.
+    </li>
+    <li>
+      <strong>PostHog opt-out</strong> — You can disable PostHog
+      tracking by enabling "Do Not Track" in your browser settings. We respect the DNT signal
+      for analytics collection.
+    </li>
+  </ul>
+
+  <h2>Third-Party Services</h2>
+  <p>
+    Some cookies are placed by third-party services that appear on our pages. We do not control
+    how these services use their cookies. For more information, review their privacy policies:
+  </p>
+  <ul>
+    <li><a href="https://clerk.com/privacy" target="_blank" rel="noopener noreferrer">Clerk Privacy Policy</a></li>
+    <li><a href="https://stripe.com/privacy" target="_blank" rel="noopener noreferrer">Stripe Privacy Policy</a></li>
+    <li><a href="https://policies.google.com/privacy" target="_blank" rel="noopener noreferrer">Google Privacy Policy</a></li>
+    <li><a href="https://posthog.com/privacy" target="_blank" rel="noopener noreferrer">PostHog Privacy Policy</a></li>
+  </ul>
+
+  <h2>Your Rights Under GDPR</h2>
+  <p>If you're in the European Economic Area (EEA) or UK, you have the right to:</p>
+  <ul>
+    <li>Access the personal data we hold about you</li>
+    <li>Request correction or deletion of your data</li>
+    <li>Object to or restrict processing of your data</li>
+    <li>Withdraw consent for non-essential cookies at any time</li>
+    <li>Lodge a complaint with your local data protection authority</li>
+  </ul>
+  <p>
+    Withdrawing consent does not affect the lawfulness of processing carried out before withdrawal.
+  </p>
+
+  <h2>Changes to This Policy</h2>
+  <p>
+    We may update this Cookie Policy from time to time. When we do, we'll revise the "last updated"
+    date at the top. We encourage you to check back periodically.
+  </p>
+
+  <h2>Contact Us</h2>
+  <p>
+    If you have questions about our use of cookies or your privacy rights, email us at
+    <a href="mailto:privacy@primateintelligence.ai">privacy@primateintelligence.ai</a>
+  </p>
+</Legal>

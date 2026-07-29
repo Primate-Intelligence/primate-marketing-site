@@ -1,8 +1,110 @@
 ---
 import Base from '../layouts/Base.astro';
+import { CAREERS_HERO, LOOK_FOR, OFFER, OPEN_ROLES } from '../data/careers';
 ---
 
-<Base title="Careers">
-  <h1>Careers</h1>
-  <p><em>P0 scaffold — placeholder page. Content lands in P1.</em></p>
+<Base
+  title="Careers"
+  description="Work on problems that matter. Primate Intelligence is a small team building infrastructure for the next generation of computer vision."
+  canonicalPath="/careers"
+>
+  <div class="page">
+    <section class="hero">
+      <p class="eyebrow">{CAREERS_HERO.eyebrow}</p>
+      <h1>{CAREERS_HERO.heading}</h1>
+      <p class="lede">{CAREERS_HERO.lede}</p>
+    </section>
+
+    <section class="columns">
+      <div class="lists">
+        <h2>What we look for</h2>
+        <ul>
+          {LOOK_FOR.map((item) => (
+            <li><span class="arrow" aria-hidden="true">→</span>{item}</li>
+          ))}
+        </ul>
+
+        <h2 class="offer-heading">What we offer</h2>
+        <ul>
+          {OFFER.map((item) => (
+            <li><span class="arrow" aria-hidden="true">→</span>{item}</li>
+          ))}
+        </ul>
+      </div>
+
+      <aside class="roles-card">
+        <p class="roles-header">Open Roles <span class="count">{OPEN_ROLES.count}</span></p>
+        <p class="telescope" aria-hidden="true">🔭</p>
+        <p class="roles-title">{OPEN_ROLES.emptyTitle}</p>
+        <p class="roles-body">{OPEN_ROLES.emptyBody}</p>
+        <p class="roles-email">{OPEN_ROLES.email}</p>
+        <a class="btn" href={`mailto:${OPEN_ROLES.email}`}>Get in touch →</a>
+      </aside>
+    </section>
+  </div>
 </Base>
+
+<style>
+  .page { max-width: 1024px; margin: 0 auto; padding: 64px 24px 96px; }
+  .hero { text-align: center; max-width: 640px; margin: 0 auto 56px; }
+  .eyebrow {
+    font-size: 13px;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--color-text-muted);
+    margin: 0 0 14px;
+  }
+  h1 { font-size: 44px; font-weight: 700; letter-spacing: -0.02em; margin: 0 0 14px; }
+  .lede { font-size: 16px; color: var(--color-text-muted); line-height: 1.65; margin: 0; }
+
+  .columns { display: grid; grid-template-columns: 1fr 380px; gap: 64px; }
+  h2 { font-size: 26px; font-weight: 600; letter-spacing: -0.01em; margin: 0 0 20px; }
+  .offer-heading { margin-top: 48px; }
+  ul { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 12px; }
+  li { display: flex; gap: 12px; font-size: 16px; color: var(--color-text-muted); line-height: 1.6; }
+  .arrow { color: var(--color-signal); flex-shrink: 0; }
+
+  .roles-card {
+    background: var(--color-bg-surface);
+    border: 1px solid var(--color-border);
+    border-radius: 8px;
+    padding: 40px 32px;
+    text-align: center;
+    align-self: start;
+    position: sticky;
+    top: 90px;
+  }
+  .roles-header { font-size: 14px; font-weight: 600; margin: 0 0 24px; }
+  .count {
+    background: var(--color-bg-secondary);
+    color: var(--color-text-muted);
+    border-radius: 999px;
+    font-size: 11px;
+    font-weight: 700;
+    padding: 2px 8px;
+    margin-left: 6px;
+  }
+  .telescope { font-size: 34px; margin: 0 0 16px; }
+  .roles-title { font-size: 19px; font-weight: 600; margin: 0 0 12px; }
+  .roles-body { font-size: 14px; color: var(--color-text-muted); line-height: 1.65; margin: 0 0 16px; }
+  .roles-email { font-size: 13px; color: var(--color-text-muted); margin: 0 0 24px; }
+  .btn {
+    display: block;
+    background: var(--color-signal);
+    color: #fff;
+    font-weight: 600;
+    font-size: 15px;
+    padding: 12px 24px;
+    border-radius: 6px;
+    transition: background var(--duration-fast) var(--ease-standard);
+  }
+  .btn:hover { background: var(--color-signal-hover); color: #fff; }
+
+  @media (max-width: 860px) {
+    .columns { grid-template-columns: 1fr; gap: 40px; }
+    .roles-card { position: static; order: -1; }
+    h1 { font-size: 30px; }
+    .page { padding: 44px 20px 64px; }
+  }
+</style>

@@ -4,15 +4,88 @@ import '../styles/tokens.css';
 interface Props {
   title: string;
   description?: string;
+  /** Path for the canonical URL, e.g. "/pricing". Defaults to current path. */
+  canonicalPath?: string;
+  /** OG type override (website | article). */
+  ogType?: string;
+  /** Absolute or site-relative OG image. */
+  ogImage?: string;
+  /** Extra JSON-LD objects to embed (Organization is always included). */
+  jsonLd?: Record<string, unknown>[];
+  /** Path to this page's markdown twin, if one exists (adds an alternate link). */
+  mdTwin?: string;
 }
 
-const { title, description = 'Primate Intelligence — real-time video intelligence.' } = Astro.props;
+const {
+  title,
+  description = 'Primate Intelligence — real-time video intelligence for the physical world.',
+  canonicalPath,
+  ogType = 'website',
+  ogImage = '/Darwin_v3_vinyl_transparent.png',
+  jsonLd = [],
+  mdTwin,
+} = Astro.props;
+
+const site = Astro.site ?? new URL('https://primateintelligence.ai');
+const canonical = new URL(canonicalPath ?? Astro.url.pathname, site).href;
+const ogImageAbs = new URL(ogImage, site).href;
+const fullTitle = `${title} · Primate Intelligence`;
+
+const organizationLd = {
+  '@context': 'https://schema.org',
+  '@type': 'Organization',
+  name: 'Primate Intelligence',
+  legalName: 'Primate AI, Inc.',
+  url: site.href,
+  logo: new URL('/Darwin_v3_vinyl_transparent.png', site).href,
+  description:
+    'Predictive world models for computer vision developers. Real-time video intelligence for the physical world.',
+  address: {
+    '@type': 'PostalAddress',
+    streetAddress: '1210 Redmond Ave',
+    addressLocality: 'San Jose',
+    addressRegion: 'CA',
+    postalCode: '95120',
+    addressCountry: 'US',
+  },
+  sameAs: ['https://www.linkedin.com/in/mattmiesnieks/'],
+};
+
+const ldBlocks = [organizationLd, ...jsonLd];
+
 const nav = [
   { href: '/pricing', label: 'Pricing' },
   { href: '/use-cases', label: 'Use cases' },
   { href: '/blog', label: 'Blog' },
   { href: '/team', label: 'Team' },
-  { href: '/careers', label: 'Careers' },
+];
+
+const footerColumns = [
+  {
+    title: 'Product',
+    links: [
+      { label: 'Primate Vision', href: 'https://primateintelligence.ai/' },
+      { label: 'Pricing', href: '/pricing' },
+      { label: 'Use Cases', href: '/use-cases' },
+      { label: 'Blog', href: '/blog' },
+    ],
+  },
+  {
+    title: 'Company',
+    links: [
+      { label: 'Team', href: '/team' },
+      { label: 'Values', href: '/values' },
+      { label: 'Careers', href: '/careers' },
+    ],
+  },
+  {
+    title: 'Legal',
+    links: [
+      { label: 'Privacy Policy', href: '/privacy' },
+      { label: 'Terms of Service', href: '/terms' },
+      { label: 'Cookie Policy', href: '/cookie-policy' },
+    ],
+  },
 ];
 ---
 
@@ -22,19 +95,47 @@ const nav = [
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="icon" type="image/png" href="/Darwin_v3_vinyl_transparent.png" />
-    <meta name="description" content={description} />
     <meta name="generator" content={Astro.generator} />
-    <title>{title} · Primate Intelligence</title>
+    <title>{fullTitle}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    {mdTwin && <link rel="alternate" type="text/markdown" href={mdTwin} />}
+    <link rel="alternate" type="application/rss+xml" title="Primate Intelligence Blog" href="/rss.xml" />
+    <link rel="sitemap" href="/sitemap-index.xml" />
+
+    <!-- Open Graph -->
+    <meta property="og:type" content={ogType} />
+    <meta property="og:site_name" content="Primate Intelligence" />
+    <meta property="og:title" content={fullTitle} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={ogImageAbs} />
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={fullTitle} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImageAbs} />
+
+    {ldBlocks.map((block) => (
+      <script type="application/ld+json" set:html={JSON.stringify(block)} />
+    ))}
   </head>
   <body>
     <header class="site-header">
-      <a class="brand" href="/">
-        <img src="/Darwin_v3_vinyl_transparent.png" alt="Primate Intelligence" width="36" height="36" />
-        <span class="brand-text"><strong>Primate</strong> Intelligence</span>
-      </a>
-      <nav>
-        {nav.map((item) => <a href={item.href}>{item.label}</a>)}
-      </nav>
+      <div class="header-inner">
+        <a class="brand" href="/">
+          <img src="/Darwin_v3_vinyl_transparent.png" alt="Primate Intelligence" width="36" height="36" />
+          <span class="brand-text">
+            <span class="brand-primate">Primate</span>
+            <span class="brand-intelligence">Intelligence</span>
+          </span>
+        </a>
+        <nav aria-label="Main">
+          {nav.map((item) => <a href={item.href}>{item.label}</a>)}
+          <a class="nav-cta" href="https://primateintelligence.ai/">Try Primate Vision</a>
+        </nav>
+      </div>
     </header>
 
     <main>
@@ -42,71 +143,150 @@ const nav = [
     </main>
 
     <footer class="site-footer">
-      <div class="footer-brand">
-        <img src="/Darwin_v3_vinyl_transparent.png" alt="" width="24" height="24" />
-        <span><strong>Primate</strong> Intelligence</span>
+      <div class="footer-inner">
+        <div class="footer-grid">
+          <div class="footer-brand-col">
+            <a href="/" class="footer-brand">
+              <img src="/Darwin_v3_vinyl_transparent.png" alt="" width="28" height="28" />
+              <span class="brand-text">
+                <span class="brand-primate">Primate</span>
+                <span class="brand-intelligence">Intelligence</span>
+              </span>
+            </a>
+            <p class="footer-tagline">Predictive world models for computer vision developers.</p>
+          </div>
+          {footerColumns.map((col) => (
+            <div class="footer-col">
+              <div class="footer-col-title">{col.title}</div>
+              <ul>
+                {col.links.map((link) => (
+                  <li><a href={link.href}>{link.label}</a></li>
+                ))}
+              </ul>
+            </div>
+          ))}
+        </div>
+        <div class="footer-bottom">
+          <p>© {new Date().getFullYear()} Primate AI, Inc. · San Jose, CA</p>
+          <p class="footer-mono">api.primateintelligence.ai</p>
+        </div>
       </div>
-      <nav>
-        <a href="/privacy">Privacy</a>
-        <a href="/terms">Terms</a>
-      </nav>
-      <p class="footnote">© {new Date().getFullYear()} Primate AI, Inc.</p>
     </footer>
   </body>
 </html>
 
 <style>
   .site-header {
+    border-bottom: 1px solid var(--color-border);
+    background: var(--color-bg-surface);
+    position: sticky;
+    top: 0;
+    z-index: 20;
+  }
+  .header-inner {
+    max-width: 1120px;
+    margin: 0 auto;
     display: flex;
     align-items: center;
     justify-content: space-between;
     gap: 24px;
-    padding: 16px 32px;
-    border-bottom: 1px solid var(--color-border);
-    background: var(--color-bg-surface);
+    padding: 14px 24px;
   }
   .brand {
     display: flex;
     align-items: center;
     gap: 10px;
     color: var(--color-text-primary);
-    font-size: 18px;
-    letter-spacing: -0.01em;
   }
-  .brand-text strong { font-weight: 700; }
+  .brand-text {
+    display: flex;
+    flex-direction: column;
+    line-height: 1.12;
+    font-size: 14px;
+    font-weight: 400;
+    letter-spacing: -0.02em;
+  }
+  .brand-primate { color: var(--color-text-primary); }
+  .brand-intelligence { color: #2058f0; }
   .site-header nav {
     display: flex;
-    gap: 20px;
+    align-items: center;
+    gap: 22px;
     font-size: 14px;
     font-weight: 500;
+    flex-wrap: wrap;
   }
   .site-header nav a { color: var(--color-text-primary); }
   .site-header nav a:hover { color: var(--color-signal); }
+  .nav-cta {
+    background: var(--color-signal);
+    color: #fff !important;
+    padding: 8px 16px;
+    border-radius: var(--radius-lg);
+    font-weight: 600;
+  }
+  .nav-cta:hover { background: var(--color-signal-hover); }
 
   main {
     flex: 1;
     width: 100%;
-    max-width: 960px;
-    margin: 0 auto;
-    padding: 48px 32px 96px;
   }
 
   .site-footer {
     border-top: 1px solid var(--color-border);
     background: var(--color-bg-secondary);
-    padding: 32px;
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
     font-size: 13px;
     color: var(--color-text-muted);
   }
+  .footer-inner {
+    max-width: 1120px;
+    margin: 0 auto;
+    padding: 48px 24px 32px;
+  }
+  .footer-grid {
+    display: grid;
+    grid-template-columns: 1fr repeat(3, auto);
+    gap: 48px;
+    margin-bottom: 40px;
+  }
   .footer-brand {
-    display: flex;
+    display: inline-flex;
     align-items: center;
     gap: 8px;
     color: var(--color-text-primary);
+    margin-bottom: 12px;
   }
-  .site-footer nav { display: flex; gap: 16px; }
-  .footnote { margin: 0; font-size: 12px; }
+  .footer-tagline { max-width: 260px; line-height: 1.6; margin: 0; }
+  .footer-col-title {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--color-text-primary);
+    font-weight: 600;
+    margin-bottom: 14px;
+  }
+  .footer-col ul { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 10px; }
+  .footer-col a { color: var(--color-text-muted); }
+  .footer-col a:hover { color: var(--color-text-primary); }
+  .footer-bottom {
+    border-top: 1px solid var(--color-border);
+    padding-top: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  .footer-bottom p { margin: 0; font-size: 12px; }
+  .footer-mono { font-family: var(--font-mono); font-size: 11px; }
+
+  @media (max-width: 820px) {
+    .footer-grid { grid-template-columns: 1fr 1fr; gap: 28px; }
+    .site-header nav { gap: 14px; font-size: 13px; }
+  }
+  @media (max-width: 520px) {
+    .footer-grid { grid-template-columns: 1fr; }
+    .nav-cta { display: none; }
+  }
 </style>

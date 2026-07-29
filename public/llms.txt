@@ -2,14 +2,31 @@
 
 > Real-time video intelligence for the physical world. Point Primate Vision at any camera and ask questions in plain language — live answers, structured data, and alerts with no training or labeling.
 
-NOTE: P0 scaffold stub. The canonical /llms.txt served in production today lives on the
-existing site (primateintelligence.ai/llms.txt) and is pinned byte-identical for the
-OpenAI submission. This file must be replaced with the canonical content before any
-cutover — see PRI-501 URL map (IMMOVABLE URLs).
+NOTE: NON-CANONICAL STUB (PRI-502). The canonical /llms.txt served in production today
+lives on the existing site (primateintelligence.ai/llms.txt) and is pinned byte-identical
+for the OpenAI submission. This file must be replaced with the canonical content before
+any cutover — see PRI-501 URL map (IMMOVABLE URLs).
 
 ## Pages
 
-- [Home](https://primateintelligence.ai/): Product overview
-- [Pricing](https://primateintelligence.ai/pricing): Plans and pricing
-- [Use Cases](https://primateintelligence.ai/use-cases): Industry applications
+- [Home](https://primateintelligence.ai/): Product overview — markdown twin at /index.md
+- [Pricing](https://primateintelligence.ai/pricing): $0.01/video-second metered credits — markdown twin at /pricing.md
+- [Use Cases](https://primateintelligence.ai/use-cases): Eight markets, one model — markdown twin at /use-cases.md
+- [Team](https://primateintelligence.ai/team): Founders — markdown twin at /team.md
+- [Values](https://primateintelligence.ai/values): Seven principles — markdown twin at /values.md
+- [Careers](https://primateintelligence.ai/careers): Open roles — markdown twin at /careers.md
 - [Docs](https://primateintelligence.ai/docs): Developer documentation
+- [API](https://api.primateintelligence.ai/v1/openapi.json): OpenAPI 3.1 specification
+
+## Learn
+
+- [Blog](https://primateintelligence.ai/blog): Research notes and perspectives — RSS at /rss.xml
+- Every blog post has a markdown twin: append .md to the post URL (e.g. /blog/how-jepa-works.md)
+- [How JEPA Works](https://primateintelligence.ai/blog/how-jepa-works): Why we build on Joint-Embedding Predictive Architectures
+- [Benchmarks Deep Dive](https://primateintelligence.ai/blog/benchmarks-deep-dive): Benchmark methodology and numbers vs YOLO / SAM / VLM baselines
+
+## Legal
+
+- [Privacy Policy](https://primateintelligence.ai/privacy)
+- [Terms of Service](https://primateintelligence.ai/terms)
+- [Cookie Policy](https://primateintelligence.ai/cookie-policy)

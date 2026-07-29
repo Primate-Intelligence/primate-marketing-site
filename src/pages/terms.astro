@@ -1,8 +1,22 @@
 ---
-import Base from '../layouts/Base.astro';
+/**
+ * Terms of Service — content migrated VERBATIM from
+ * primate-intelligence-website-dev src/pages/Terms.tsx (current site copy is a
+ * short placeholder; full terms are authored by Matt/legal later).
+ * NOTE (PRI-501 §3): /terms is an IMMOVABLE URL for the OpenAI submission —
+ * semantic equivalence tracked in PRI-505.
+ */
+import Legal from '../layouts/Legal.astro';
 ---
 
-<Base title="Terms">
-  <h1>Terms</h1>
-  <p><em>P0 scaffold — placeholder page. Content lands in P1.</em></p>
-</Base>
+<Legal
+  title="Terms of Service"
+  description="Terms of Service for Primate AI, Inc. (dba Primate Intelligence)."
+  canonicalPath="/terms"
+>
+  <p>Full terms of service coming soon.</p>
+  <p>
+    For questions, email
+    <a href="mailto:legal@primateintelligence.ai">legal@primateintelligence.ai</a>
+  </p>
+</Legal>

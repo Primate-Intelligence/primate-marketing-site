@@ -1,8 +1,161 @@
 ---
 import Base from '../layouts/Base.astro';
+import { USE_CASES_HERO, VERTICALS, USE_CASES_CTA } from '../data/useCases';
+
+const itemListLd = {
+  '@context': 'https://schema.org',
+  '@type': 'ItemList',
+  name: 'Primate Vision Use Cases',
+  itemListElement: VERTICALS.map((v, i) => ({
+    '@type': 'ListItem',
+    position: i + 1,
+    name: v.badge,
+    description: v.headline,
+  })),
+};
 ---
 
-<Base title="Use Cases">
-  <h1>Use Cases</h1>
-  <p><em>P0 scaffold — placeholder page. Content lands in P1.</em></p>
+<Base
+  title="Use Cases"
+  description="One model. Eight markets. Primate Vision's JEPA world model addresses every CV pipeline where hallucinations, brittle performance, or cloud inference costs are limiting you."
+  canonicalPath="/use-cases"
+  jsonLd={[itemListLd]}
+>
+  <div class="page">
+    <section class="hero">
+      <p class="eyebrow">{USE_CASES_HERO.eyebrow}</p>
+      <h1>{USE_CASES_HERO.heading}</h1>
+      <p class="lede">{USE_CASES_HERO.lede}</p>
+      <p class="note">{USE_CASES_HERO.note}</p>
+    </section>
+
+    <section class="grid">
+      {VERTICALS.map((v) => (
+        <article class="card">
+          <div class="badges">
+            <span class="badge">{v.badge}</span>
+            <span class={`status ${v.statusVariant}`}>{v.statusLabel}</span>
+          </div>
+          <h2>{v.headline}</h2>
+          <p class="description">{v.description}</p>
+          <div class="benefit">
+            <span class="benefit-label">Key benefit</span>
+            <p>{v.keyBenefit}</p>
+          </div>
+          <a class="card-cta" href="https://primateintelligence.ai/">Try Primate Vision <span aria-hidden="true">→</span></a>
+        </article>
+      ))}
+    </section>
+
+    <section class="bottom-cta">
+      <h2>{USE_CASES_CTA.heading}</h2>
+      <p>{USE_CASES_CTA.body}</p>
+      <p class="cta-row">
+        <a class="cta" href={USE_CASES_CTA.primary.href}>{USE_CASES_CTA.primary.label}</a>
+        <a class="cta-link" href={USE_CASES_CTA.secondary.href} target="_blank" rel="noopener noreferrer">{USE_CASES_CTA.secondary.label}</a>
+      </p>
+    </section>
+  </div>
 </Base>
+
+<style>
+  .page { max-width: 1120px; margin: 0 auto; padding: 56px 24px 80px; }
+  .hero { text-align: center; margin-bottom: 48px; }
+  .eyebrow {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--color-signal);
+    margin: 0 0 12px;
+  }
+  h1 { font-size: 48px; font-weight: 700; letter-spacing: -0.02em; line-height: 1.15; margin: 0 0 16px; }
+  .lede { font-size: 18px; color: var(--color-text-muted); max-width: 640px; margin: 0 auto 12px; line-height: 1.6; }
+  .note { font-size: 13px; color: #a8a39a; max-width: 520px; margin: 0 auto; line-height: 1.6; }
+
+  .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+  .card {
+    background: var(--color-bg-surface);
+    border: 1px solid var(--color-border);
+    border-radius: 8px;
+    padding: 32px;
+    transition: border-color 200ms var(--ease-standard);
+  }
+  .card:hover { border-color: rgba(27, 79, 224, 0.4); }
+  .badges { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 20px; }
+  .badge {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--color-signal);
+    border: 1px solid rgba(27, 79, 224, 0.4);
+    border-radius: 2px;
+    padding: 4px 10px;
+  }
+  .status {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    border-radius: 2px;
+    padding: 4px 10px;
+    border: 1px solid;
+  }
+  .status.green { color: #16a34a; background: rgba(22, 163, 74, 0.08); border-color: rgba(22, 163, 74, 0.3); }
+  .status.amber { color: #d97706; background: rgba(217, 119, 6, 0.08); border-color: rgba(217, 119, 6, 0.3); }
+  .status.steel { color: #72798a; background: rgba(114, 121, 138, 0.08); border-color: rgba(114, 121, 138, 0.25); }
+  .card h2 { font-size: 21px; font-weight: 600; letter-spacing: -0.01em; line-height: 1.35; margin: 0 0 14px; }
+  .description { font-size: 15px; color: var(--color-text-muted); line-height: 1.65; margin: 0 0 20px; }
+  .benefit {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 14px 16px;
+    background: var(--color-bg-secondary);
+    border: 1px solid var(--color-border);
+    border-radius: 6px;
+    margin-bottom: 20px;
+  }
+  .benefit-label {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--color-signal);
+    margin-top: 2px;
+    flex-shrink: 0;
+  }
+  .benefit p { font-size: 14px; line-height: 1.5; margin: 0; }
+  .card-cta { display: inline-flex; align-items: center; gap: 6px; font-size: 14px; font-weight: 500; }
+
+  .bottom-cta {
+    margin-top: 72px;
+    padding-top: 64px;
+    border-top: 1px solid var(--color-border);
+    text-align: center;
+  }
+  .bottom-cta h2 { font-size: 32px; font-weight: 600; letter-spacing: -0.015em; margin: 0 0 14px; }
+  .bottom-cta p { font-size: 17px; color: var(--color-text-muted); margin: 0 0 8px; }
+  .cta-row { display: flex; align-items: center; justify-content: center; gap: 18px; margin-top: 28px; flex-wrap: wrap; }
+  .cta {
+    background: var(--color-signal);
+    color: #fff;
+    font-weight: 600;
+    font-size: 15px;
+    padding: 12px 24px;
+    border-radius: 6px;
+  }
+  .cta:hover { background: var(--color-signal-hover); color: #fff; }
+  .cta-link { font-size: 15px; font-weight: 500; }
+
+  @media (max-width: 860px) {
+    .grid { grid-template-columns: 1fr; }
+    h1 { font-size: 32px; }
+    .page { padding: 36px 20px 60px; }
+  }
+</style>

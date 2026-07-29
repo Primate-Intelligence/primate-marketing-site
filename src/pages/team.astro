@@ -1,8 +1,91 @@
 ---
 import Base from '../layouts/Base.astro';
+import { TEAM, TEAM_HERO } from '../data/team';
+
+const personLd = TEAM.map((p) => ({
+  '@context': 'https://schema.org',
+  '@type': 'Person',
+  name: p.name,
+  jobTitle: p.title,
+  image: new URL(p.image, Astro.site ?? 'https://primateintelligence.ai').href,
+  sameAs: [p.linkedin],
+  worksFor: { '@type': 'Organization', name: 'Primate Intelligence' },
+}));
 ---
 
-<Base title="Team">
-  <h1>Team</h1>
-  <p><em>P0 scaffold — placeholder page. Content lands in P1.</em></p>
+<Base
+  title="Team"
+  description="The people behind the research. Primate Intelligence was founded by Matt Miesnieks (CEO, previously 6D.ai, acquired by Niantic) and Mehdi Nikkhah (CTO, PhD UPenn, previously Cisco AI research and 6D.ai)."
+  canonicalPath="/team"
+  jsonLd={personLd}
+>
+  <div class="page">
+    <section class="hero">
+      <p class="eyebrow">{TEAM_HERO.eyebrow}</p>
+      <h1>{TEAM_HERO.heading}</h1>
+    </section>
+
+    <section class="grid">
+      {TEAM.map((person) => (
+        <article class="card">
+          <img class="headshot" src={person.image} alt={person.name} width="160" height="160" />
+          <h2>{person.name}</h2>
+          <p class="title">{person.title}</p>
+          <div class="bio">
+            {person.bio.map((paragraph) => <p>{paragraph}</p>)}
+          </div>
+          <a class="linkedin" href={person.linkedin} target="_blank" rel="noopener noreferrer">
+            LinkedIn <span aria-hidden="true">→</span>
+          </a>
+        </article>
+      ))}
+    </section>
+  </div>
 </Base>
+
+<style>
+  .page { max-width: 960px; margin: 0 auto; padding: 64px 24px 96px; }
+  .hero { text-align: center; margin-bottom: 56px; }
+  .eyebrow {
+    font-size: 13px;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--color-text-muted);
+    margin: 0 0 14px;
+  }
+  h1 { font-size: 40px; font-weight: 600; letter-spacing: -0.015em; margin: 0; }
+  .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; }
+  .card {
+    background: var(--color-bg-surface);
+    border: 1px solid var(--color-border);
+    border-radius: 12px;
+    padding: 32px;
+  }
+  .headshot {
+    width: 160px;
+    height: 160px;
+    border-radius: 50%;
+    object-fit: cover;
+    object-position: top;
+    border: 2px solid var(--color-border);
+  }
+  h2 { font-size: 22px; font-weight: 600; margin: 24px 0 4px; }
+  .title {
+    font-size: 13px;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--color-signal);
+    margin: 0 0 16px;
+  }
+  .bio p { font-size: 14px; color: var(--color-text-muted); line-height: 1.7; margin: 0 0 12px; }
+  .linkedin { display: inline-flex; align-items: center; gap: 6px; font-size: 14px; font-weight: 500; margin-top: 8px; }
+
+  @media (max-width: 780px) {
+    .grid { grid-template-columns: 1fr; }
+    h1 { font-size: 30px; }
+    .page { padding: 44px 20px 64px; }
+    .headshot { width: 100px; height: 100px; }
+  }
+</style>

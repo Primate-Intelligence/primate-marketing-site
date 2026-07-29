@@ -1,0 +1,186 @@
+---
+/**
+ * Darwin carousel — static HTML render of all 13 slides (content verbatim from
+ * the current site's BeforeStateCarousel). Every slide is present in the HTML
+ * (agent/SEO-readable); a small progressive-enhancement script drives
+ * prev/next/dot navigation. No auto-advance, matching the original.
+ */
+import { SLIDES } from '../data/carousel';
+---
+
+<div class="carousel" data-carousel>
+  <div class="carousel-track">
+    {SLIDES.map((slide, i) => (
+      <article class="carousel-slide" data-slide={i} aria-hidden={i === 0 ? 'false' : 'true'}>
+        <div class="slide-text">
+          {slide.eyebrow && <span class="slide-eyebrow">{slide.eyebrow}</span>}
+          <h3 class="slide-heading">{slide.heading}</h3>
+          <p class="slide-body">{slide.body}</p>
+          {slide.cta && <a class="slide-cta" href={slide.cta.href}>{slide.cta.label}</a>}
+        </div>
+        <div class="slide-image">
+          <img src={slide.imgSrc} alt={slide.heading} loading={i === 0 ? 'eager' : 'lazy'} />
+        </div>
+      </article>
+    ))}
+    <button class="carousel-nav prev" data-prev aria-label="Previous slide">
+      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M15 18l-6-6 6-6" /></svg>
+    </button>
+    <button class="carousel-nav next" data-next aria-label="Next slide">
+      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 18l6-6-6-6" /></svg>
+    </button>
+  </div>
+  <div class="carousel-dots" role="tablist">
+    {SLIDES.map((_, i) => (
+      <button class={`dot${i === 0 ? ' active' : ''}`} data-dot={i} aria-label={`Go to slide ${i + 1}`}></button>
+    ))}
+  </div>
+</div>
+
+<style>
+  .carousel { width: 100%; }
+  .carousel-track {
+    position: relative;
+    background: var(--color-bg-surface);
+    border: 1px solid var(--color-border);
+    border-radius: 14px;
+    overflow: hidden;
+    min-height: 220px;
+  }
+  .carousel-slide {
+    display: none;
+    grid-template-columns: 1fr 280px;
+    min-height: 220px;
+  }
+  .carousel-slide[aria-hidden='false'] { display: grid; }
+  .slide-text {
+    padding: 24px 24px 24px 52px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    border-right: 1px solid var(--color-border);
+    min-width: 0;
+  }
+  .slide-eyebrow {
+    align-self: flex-start;
+    padding: 2px 8px;
+    border-radius: 8px;
+    margin-bottom: 8px;
+    font-size: 10px;
+    font-weight: 700;
+    font-family: var(--font-mono);
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--color-signal);
+    background: rgba(32, 88, 240, 0.08);
+    border: 1px solid rgba(32, 88, 240, 0.2);
+  }
+  .slide-heading {
+    font-size: 18px;
+    font-weight: 800;
+    letter-spacing: -0.018em;
+    line-height: 1.25;
+    margin: 0 0 6px;
+    color: var(--color-text-primary);
+  }
+  .slide-body {
+    color: var(--color-text-muted);
+    font-size: 14px;
+    line-height: 1.5;
+    margin: 0;
+  }
+  .slide-cta {
+    margin-top: 10px;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 11px;
+    font-weight: 700;
+    font-family: var(--font-mono);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: rgba(32, 88, 240, 0.75);
+  }
+  .slide-image {
+    background: #fafaf7;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+  }
+  .slide-image img {
+    width: 100%;
+    height: 100%;
+    max-height: 260px;
+    object-fit: contain;
+    display: block;
+  }
+  .carousel-nav {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 4;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background: rgba(0, 0, 0, 0.06);
+    border: 1px solid rgba(0, 0, 0, 0.09);
+    color: var(--color-text-muted);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+  }
+  .carousel-nav.prev { left: 10px; }
+  .carousel-nav.next { right: 10px; }
+  .carousel-dots {
+    display: flex;
+    justify-content: center;
+    gap: 6px;
+    margin-top: 10px;
+  }
+  .dot {
+    height: 5px;
+    width: 5px;
+    padding: 0;
+    border-radius: 3px;
+    border: none;
+    cursor: pointer;
+    background: var(--color-border);
+    transition: width 200ms ease, background 200ms ease;
+  }
+  .dot.active {
+    width: 16px;
+    background: var(--color-text-primary);
+  }
+  @media (max-width: 640px) {
+    .carousel-slide { grid-template-columns: 1fr 130px; }
+    .slide-text { padding: 18px 14px 18px 44px; }
+    .slide-heading { font-size: 15px; }
+    .slide-body { font-size: 13px; }
+  }
+</style>
+
+<script>
+  document.querySelectorAll('[data-carousel]').forEach((root) => {
+    const slides = root.querySelectorAll<HTMLElement>('[data-slide]');
+    const dots = root.querySelectorAll<HTMLElement>('[data-dot]');
+    let active = 0;
+    const show = (idx: number) => {
+      active = (idx + slides.length) % slides.length;
+      slides.forEach((s, i) => s.setAttribute('aria-hidden', i === active ? 'false' : 'true'));
+      dots.forEach((d, i) => d.classList.toggle('active', i === active));
+    };
+    root.querySelector('[data-prev]')?.addEventListener('click', () => show(active - 1));
+    root.querySelector('[data-next]')?.addEventListener('click', () => show(active + 1));
+    dots.forEach((d, i) => d.addEventListener('click', () => show(i)));
+    // touch swipe
+    let startX = 0;
+    const track = root.querySelector('.carousel-track');
+    track?.addEventListener('touchstart', (e) => { startX = (e as TouchEvent).touches[0].clientX; }, { passive: true });
+    track?.addEventListener('touchend', (e) => {
+      const delta = startX - (e as TouchEvent).changedTouches[0].clientX;
+      if (Math.abs(delta) > 50) show(delta > 0 ? active + 1 : active - 1);
+    });
+  });
+</script>
