@@ -1,4 +1,42 @@
+# https://www.primateintelligence.ai
+# Primate Intelligence — Real-Time Video Intelligence API
+
 User-agent: *
 Allow: /
 
-Sitemap: https://primateintelligence.ai/sitemap-index.xml
+# Block authenticated dashboard, admin, and signup/onboarding flows
+Disallow: /dashboard
+Disallow: /dashboard/*
+Disallow: /admin
+Disallow: /admin/*
+Disallow: /onboarding
+Disallow: /signup
+Disallow: /login
+Disallow: /invite
+Disallow: /invite-code
+Disallow: /500
+
+# Allow GPTBot, Claude, Perplexity, and others to read the site
+User-agent: GPTBot
+Allow: /
+
+User-agent: ClaudeBot
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: anthropic-ai
+Allow: /
+
+# Block aggressive scrapers
+User-agent: SemrushBot
+Disallow: /
+
+User-agent: AhrefsBot
+Disallow: /
+
+User-agent: MJ12bot
+Disallow: /
+
+Sitemap: https://www.primateintelligence.ai/sitemap.xml

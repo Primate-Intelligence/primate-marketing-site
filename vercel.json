@@ -251,10 +251,6 @@
       "destination": "https://app.primateintelligence.ai/assets/:path*"
     },
     {
-      "source": "/sitemap.xml",
-      "destination": "/sitemap-index.xml"
-    },
-    {
       "source": "/agents.md",
       "destination": "https://api.primateintelligence.ai/docs/agents.md"
     },
