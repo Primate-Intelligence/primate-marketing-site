@@ -10,6 +10,7 @@ import { USE_CASES_HERO, VERTICALS, USE_CASES_CTA } from '../data/useCases';
 import { TEAM, TEAM_HERO } from '../data/team';
 import { VALUES, VALUES_HERO, VALUES_TEAM } from '../data/values';
 import { CAREERS_HERO, LOOK_FOR, OFFER, OPEN_ROLES } from '../data/careers';
+import { PRICING_FAQ } from './faq';
 
 const SITE = 'https://primateintelligence.ai';
 
@@ -97,6 +98,10 @@ commit. Support: SLA + dedicated. Contact: sales@primateintelligence.ai
 - 8m stream = 480s
 - No queued-time charge
 - Failed jobs not charged
+
+## Frequently asked questions
+
+${PRICING_FAQ.map((item) => `### ${item.q}\n\n${item.a}`).join('\n\n')}
 `;
 }
 

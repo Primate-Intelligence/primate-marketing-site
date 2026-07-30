@@ -7,6 +7,7 @@
  * presets, 600s auto-refill threshold).
  */
 import Base from '../layouts/Base.astro';
+import { PRICING_FAQ, faqPageLd } from '../lib/faq';
 
 const presets = [1000, 2500, 5000, 10000];
 const presetLabel = presets.map((c) => `$${c / 100}`).join(' · ');
@@ -41,7 +42,7 @@ const pricingLd = {
   title="Pricing"
   description="One balance for every video workflow. $0.01 per video second — buy credits once, use them through the web app, API, agents, file uploads, or live streams."
   canonicalPath="/pricing"
-  jsonLd={[pricingLd]}
+  jsonLd={[pricingLd, faqPageLd(PRICING_FAQ)]}
 >
   <div class="page">
     <!-- ── Hero ── -->
@@ -155,6 +156,17 @@ const pricingLd = {
       </div>
     </section>
 
+    <!-- ── FAQ (PRI-492: visible text mirrors the FAQPage JSON-LD exactly) ── -->
+    <section class="faq">
+      <h3>Frequently asked questions</h3>
+      {PRICING_FAQ.map((item) => (
+        <details class="faq-item">
+          <summary>{item.q}</summary>
+          <p class="muted small">{item.a}</p>
+        </details>
+      ))}
+    </section>
+
     <!-- ── Footer strip ── -->
     <section class="footer-strip">
       <span>
@@ -248,6 +260,21 @@ const pricingLd = {
   .pill.signal { color: var(--color-signal); border-color: rgba(27, 79, 224, 0.33); }
   .pill.green { color: var(--color-success); border-color: rgba(22, 163, 74, 0.33); }
   .pill.muted-pill { color: var(--color-text-muted); border-color: rgba(122, 118, 105, 0.33); }
+
+  .faq { margin-bottom: 40px; }
+  .faq h3 { font-size: 18px; font-weight: 700; margin: 0 0 16px; }
+  .faq-item {
+    border-bottom: 1px solid var(--color-border);
+    padding: 4px 0;
+  }
+  .faq-item summary {
+    font-size: 15px;
+    font-weight: 600;
+    padding: 12px 0;
+    cursor: pointer;
+    list-style-position: outside;
+  }
+  .faq-item p { margin: 0 0 16px; max-width: 760px; }
 
   .footer-strip {
     display: flex;

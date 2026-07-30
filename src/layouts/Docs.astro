@@ -16,13 +16,15 @@ interface Props {
   /** Path to this page's markdown twin. */
   mdTwin?: string;
   headings?: Array<{ depth: number; text: string; id: string }>;
+  /** Optional JSON-LD objects forwarded to the Base layout (PRI-492). */
+  jsonLd?: Record<string, unknown>[];
 }
 
-const { title, description, activeSlug, canonicalPath, mdTwin, headings = [] } = Astro.props;
+const { title, description, activeSlug, canonicalPath, mdTwin, headings = [], jsonLd = [] } = Astro.props;
 const nav = await getDocsNav();
 ---
 
-<Base title={title} description={description} canonicalPath={canonicalPath} mdTwin={mdTwin}>
+<Base title={title} description={description} canonicalPath={canonicalPath} mdTwin={mdTwin} jsonLd={jsonLd}>
   <div class="docs-shell">
     <aside class="docs-sidebar" aria-label="Docs navigation">
       {nav.map((group) => (

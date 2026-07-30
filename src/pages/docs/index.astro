@@ -6,11 +6,15 @@
 import Docs from '../../layouts/Docs.astro';
 import { getDocsPages } from '../../lib/docsCorpus';
 import { renderDocsMarkdown, extractHeadings } from '../../lib/docsRender';
+import { DOCS_FAQ, faqPageLd } from '../../lib/faq';
 
 const pages = await getDocsPages();
 const page = pages.find((p) => p.slug === 'quickstart')!;
 const html = renderDocsMarkdown(page.body);
-const headings = extractHeadings(page.body);
+const headings = [
+  ...extractHeadings(page.body),
+  { depth: 2, text: 'Frequently asked questions', id: 'faq' },
+];
 ---
 
 <Docs
@@ -20,6 +24,17 @@ const headings = extractHeadings(page.body);
   canonicalPath="/docs"
   mdTwin="/docs/quickstart.md"
   headings={headings}
+  jsonLd={[faqPageLd(DOCS_FAQ)]}
 >
   <div set:html={html} />
+  <!-- PRI-492: visible FAQ mirrors the FAQPage JSON-LD exactly -->
+  <section id="faq">
+    <h2>Frequently asked questions</h2>
+    {DOCS_FAQ.map((item) => (
+      <details>
+        <summary><strong>{item.q}</strong></summary>
+        <p>{item.a}</p>
+      </details>
+    ))}
+  </section>
 </Docs>
