@@ -1,17 +1,34 @@
 ---
 /**
- * Pricing — copy migrated verbatim from primate-intelligence-website-dev
- * src/pages/Pricing.tsx (PRI-437 metered-credits page). The SPA fetches live
- * config from GET /v1/credit-pricing; this static page renders the same launch
- * defaults the SPA falls back to (rate 1¢/s, 6000s grants, $10/$25/$50/$100
- * presets, 600s auto-refill threshold).
+ * Pricing — PRI-523 canonical consolidated pricing page (merged from the
+ * former app pricing page + this www page; the app's /pricing now redirects
+ * here). SSR renders launch defaults from src/lib/pricingDefaults.ts for SEO;
+ * an inline script hydrates the numbers from GET /v1/credit-pricing so this
+ * page and the billing surface share one source of truth.
  */
 import Base from '../layouts/Base.astro';
 import { PRICING_FAQ, faqPageLd } from '../lib/faq';
+import {
+  PRICING_DEFAULTS,
+  PRICING_ENDPOINT,
+  fmtRate,
+  fmtSeconds,
+  batchExampleSeconds,
+} from '../lib/pricingDefaults';
 
-const presets = [1000, 2500, 5000, 10000];
+const P = PRICING_DEFAULTS;
+const rate = fmtRate(P.price_per_second_cents);
+const grant = fmtSeconds(P.signup_grant_seconds);
+const presets = P.allowed_purchase_cents;
 const presetLabel = presets.map((c) => `$${c / 100}`).join(' · ');
-const refillMath = presets.map((c) => `$${c / 100}=${(c / 1).toLocaleString()}s`).join(' · ');
+const refillMath = presets
+  .map((c) => `$${c / 100}=${fmtSeconds(Math.floor(c / P.price_per_second_cents))}s`)
+  .join(' · ');
+const batchPct = P.batch_discount_pct;
+const batchMax = P.batch_max_prompts;
+// Worked example: 100s video, 4 prompts → 100 + 3×50 = 250s (not 400s)
+const exampleTotal = batchExampleSeconds(100, 4, batchPct);
+const exampleNaive = 100 * 4;
 
 const pricingLd = {
   '@context': 'https://schema.org',
@@ -25,14 +42,14 @@ const pricingLd = {
       name: 'Free Start',
       price: '0',
       priceCurrency: 'USD',
-      description: '6,000 seconds signup grant, no card required.',
+      description: `${grant} seconds signup grant, no card required.`,
     },
     {
       '@type': 'Offer',
       name: 'Self-Serve',
-      price: '0.01',
+      price: (P.price_per_second_cents / 100).toFixed(2),
       priceCurrency: 'USD',
-      description: '$0.01 per video second, metered credits with auto-refill.',
+      description: `${rate} per video second, metered credits with auto-refill.`,
     },
   ],
 };
@@ -40,7 +57,7 @@ const pricingLd = {
 
 <Base
   title="Pricing"
-  description="One balance for every video workflow. $0.01 per video second — buy credits once, use them through the web app, API, agents, file uploads, or live streams."
+  description={`One balance for every video workflow. ${rate} per video second — ${grant} seconds free to start, no card. Batch up to ${batchMax} prompts per request with ${batchPct}% off each additional prompt.`}
   canonicalPath="/pricing"
   jsonLd={[pricingLd, faqPageLd(PRICING_FAQ)]}
 >
@@ -54,10 +71,17 @@ const pricingLd = {
           file uploads, or live streams. A second is one second of source video clock
           time, independent of frame rate.
         </p>
+        <a class="btn primary hero-cta" href="https://primateintelligence.ai/signup">Start free</a>
       </div>
       <div class="rate-card">
         <p class="eyebrow">Launch rate</p>
-        <p class="rate"><span class="rate-num">$0.01</span> <span class="rate-unit">/ video second</span></p>
+        <p class="rate">
+          <span class="rate-num" data-live="rate">{rate}</span>
+          <span class="rate-unit">/ video second</span>
+        </p>
+        <p class="grant-line">
+          <strong><span data-live="grant">{grant}</span> seconds free to start — no card required.</strong>
+        </p>
         <p class="muted small">
           $0.60/min · $36/hr. Reviewed after benchmark and demand data; Enterprise is
           custom above $20k/month.
@@ -70,37 +94,37 @@ const pricingLd = {
       <div class="card">
         <p class="eyebrow">Free start</p>
         <h2>Try real processing without a card.</h2>
-        <p class="big-num">6,000s</p>
+        <p class="big-num"><span data-live="grant">{grant}</span>s</p>
         <p class="muted small">
           $60 face value. Signup grant expires after 30 days. API keys are
           available immediately after account creation.
         </p>
         <table class="mini-table">
           <tbody>
-            <tr><td>Card grant</td><td>+6,000s / +$60</td></tr>
+            <tr><td>Card grant</td><td>+<span data-live="card-grant">{fmtSeconds(P.card_grant_seconds)}</span>s / +$60</td></tr>
             <tr><td>Card requirement</td><td>$0 setup</td></tr>
             <tr><td>Total face value</td><td>$120</td></tr>
           </tbody>
         </table>
-        <a class="btn outline" href="https://primateintelligence.ai/signup">Create account</a>
+        <a class="btn outline" href="https://primateintelligence.ai/signup">Start free</a>
       </div>
 
       <div class="card accent-signal">
         <p class="eyebrow">Self-serve</p>
         <h2>Metered credits for production work.</h2>
-        <p class="big-num">$0.01<span class="rate-unit"> / second</span></p>
+        <p class="big-num"><span data-live="rate">{rate}</span><span class="rate-unit"> / second</span></p>
         <p class="muted small">
           $0.60/min · $36/hr. Buy credits manually or auto-refill before your balance
-          drops below 600s ($6).
+          drops below <span data-live="threshold">{fmtSeconds(P.auto_refill_threshold_seconds)}</span>s ($6).
         </p>
         <table class="mini-table">
           <tbody>
-            <tr><td>Refill presets</td><td>{presetLabel}</td></tr>
+            <tr><td>Refill presets</td><td data-live="presets">{presetLabel}</td></tr>
             <tr><td>Custom amount</td><td>Yes</td></tr>
             <tr><td>Paid credits</td><td>No expiry</td></tr>
           </tbody>
         </table>
-        <a class="btn primary" href="https://primateintelligence.ai/signup">Buy credits</a>
+        <a class="btn primary" href="https://primateintelligence.ai/signup">Start free</a>
       </div>
 
       <div class="card accent-green">
@@ -120,6 +144,44 @@ const pricingLd = {
         </table>
         <a class="btn outline" href="mailto:sales@primateintelligence.ai">Contact sales</a>
       </div>
+    </section>
+
+    <!-- ── Batch analyses (PRI-523) ── -->
+    <section class="batch" data-testid="batch-block">
+      <div class="batch-copy">
+        <p class="eyebrow">Batch analyses</p>
+        <h3>Ask up to <span data-live="batch-max">{batchMax}</span> prompts in one request.</h3>
+        <p class="muted">
+          The first prompt bills the full video duration; each additional prompt is
+          <strong><span data-live="batch-pct">{batchPct}</span>% off</strong>. Same video,
+          more answers, less than proportional cost.
+        </p>
+      </div>
+      <div class="batch-example" data-testid="batch-example">
+        <p class="eyebrow">Worked example</p>
+        <p class="example-line">100s video · 4 prompts</p>
+        <p class="example-math">
+          100s + 3 × 50s = <strong><span data-live="batch-example">{fmtSeconds(exampleTotal)}</span>s billed</strong>
+        </p>
+        <p class="muted small">not {fmtSeconds(exampleNaive)}s — the batch discount applies to every prompt after the first.</p>
+      </div>
+    </section>
+
+    <!-- ── One balance, every surface ── -->
+    <section class="surfaces" data-testid="surfaces-strip">
+      <h3>One balance, every surface</h3>
+      <div class="pills">
+        <span class="pill signal">Web app</span>
+        <span class="pill signal">API</span>
+        <span class="pill signal">Agents</span>
+        <span class="pill signal">File uploads</span>
+        <span class="pill signal">Live streams</span>
+      </div>
+      <p class="muted small">
+        Credits are shared across every way you use Primate Vision — no per-surface
+        plans, no separate API pricing. Buy credits in the app under
+        <strong>Settings → Billing</strong>.
+      </p>
     </section>
 
     <!-- ── Bottom panels ── -->
@@ -170,13 +232,59 @@ const pricingLd = {
     <!-- ── Footer strip ── -->
     <section class="footer-strip">
       <span>
-        Refill math: {refillMath}. Enterprise:
+        Refill math: <span data-live="refill-math">{refillMath}</span>. Enterprise:
         <a href="mailto:sales@primateintelligence.ai">sales@primateintelligence.ai</a>
       </span>
       <span>Paid credits never expire</span>
     </section>
   </div>
 </Base>
+
+<!-- PRI-523: hydrate rendered numbers from the live public pricing endpoint so
+     the page can never drift from what billing actually charges. SSR keeps the
+     launch defaults for SEO/no-JS readers. -->
+<script define:vars={{ endpoint: PRICING_ENDPOINT }}>
+  (async () => {
+    try {
+      const res = await fetch(endpoint, { headers: { Accept: 'application/json' } });
+      if (!res.ok) return;
+      const p = await res.json();
+      const fmtS = (n) => Number(n).toLocaleString('en-US');
+      const set = (key, value) => {
+        for (const el of document.querySelectorAll(`[data-live="${key}"]`)) {
+          el.textContent = value;
+        }
+      };
+      if (typeof p.price_per_second_cents === 'number') {
+        set('rate', `$${(p.price_per_second_cents / 100).toFixed(2)}`);
+      }
+      if (typeof p.signup_grant_seconds === 'number') set('grant', fmtS(p.signup_grant_seconds));
+      if (typeof p.card_grant_seconds === 'number') set('card-grant', fmtS(p.card_grant_seconds));
+      if (typeof p.auto_refill_threshold_seconds === 'number') {
+        set('threshold', fmtS(p.auto_refill_threshold_seconds));
+      }
+      if (Array.isArray(p.allowed_purchase_cents) && p.allowed_purchase_cents.length) {
+        set('presets', p.allowed_purchase_cents.map((c) => `$${c / 100}`).join(' · '));
+        if (typeof p.price_per_second_cents === 'number' && p.price_per_second_cents > 0) {
+          set(
+            'refill-math',
+            p.allowed_purchase_cents
+              .map((c) => `$${c / 100}=${fmtS(Math.floor(c / p.price_per_second_cents))}s`)
+              .join(' · '),
+          );
+        }
+      }
+      if (typeof p.batch_discount_pct === 'number') {
+        set('batch-pct', String(p.batch_discount_pct));
+        const total = Math.round(100 + 3 * 100 * ((100 - p.batch_discount_pct) / 100));
+        set('batch-example', fmtS(total));
+      }
+      if (typeof p.batch_max_prompts === 'number') set('batch-max', String(p.batch_max_prompts));
+    } catch {
+      /* offline/no-CORS: launch defaults stay rendered */
+    }
+  })();
+</script>
 
 <style>
   .page { max-width: 1120px; margin: 0 auto; padding: 64px 24px 80px; }
@@ -189,6 +297,7 @@ const pricingLd = {
   }
   h1 { font-size: 48px; font-weight: 800; letter-spacing: -0.03em; line-height: 1.1; margin: 0; }
   .lede { font-size: 17px; line-height: 1.6; color: var(--color-text-muted); margin: 16px 0 0; max-width: 560px; }
+  .hero-cta { display: inline-block; margin-top: 24px; padding: 12px 28px; font-size: 15px; }
   .eyebrow {
     font-size: 11px;
     font-weight: 600;
@@ -201,6 +310,7 @@ const pricingLd = {
   .rate { margin: 0; }
   .rate-num { font-size: 30px; font-weight: 800; letter-spacing: -0.02em; }
   .rate-unit { font-size: 18px; font-weight: 400; color: var(--color-text-muted); }
+  .grant-line { font-size: 14px; margin: 10px 0 8px; }
   .muted { color: var(--color-text-muted); }
   .small { font-size: 13px; line-height: 1.6; }
 
@@ -241,6 +351,35 @@ const pricingLd = {
   .btn.outline { color: var(--color-text-primary); background: var(--color-bg-surface); border: 1px solid var(--color-border); }
   .btn.primary { color: #fff; background: var(--color-signal); border: 1px solid var(--color-signal); }
   .btn.primary:hover { background: var(--color-signal-hover); color: #fff; }
+
+  .batch {
+    display: grid;
+    grid-template-columns: 3fr 2fr;
+    gap: 24px;
+    background: var(--color-bg-secondary);
+    border-radius: 10px;
+    padding: 28px;
+    margin-bottom: 24px;
+  }
+  .batch h3 { font-size: 22px; font-weight: 700; margin: 0 0 10px; letter-spacing: -0.01em; }
+  .batch-copy .muted { font-size: 15px; line-height: 1.6; max-width: 520px; }
+  .batch-example {
+    background: var(--color-bg-surface);
+    border: 1px solid var(--color-border);
+    border-radius: 8px;
+    padding: 20px 24px;
+  }
+  .example-line { font-size: 14px; font-weight: 600; margin: 0 0 6px; }
+  .example-math { font-size: 20px; margin: 0 0 6px; }
+
+  .surfaces {
+    background: var(--color-bg-secondary);
+    border-radius: 10px;
+    padding: 28px;
+    margin-bottom: 24px;
+  }
+  .surfaces h3 { font-size: 18px; font-weight: 700; margin: 0 0 16px; }
+  .surfaces .muted { margin: 16px 0 0; max-width: 640px; }
 
   .panels { display: grid; grid-template-columns: 3fr 2fr; gap: 24px; margin-bottom: 40px; }
   .panel { background: var(--color-bg-secondary); border-radius: 10px; padding: 28px; }
@@ -289,7 +428,7 @@ const pricingLd = {
   .footer-strip a { color: #a8a39a; text-decoration: underline; }
 
   @media (max-width: 860px) {
-    .hero-grid, .cards, .panels, .steps { grid-template-columns: 1fr; }
+    .hero-grid, .cards, .panels, .steps, .batch { grid-template-columns: 1fr; }
     h1 { font-size: 36px; }
     .page { padding: 40px 20px 60px; }
   }

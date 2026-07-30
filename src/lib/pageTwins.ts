@@ -79,6 +79,19 @@ benchmark and demand data; Enterprise is custom above $20k/month.
 - Auto-refill before your balance drops below 600s ($6)
 - Paid credits never expire
 
+## Batch analyses — up to 10 prompts per request
+
+The first prompt bills the full video duration; each additional prompt is 50% off.
+Worked example: a 100s video with 4 prompts bills 100 + 3 × 50 = 250s (not 400s).
+Current discount config is served live by GET https://api.primateintelligence.ai/v1/credit-pricing
+(batch_discount_pct, batch_min_prompts, batch_max_prompts).
+
+## One balance, every surface
+
+Credits are shared across the web app, API, agents, file uploads, and live
+streams — no per-surface plans, no separate API pricing. Buy credits in the
+app under Settings → Billing.
+
 ## Enterprise — custom pricing for committed volume
 
 For customers forecasting or committing to more than $20k/month. A nonstop

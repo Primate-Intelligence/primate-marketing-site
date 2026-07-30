@@ -28,6 +28,10 @@ export const PRICING_FAQ: FaqItem[] = [
     a: 'Primate Vision answers plain-English questions about video with a deterministic result: yes, no, or indeterminate, plus a confidence score and timestamped evidence clips — rather than returning label taxonomies or embeddings for you to interpret. Pricing is a single metered rate ($0.01 per video second) with no subscription tiers, and the API is built agent-first: a free key in one POST, an OpenAPI 3.1 spec, and an MCP server for Claude, Cursor, and other AI agents.',
   },
   {
+    q: 'Can I ask multiple questions about the same video in one request?',
+    a: 'Yes — batch analyses accept up to 10 prompts per request. The first prompt bills the full video duration and each additional prompt is 50% off. Example: a 100-second video with 4 prompts bills 250 seconds (100 + 3 × 50), not 400. The current discount is served live by GET https://api.primateintelligence.ai/v1/credit-pricing.',
+  },
+  {
     q: 'What happens when my balance runs out?',
     a: 'You can buy credits manually ($10 / $25 / $50 / $100 presets or a custom amount) or enable auto-refill, which tops up before your balance drops below 600 seconds ($6). Above $20k/month, Enterprise pricing is custom — contact sales@primateintelligence.ai.',
   },
