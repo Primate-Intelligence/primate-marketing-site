@@ -1,4 +1,4 @@
-# https://www.primateintelligence.ai
+# https://primateintelligence.ai
 # Primate Intelligence — Real-Time Video Intelligence API
 
 User-agent: *
@@ -39,4 +39,4 @@ Disallow: /
 User-agent: MJ12bot
 Disallow: /
 
-Sitemap: https://www.primateintelligence.ai/sitemap.xml
+Sitemap: https://primateintelligence.ai/sitemap.xml
