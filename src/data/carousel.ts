@@ -21,8 +21,8 @@ export const SLIDES: CarouselSlide[] = [
   },
   {
     eyebrow: 'Platform',
-    heading: 'JEPA world models for physical AI.',
-    body: 'First deployable JEPA perception product. Cloud performance. Edge costs.',
+    heading: 'Real-time video intelligence for physical AI.',
+    body: 'Built on JEPA world models — the first deployable JEPA perception product. Cloud performance. Edge costs.',
     cta: { label: 'How JEPA works →', href: '/blog/how-jepa-works' },
     imgSrc: '/images/slide0-brain-diagram.png',
   },
