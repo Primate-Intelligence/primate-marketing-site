@@ -7,7 +7,7 @@
   },
   "scripts": {
     "dev": "astro dev",
-    "build": "astro build && cp dist/sitemap-0.xml dist/sitemap.xml",
+    "build": "node scripts/gen-lastmod.mjs && astro build && cp dist/sitemap-0.xml dist/sitemap.xml",
     "preview": "astro preview",
     "astro": "astro"
   },
