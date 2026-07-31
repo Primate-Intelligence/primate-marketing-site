@@ -55,6 +55,30 @@ export const STREAMING_ROWS: SpecRow[] = [
   },
 ];
 
+/**
+ * Production fleet telemetry — last 30 days of real customer streaming
+ * sessions (server-side metering, streaming_sessions table). Not a synthetic
+ * benchmark: this is what actual users saw in production.
+ * Window: 2026-07-01 → 2026-07-30. Sessions with duration > 0 only.
+ */
+export const FLEET_WINDOW = 'last 30 days (2026-07-01 → 2026-07-30)';
+export const FLEET_ROWS: SpecRow[] = [
+  {
+    metric: 'Time to first analyzed frame (session join → first result)',
+    p50: '1.09 s',
+    p95: '4.25 s',
+    n: '46 sessions',
+    notes: 'Server-side metered on every production session (time_to_first_frame_s). Measured from WebRTC join to the first analyzed-frame result.',
+  },
+  {
+    metric: 'GPU queue wait before session start',
+    p50: '0 s',
+    p95: '0 s',
+    n: '46 sessions',
+    notes: '0 of 46 sessions waited in queue in the window — capacity headroom, not luck of sampling. Queued time is never billed.',
+  },
+];
+
 /** Async path — upload once, then POST /v1/analyses per question. */
 export const ASYNC_ROWS: SpecRow[] = [
   {
@@ -115,6 +139,10 @@ export const PERFORMANCE_FAQ: FaqItem[] = [
     a: 'Darwin (our video JEPA model) scores ~73% on Something-Something V2, ~78% on Kinetics-700, and ~88% on ImageNet-1K with a linear probe on a frozen backbone — matching or exceeding V-JEPA 2 class models while running in real time on a single commodity CPU. Full protocol in the published benchmarks post.',
   },
   {
+    q: 'How long until the first result on a live stream?',
+    a: 'Across all production sessions in the last 30 days (n=46, server-side metering): 1.09 s p50 / 4.25 s p95 from WebRTC join to the first analyzed-frame result, and 0 of 46 sessions waited in a GPU queue. This is fleet telemetry from real customer sessions, not a synthetic benchmark.',
+  },
+  {
     q: 'Can I verify these numbers myself?',
     a: 'Yes — that is the point of this page. Get a free key with one call (POST https://api.primateintelligence.ai/v1/sandbox, no signup), and every streaming result payload carries its own timing block (inference_ms, session_fps), so the API self-reports latency in production. The measurement client is open source at github.com/Primate-Intelligence/primate-examples.',
   },
@@ -124,6 +152,7 @@ export const METHODOLOGY = [
   'All latency numbers were measured against the live production API (api.primateintelligence.ai) on ' +
     MEASURED_AT +
     ' from a client in US-East. No staging environments, no cherry-picking: every run in each batch is included in the percentiles.',
+  'Fleet telemetry: server-side metering recorded on every production streaming session (time_to_first_frame_s, queue_wait_s in our metering store), aggregated over the trailing 30 days — real customer sessions, all included, no filtering beyond duration > 0.',
   'Streaming: 10 complete WebRTC sessions via the public streaming API (create stream → mint client token → signaling → live), using the open-source example client from github.com/Primate-Intelligence/primate-examples. 183 result frames collected.',
   'Async: repeated POST /v1/analyses calls with Prefer: wait against pre-uploaded videos; wall-clock measured to terminal status, queue time included.',
   'You can repeat this yourself with a free key: POST https://api.primateintelligence.ai/v1/sandbox (no signup) — and per-frame timing is included in every streaming result payload, so the API self-reports its own latency in production.',

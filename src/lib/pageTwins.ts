@@ -13,6 +13,8 @@ import { CAREERS_HERO, LOOK_FOR, OFFER, OPEN_ROLES } from '../data/careers';
 import { PRICING_FAQ } from './faq';
 import {
   STREAMING_ROWS,
+  FLEET_ROWS,
+  FLEET_WINDOW,
   ASYNC_ROWS,
   ACCURACY_ROWS,
   ACCURACY_SOURCE,
@@ -193,21 +195,27 @@ export function performanceMd(): string {
 
 Measured on the live production API (api.primateintelligence.ai), ${MEASURED_AT}. Repeatable with a free key: \`POST https://api.primateintelligence.ai/v1/sandbox\` (no signup).
 
-## Streaming analysis (live video over WebRTC)
+## How fast is streaming analysis (live video over WebRTC)?
 
 ${specTable(STREAMING_ROWS)}
 
-## Async analysis (upload, then ask)
+## What do real production sessions see?
+
+Server-side fleet telemetry from every customer streaming session, ${FLEET_WINDOW} — not a synthetic benchmark.
+
+${specTable(FLEET_ROWS)}
+
+## How long does an async analysis take (upload, then ask)?
 
 ${specTable(ASYNC_ROWS)}
 
-## Accuracy — published benchmarks
+## How accurate is the model? (published benchmarks)
 
 ${accuracyTable}
 
 Source: [${ACCURACY_SOURCE.label}](${SITE}${ACCURACY_SOURCE.href}) (${ACCURACY_SOURCE.author}, ${ACCURACY_SOURCE.date}).
 
-## Methodology
+## How were these numbers measured?
 
 ${METHODOLOGY.map((m) => `- ${m}`).join('\n')}
 

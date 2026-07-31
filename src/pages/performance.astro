@@ -10,6 +10,8 @@
 import Base from '../layouts/Base.astro';
 import {
   STREAMING_ROWS,
+  FLEET_ROWS,
+  FLEET_WINDOW,
   ASYNC_ROWS,
   ACCURACY_ROWS,
   ACCURACY_SOURCE,
@@ -38,7 +40,7 @@ import { faqPageLd } from '../lib/faq';
     </section>
 
     <section class="spec-section">
-      <h2>Streaming analysis (live video over WebRTC)</h2>
+      <h2>How fast is streaming analysis (live video over WebRTC)?</h2>
       <p class="section-note">
         Point a camera or stream a file; results arrive on a data channel while the video plays.
       </p>
@@ -61,7 +63,31 @@ import { faqPageLd } from '../lib/faq';
     </section>
 
     <section class="spec-section">
-      <h2>Async analysis (upload, then ask)</h2>
+      <h2>What do real production sessions see?</h2>
+      <p class="section-note">
+        Server-side telemetry from every customer streaming session, {FLEET_WINDOW} — not a synthetic
+        benchmark. All sessions with duration &gt; 0 are included.
+      </p>
+      <table class="spec-table">
+        <thead>
+          <tr><th>Metric</th><th>p50</th><th>p95</th><th>Samples</th><th>Notes</th></tr>
+        </thead>
+        <tbody>
+          {FLEET_ROWS.map((r) => (
+            <tr>
+              <td>{r.metric}</td>
+              <td class="num">{r.p50}</td>
+              <td class="num">{r.p95}</td>
+              <td class="num">{r.n}</td>
+              <td class="notes">{r.notes}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </section>
+
+    <section class="spec-section">
+      <h2>How long does an async analysis take (upload, then ask)?</h2>
       <p class="section-note">
         <code>POST /v1/analyses</code> with <code>Prefer: wait</code> — one request, terminal answer. Wall-clock
         includes queue time; queued time is never billed.
@@ -85,7 +111,7 @@ import { faqPageLd } from '../lib/faq';
     </section>
 
     <section class="spec-section">
-      <h2>Accuracy — published benchmarks</h2>
+      <h2>How accurate is the model? (published benchmarks)</h2>
       <p class="section-note">
         Darwin, our video JEPA model, benchmarked with a linear probe on a frozen backbone.
         Full protocol, figures, and CPU/GPU throughput comparisons in
@@ -108,7 +134,7 @@ import { faqPageLd } from '../lib/faq';
     </section>
 
     <section class="spec-section">
-      <h2>Methodology</h2>
+      <h2>How were these numbers measured?</h2>
       <ul class="methodology">
         {METHODOLOGY.map((m) => <li>{m}</li>)}
       </ul>
