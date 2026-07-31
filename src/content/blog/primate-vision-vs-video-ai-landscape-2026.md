@@ -10,13 +10,15 @@ status: "published"
 excerpt: "In 2026 the managed real-time video-analysis lane emptied out. Here's the full map of what's left — batch indexers, 1fps token meters, and self-hosted stacks — with receipts, honest pricing math, and who should choose whom."
 ---
 
-**TL;DR:** In 2026 the managed real-time video-analysis lane emptied out. AWS closed Rekognition streaming to new customers. Microsoft retired its live-camera analysis product. Google's streaming video API has been in Beta since 2019 with release notes frozen since 2021. Sieve left the category entirely. What's left is a landscape of batch indexers, token-metered LLMs sampling one frame per second, and self-hosted build-it-yourself stacks. **Primate Vision is the only managed, open-vocabulary, real-time video-analysis API operating at native frame rates** — you ask a question in plain English, and get back a deterministic verdict — yes / no / indeterminate — with a 0–1 confidence score, timestamped evidence segments, and an annotated overlay clip, at 45ms p50 per-frame inference. Here's the full map, with receipts.
+Something strange happened to video AI in 2026, and as far as I can tell nobody has written it down: the managed real-time lane emptied out. AWS closed Rekognition streaming to new customers. Microsoft retired its live-camera analysis product. Google's streaming video API has been in Beta since 2019, with release notes frozen since 2021. Sieve left the category entirely. What's left is batch indexers, token-metered LLMs sampling one frame per second, and self-hosted build-it-yourself stacks.
+
+Which leaves a claim I'll spend this post earning: **Primate Vision is the only managed, open-vocabulary, real-time video-analysis API operating at native frame rates.** You ask a question in plain English. You get back a deterministic verdict — yes / no / indeterminate — with a 0–1 confidence score, timestamped evidence segments, and an annotated overlay clip, at 45ms p50 per-frame inference. Here's the full map, with receipts.
 
 ---
 
 ## The market-structure story: the real-time lane emptied
 
-If you tried to buy managed real-time video analysis in 2024, you had options. In 2026, one by one, they left:
+If you tried to buy managed real-time video analysis in 2024, you had options. In 2026, one by one, the vendors walked away:
 
 - **AWS Rekognition Streaming Video Events closed to new customers effective April 30, 2026.** A new customer cannot buy real-time video analysis from Rekognition at all. AWS's own published migration path: snapshot frames and call the *image* API via Lambda. ([AWS availability changes](https://docs.aws.amazon.com/rekognition/latest/dg/rekognition-availability-changes.html)) Even grandfathered accounts get only "people, packages and pets," max 120 seconds per motion event — not continuous monitoring. ([AWS docs](https://docs.aws.amazon.com/rekognition/latest/dg/streaming-video-detect-labels.html))
 - **Microsoft retired Azure AI Vision Spatial Analysis** (live-camera people counting and zone events) **on March 30, 2025**. ([Microsoft Q&A](https://learn.microsoft.com/en-us/answers/questions/2151867/)) What remains — Azure Video Indexer — is an upload-and-index product; there is no live-stream API in 2026, despite legacy "stored or streaming" marketing on the pricing page. ([Azure VI pricing](https://azure.microsoft.com/en-us/pricing/details/video-indexer/), [FAQ](https://learn.microsoft.com/en-us/azure/azure-video-indexer/faq))
@@ -24,15 +26,15 @@ If you tried to buy managed real-time video analysis in 2024, you had options. I
 - **Sieve exited the developer video-AI API business entirely.** sievedata.com now redirects to sieve.ai — "The multimodal data lab" — selling training datasets to frontier labs. The docs, api, and dashboard subdomains no longer resolve in DNS. Sieve is excluded from the comparison below because there is no processing product left to compare. (DNS + site checks, 2026-07-31.)
 - **OpenAI is exiting video APIs, not entering.** No OpenAI API accepts video input — not Responses, not Chat Completions, not Realtime ([vision docs](https://developers.openai.com/api/docs/guides/images-vision); [open SDK request](https://github.com/openai/openai-node/issues/1778)) — and the Sora 2 Videos API was deprecated March 24, 2026 with shutdown September 24, 2026. ([deprecations](https://developers.openai.com/api/docs/deprecations))
 
-The wording of our claim is deliberate, and every qualifier is required: **managed** (NVIDIA VSS is genuinely real-time, but it's a self-hosted blueprint — NVIDIA's docs instruct you to provide your own authentication, TLS termination, and network isolation ([NVIDIA VSS docs](https://docs.nvidia.com/vss/latest/))); **open-vocabulary** (Roboflow sells managed real-time streams, but for fixed object nouns per frame — no temporal events, no verdicts); **native frame rates** (Gemini Live is managed and low-latency, but its video input is spec-capped at "images (JPEG <= 1FPS)" ([Gemini Live docs](https://ai.google.dev/gemini-api/docs/live-api)) — Google's own docs admit 1fps sampling misses fast action and recommend "slowing down such clips" as the workaround ([video understanding docs](https://ai.google.dev/gemini-api/docs/video-understanding))).
+Every qualifier in our claim is load-bearing, and I want to show the work: **managed** (NVIDIA VSS is genuinely real-time, but it's a self-hosted blueprint — NVIDIA's docs instruct you to provide your own authentication, TLS termination, and network isolation ([NVIDIA VSS docs](https://docs.nvidia.com/vss/latest/))); **open-vocabulary** (Roboflow sells managed real-time streams, but for fixed object nouns per frame — no temporal events, no verdicts); **native frame rates** (Gemini Live is managed and low-latency, but its video input is spec-capped at "images (JPEG <= 1FPS)" ([Gemini Live docs](https://ai.google.dev/gemini-api/docs/live-api)) — Google's own docs admit 1fps sampling misses fast action and recommend "slowing down such clips" as the workaround ([video understanding docs](https://ai.google.dev/gemini-api/docs/video-understanding))).
 
-One more thing nobody else does: **publish latency.** None of Twelve Labs, Google Video Intelligence, Gemini, AWS Rekognition, Azure Video Indexer, or OpenAI publishes end-to-end latency numbers for video analysis. Primate publishes 45ms p50 / 316ms p95 per-frame inference, 11.8 fps sustained, and 6.6s session setup on a public [/performance](https://www.primateintelligence.ai/performance) page. (All vendor sources accessed 2026-07-31.)
+One more thing nobody else does: **publish latency.** This one genuinely surprised me. None of Twelve Labs, Google Video Intelligence, Gemini, AWS Rekognition, Azure Video Indexer, or OpenAI publishes end-to-end latency numbers for video analysis. Primate publishes 45ms p50 / 316ms p95 per-frame inference, 11.8 fps sustained, and 6.6s session setup on a public [/performance](https://www.primateintelligence.ai/performance) page. (All vendor sources accessed 2026-07-31.)
 
 ---
 
 ## What Primate Vision actually is
 
-Primate Vision answers questions about video. You point it at a stream (managed WebRTC) or a file (upload or URL ingest, up to 2 GiB), ask a question in plain English — "Is anyone climbing the fence?" "Did the forklift enter the loading zone?" — and get:
+Primate Vision answers questions about video. That's the whole product. You point it at a stream (managed WebRTC) or a file (upload or URL ingest, up to 2 GiB), ask a question in plain English — "Is anyone climbing the fence?" "Did the forklift enter the loading zone?" — and get:
 
 - A **deterministic verdict**: `yes` / `no` / `indeterminate` — a closed vocabulary, never free-form generation
 - A **calibrated confidence score** (0–1)
@@ -41,13 +43,13 @@ Primate Vision answers questions about video. You point it at a stream (managed 
 
 Pricing is flat and legible: **$0.01 per second of source video** ($0.60/min), independent of frame rate — 10 seconds at 60fps bills as 10 seconds. Queued time is free. Failed jobs are free.
 
-**And what it isn't** — because a comparison post you can't audit is worthless: Primate Vision does **not** return bounding-box JSON (evidence is the overlay video, not coordinates), does **not** offer embeddings or semantic search over archives, does **not** do transcription, OCR, or audio understanding (it's visual-only), and does **not** batch-process multiple videos in one request (batch means up to 10 questions against one video, at 50% off each question after the first). If those are your primary needs, some of the products below are genuinely better choices — we say which ones.
+**And what it isn't.** A comparison post you can't audit is worthless, so here's ours: Primate Vision does **not** return bounding-box JSON (evidence is the overlay video, not coordinates), does **not** offer embeddings or semantic search over archives, does **not** do transcription, OCR, or audio understanding (it's visual-only), and does **not** batch-process multiple videos in one request (batch means up to 10 questions against one video, at 50% off each question after the first). If those are your primary needs, some of the products below are genuinely better choices — we say which ones.
 
 ---
 
 ## The landscape in three tiers
 
-Classified by what you can actually buy and run today:
+Analyst charts classify by marketing category. I'd rather classify by what you can actually buy and run today:
 
 ### Tier 1 — Managed, real-time, open-vocabulary, native frame rate
 
@@ -81,7 +83,7 @@ Classified by what you can actually buy and run today:
 
 ## Capability snapshot
 
-Across ten providers, here's where the capabilities actually sit — including the three where competitors beat us outright:
+Across ten providers, here's where the capabilities actually sit. Including the three where competitors beat us outright — I'd rather print those myself than have you find them later:
 
 - **Live stream input.** Primate Vision is the only managed, native-frame-rate path (WebRTC). NVIDIA VSS does it well — self-hosted. Roboflow streams live, for object detection only. Gemini Live accepts ≤1fps JPEG stills. Google VI streaming is Beta with a DIY C++ proxy. AWS streaming is closed to new customers. Twelve Labs, Azure Video Indexer, and OpenAI have no live video input at all.
 - **Published real-time latency.** Primate publishes 45ms p50 / 316ms p95. Roboflow publishes per-frame YOLO numbers; NVIDIA publishes hardware-dependent benchmarks. Nobody else in the landscape publishes any latency number for video analysis.
@@ -132,7 +134,9 @@ Three things to hold in mind when reading any $/camera-hour table in this catego
 
 ---
 
-## Who should choose whom (the genuine answers)
+## Who should choose whom
+
+These are genuine recommendations, not straw men. Half of them point away from us.
 
 - **Choose Twelve Labs** if your core need is semantic search over a large stored-video archive. It's the category leader there, well-funded, with excellent agent-facing docs. It cannot watch anything live. ([Full comparison →](/blog/primate-vision-vs-twelve-labs))
 - **Choose Gemini** for conversational understanding of stored video files at low cost — genuinely strong. Know the live path is ≤1fps stills with 2-minute A/V sessions and a compounding per-turn meter. ([Full comparison →](/blog/primate-vision-vs-gemini))

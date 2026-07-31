@@ -10,7 +10,9 @@ status: "published"
 excerpt: "Gemini is the strongest general-purpose video model you can rent — and at 1fps it's dramatically cheaper than us. But its live video input is spec-capped at 1fps JPEG stills with 2-minute sessions and a compounding token meter. Here's the honest head-to-head."
 ---
 
-**TL;DR:** Gemini is the strongest general-purpose video-understanding model you can rent, and at its default 1fps sampling it's dramatically cheaper than us. If you want conversational answers about stored video — summaries, Q&A, world-knowledge reasoning — it's excellent, and we say so. But for *real-time video analysis*, the spec sheet decides: Gemini Live's video input is hard-capped at **1fps JPEG stills**, audio+video sessions last **2 minutes** without context compression, and the meter **re-bills the entire session context on every turn**. Primate Vision watches live video at native frame rates over managed WebRTC (45ms p50 per-frame inference) and returns a **deterministic verdict** — yes / no / indeterminate — with calibrated confidence, timestamps, and an annotated evidence video, on a flat per-second meter.
+Let me start with the concession, because it's a big one: Gemini is the strongest general-purpose video-understanding model you can rent, and at its default 1fps sampling it's dramatically cheaper than us. If you want conversational answers about stored video — summaries, Q&A, world-knowledge reasoning — it's excellent.
+
+But for *real-time video analysis*, the spec sheet decides, not the marketing. Gemini Live's video input is hard-capped at **1fps JPEG stills**. Audio+video sessions last **2 minutes** without context compression. And the meter **re-bills the entire session context on every turn**. Primate Vision watches live video at native frame rates over managed WebRTC (45ms p50 per-frame inference) and returns a **deterministic verdict** — yes / no / indeterminate — with calibrated confidence, timestamps, and an annotated evidence video, on a flat per-second meter.
 
 *A note on keeping Google straight: this post is about **Gemini** — Google's modern multimodal surface. Google Video Intelligence, the 2017-era annotation API, is a different product with different criticisms; we cover it in the [full landscape comparison](/blog/primate-vision-vs-video-ai-landscape-2026). Don't conflate them — we don't.*
 
@@ -18,9 +20,9 @@ excerpt: "Gemini is the strongest general-purpose video model you can rent — a
 
 ## Two different jobs
 
-Gemini is a universal brain: video is one input modality among many, decomposed into sampled frames plus audio tokens, answered with generated prose or JSON. Google's own docs describe the capability well — "describe, segment, and extract information from videos, answer questions about video content" ([video understanding docs](https://ai.google.dev/gemini-api/docs/video-understanding)).
+Gemini is a universal brain. Video is one input modality among many, decomposed into sampled frames plus audio tokens, answered with generated prose or JSON. Google's own docs describe the capability well — "describe, segment, and extract information from videos, answer questions about video content" ([video understanding docs](https://ai.google.dev/gemini-api/docs/video-understanding)).
 
-Primate Vision is a measurement instrument: it watches video — live (managed WebRTC) or uploaded (up to 2 GiB, direct or URL ingest) — and answers one framed question with a deterministic verdict (`yes` / `no` / `indeterminate`), a calibrated 0–1 confidence score, timestamped evidence segments, and an annotated overlay evidence video. Verdicts are computed by similarity scoring against the video, not sampled from a language model, and you can pin the model version (`darwin-1.3`) so behavior changes only when you choose.
+Primate Vision is a measurement instrument. It watches video — live (managed WebRTC) or uploaded (up to 2 GiB, direct or URL ingest) — and answers one framed question with a deterministic verdict (`yes` / `no` / `indeterminate`), a calibrated 0–1 confidence score, timestamped evidence segments, and an annotated overlay evidence video. Verdicts are computed by similarity scoring against the video, not sampled from a language model, and you can pin the model version (`darwin-1.3`) so behavior changes only when you choose.
 
 ## The head-to-head
 
@@ -41,13 +43,15 @@ That last row matters for honesty: earlier analyses called Google "polling-only.
 
 ## The 1fps wall
 
-This is the crux, and it's Google's spec, not our characterization. The Live API's input modalities are listed as "Audio…, images (JPEG <= 1FPS), text." A person falls in 0.7 seconds. A package is snatched between frames. At one still per second, fast events physically cannot be seen — which is why Google's video docs recommend "slowing down such clips" as the workaround for fast action. That's a fine tip for stored files. It is not available advice for a live camera.
+This is the crux, and it's Google's spec, not our characterization. The Live API's input modalities are listed as "Audio…, images (JPEG <= 1FPS), text."
 
-On the file path you can request a higher custom fps — and then the token meter answers. Which brings us to pricing.
+Think about what one frame per second means physically. A person falls in 0.7 seconds. A package is snatched between frames. At one still per second, fast events cannot be seen — not "detected less accurately," *not seen* — which is why Google's own video docs recommend "slowing down such clips" as the workaround for fast action. That's a fine tip for stored files. It is not available advice for a live camera.
+
+On the file path you can request a higher custom fps. Then the token meter answers. Which brings us to pricing.
 
 ## Pricing: flat meter vs. compounding token curve
 
-**Gemini bills tokens.** Each frame is 258 tokens at default resolution; ~300 tokens/second of video all-in. At the 1fps default on Flash-Lite, that's roughly **$0.28 per camera-hour input** (estimate, input-only) — 100×+ cheaper than our metered rate, and we won't pretend otherwise. If 1fps is enough and prose is enough, Gemini is very cheap.
+**Gemini bills tokens.** Each frame is 258 tokens at default resolution; ~300 tokens/second of video all-in. At the 1fps default on Flash-Lite, that's roughly **$0.28 per camera-hour input** (estimate, input-only) — 100×+ cheaper than our metered rate. I'm not going to pretend otherwise. If 1fps is enough and prose is enough, Gemini is very cheap and you should use it.
 
 But two curves bend the other way:
 
@@ -63,11 +67,11 @@ Normalized honestly: at 1fps Gemini is ~$0.28–$1.39/camera-hour (estimate, inp
 
 † *Metered rate normalized for comparison. Primate does not sell 24/7 continuous monitoring at the metered rate — continuous and fleet workloads use enterprise plans; [contact us](https://primateintelligence.ai/pricing#enterprise).*
 
-One more production consideration: model churn. Gemini 2.0 was shut down June 2026; preview models are routinely retired on ~30-day notice; the Live model on the developer API is still `-preview` (GA only via Vertex). Every forced migration means re-validating your video pipeline. Primate Vision versions models as pinnable resources — behavior changes when you choose.
+One more production consideration: model churn. Gemini 2.0 was shut down June 2026. Preview models are routinely retired on ~30-day notice. The Live model on the developer API is still `-preview` (GA only via Vertex). Every forced migration means re-validating your video pipeline — anyone who's shipped on a fast-moving model API knows exactly what that costs. Primate Vision versions models as pinnable resources. Behavior changes when you choose.
 
 ## Choose Gemini instead when…
 
-Genuinely — these are its lanes, not ours:
+These are its lanes, not ours:
 
 - **Conversational "what am I looking at?" experiences.** Voice assistant over a screen share or camera where prose/audio *is* the product — Shopify's Sidekick is built on Gemini Live via Vertex. We don't do conversation.
 - **Low-fps, low-stakes monitoring at massive scale**, where ~$0.30–$1.40/camera-hour beats everything and an occasional miss is tolerable.
