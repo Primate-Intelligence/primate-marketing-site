@@ -53,6 +53,7 @@ const add = (urlPath, sources) => {
 const staticPages = {
   '/': 'src/pages/index.astro',
   '/pricing/': 'src/pages/pricing.astro',
+  '/performance/': 'src/pages/performance.astro',
   '/careers/': 'src/pages/careers.astro',
   '/cookie-policy/': 'src/pages/cookie-policy.astro',
   '/privacy/': 'src/pages/privacy.astro',
