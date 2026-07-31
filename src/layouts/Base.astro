@@ -122,6 +122,45 @@ const footerColumns = [
     {ldBlocks.map((block) => (
       <script type="application/ld+json" set:html={JSON.stringify(block)} />
     ))}
+
+    <!-- GA4 (G-NEMWN2PDNG) + AI-assistant referral attribution (PRI-492 item 8).
+         Cookies disclosed in /cookie-policy. Mirrors the app's classifyAiReferral
+         (src/primate/analytics/analytics.ts) so www + app report the same
+         ai_referral event with the same ai_source values. -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-NEMWN2PDNG"></script>
+    <script is:inline>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-NEMWN2PDNG');
+      (function () {
+        var AI_HOSTS = [
+          [/(^|\.)chatgpt\.com$/, 'chatgpt'],
+          [/^chat\.openai\.com$/, 'chatgpt'],
+          [/(^|\.)perplexity\.ai$/, 'perplexity'],
+          [/(^|\.)claude\.ai$/, 'claude'],
+          [/^gemini\.google\.com$/, 'gemini'],
+          [/^copilot\.microsoft\.com$/, 'copilot'],
+        ];
+        function match(value) {
+          for (var i = 0; i < AI_HOSTS.length; i++) {
+            if (AI_HOSTS[i][0].test(value)) return AI_HOSTS[i][1];
+          }
+          return null;
+        }
+        var source = null;
+        try {
+          var utm = new URLSearchParams(window.location.search).get('utm_source');
+          if (utm) source = match(utm);
+        } catch (e) { /* ignore */ }
+        if (!source && document.referrer) {
+          try { source = match(new URL(document.referrer).hostname); } catch (e) { /* ignore */ }
+        }
+        if (source) {
+          gtag('event', 'ai_referral', { ai_source: source, page_path: window.location.pathname });
+        }
+      })();
+    </script>
   </head>
   <body>
     <header class="site-header">
