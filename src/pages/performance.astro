@@ -1,0 +1,214 @@
+---
+/**
+ * /performance — Performance & latency (PRI-492 action #0).
+ *
+ * The one page an evaluator (human or AI agent) needs to verify our claims:
+ * measured p50/p95 latency for both API paths, throughput, and accuracy
+ * benchmarks linked to the published Darwin post. All numbers come from
+ * src/data/performance.ts (single source of truth shared with the .md twin).
+ */
+import Base from '../layouts/Base.astro';
+import {
+  STREAMING_ROWS,
+  ASYNC_ROWS,
+  ACCURACY_ROWS,
+  ACCURACY_SOURCE,
+  METHODOLOGY,
+  MEASURED_AT,
+  PERFORMANCE_FAQ,
+} from '../data/performance';
+import { faqPageLd } from '../lib/faq';
+---
+
+<Base
+  title="Performance & latency"
+  description={`Measured production latency for the Primate Vision real-time video intelligence API (${MEASURED_AT}): 45 ms p50 per-frame inference, 11.8 fps sustained streaming analysis, plus published accuracy benchmarks.`}
+  canonicalPath="/performance"
+  jsonLd={[faqPageLd(PERFORMANCE_FAQ)]}
+>
+  <div class="page">
+    <section class="hero">
+      <p class="eyebrow">Measured on production · {MEASURED_AT}</p>
+      <h1>Performance &amp; latency</h1>
+      <p class="lede">
+        Real numbers from the live API — every figure below was measured against
+        <code>api.primateintelligence.ai</code>, and you can repeat the measurement with a
+        free key in one <code>POST</code>. No estimates, no lab conditions.
+      </p>
+    </section>
+
+    <section class="spec-section">
+      <h2>Streaming analysis (live video over WebRTC)</h2>
+      <p class="section-note">
+        Point a camera or stream a file; results arrive on a data channel while the video plays.
+      </p>
+      <table class="spec-table">
+        <thead>
+          <tr><th>Metric</th><th>p50</th><th>p95</th><th>Samples</th><th>Notes</th></tr>
+        </thead>
+        <tbody>
+          {STREAMING_ROWS.map((r) => (
+            <tr>
+              <td>{r.metric}</td>
+              <td class="num">{r.p50}</td>
+              <td class="num">{r.p95}</td>
+              <td class="num">{r.n}</td>
+              <td class="notes">{r.notes}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </section>
+
+    <section class="spec-section">
+      <h2>Async analysis (upload, then ask)</h2>
+      <p class="section-note">
+        <code>POST /v1/analyses</code> with <code>Prefer: wait</code> — one request, terminal answer. Wall-clock
+        includes queue time; queued time is never billed.
+      </p>
+      <table class="spec-table">
+        <thead>
+          <tr><th>Metric</th><th>p50</th><th>p95</th><th>Samples</th><th>Notes</th></tr>
+        </thead>
+        <tbody>
+          {ASYNC_ROWS.map((r) => (
+            <tr>
+              <td>{r.metric}</td>
+              <td class="num">{r.p50}</td>
+              <td class="num">{r.p95}</td>
+              <td class="num">{r.n}</td>
+              <td class="notes">{r.notes}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </section>
+
+    <section class="spec-section">
+      <h2>Accuracy — published benchmarks</h2>
+      <p class="section-note">
+        Darwin, our video JEPA model, benchmarked with a linear probe on a frozen backbone.
+        Full protocol, figures, and CPU/GPU throughput comparisons in
+        <a href={ACCURACY_SOURCE.href}>{ACCURACY_SOURCE.label}</a> ({ACCURACY_SOURCE.author}, {ACCURACY_SOURCE.date}).
+      </p>
+      <table class="spec-table">
+        <thead>
+          <tr><th>Benchmark</th><th>Result</th><th>Protocol</th></tr>
+        </thead>
+        <tbody>
+          {ACCURACY_ROWS.map((r) => (
+            <tr>
+              <td>{r.benchmark}</td>
+              <td class="num">{r.result}</td>
+              <td class="notes">{r.protocol}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </section>
+
+    <section class="spec-section">
+      <h2>Methodology</h2>
+      <ul class="methodology">
+        {METHODOLOGY.map((m) => <li>{m}</li>)}
+      </ul>
+    </section>
+
+    <!-- FAQ (visible text mirrors the FAQPage JSON-LD exactly) -->
+    <section class="faq">
+      <h2>Performance FAQ</h2>
+      {PERFORMANCE_FAQ.map((item) => (
+        <details class="faq-item">
+          <summary>{item.q}</summary>
+          <p>{item.a}</p>
+        </details>
+      ))}
+    </section>
+
+    <section class="cta-section">
+      <h2>Measure it yourself</h2>
+      <pre><code># Free key, no signup
+curl -s -X POST https://api.primateintelligence.ai/v1/sandbox</code></pre>
+      <p>
+        <a class="cta" href="/docs">Read the docs</a>
+        <a class="cta secondary" href="https://github.com/Primate-Intelligence/primate-examples">Measurement client on GitHub</a>
+      </p>
+    </section>
+  </div>
+</Base>
+
+<style>
+  .page {
+    max-width: 960px;
+    margin: 0 auto;
+    padding: 48px 24px 96px;
+  }
+  .hero { padding: 24px 0 8px; }
+  .eyebrow {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--color-text-muted, #7a7669);
+    margin: 0 0 12px;
+  }
+  h1 { font-size: 40px; line-height: 1.1; letter-spacing: -0.02em; margin: 0 0 16px; }
+  .lede { font-size: 17px; line-height: 1.6; max-width: 680px; color: var(--color-text-muted, #55524a); }
+  .spec-section { margin-top: 48px; }
+  h2 { font-size: 24px; letter-spacing: -0.01em; margin: 0 0 8px; }
+  .section-note { font-size: 14px; color: var(--color-text-muted, #7a7669); margin: 0 0 16px; max-width: 680px; }
+  .spec-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 14px;
+  }
+  .spec-table th {
+    text-align: left;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--color-text-muted, #7a7669);
+    padding: 10px 12px;
+    border-bottom: 2px solid var(--color-border, #d4d0c8);
+  }
+  .spec-table td {
+    padding: 12px;
+    border-bottom: 1px solid var(--color-border, #e3e0d8);
+    vertical-align: top;
+  }
+  .spec-table td.num { font-family: 'JetBrains Mono', monospace; white-space: nowrap; }
+  .spec-table td.notes { font-size: 13px; color: var(--color-text-muted, #7a7669); }
+  .methodology { padding-left: 20px; }
+  .methodology li { font-size: 14px; line-height: 1.6; margin-bottom: 10px; color: var(--color-text-muted, #55524a); }
+  .faq { margin-top: 48px; }
+  .faq-item { border-bottom: 1px solid var(--color-border, #e3e0d8); padding: 4px 0; }
+  .faq-item summary { cursor: pointer; font-weight: 600; font-size: 15px; padding: 12px 0; }
+  .faq-item p { font-size: 14px; line-height: 1.65; color: var(--color-text-muted, #55524a); padding: 0 0 16px; max-width: 720px; }
+  .cta-section { margin-top: 56px; }
+  .cta-section pre {
+    background: var(--color-bg-code, #f2f0eb);
+    border: 1px solid var(--color-border, #d4d0c8);
+    border-radius: 6px;
+    padding: 16px;
+    font-size: 13px;
+    overflow-x: auto;
+  }
+  .cta {
+    display: inline-block;
+    background: #1b4fe0;
+    color: #fff;
+    padding: 10px 20px;
+    border-radius: 6px;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 14px;
+    margin-right: 12px;
+  }
+  .cta.secondary { background: transparent; color: #1b4fe0; border: 1px solid #1b4fe0; }
+  code { font-family: 'JetBrains Mono', monospace; font-size: 0.92em; }
+  @media (max-width: 720px) {
+    .spec-table { display: block; overflow-x: auto; }
+    h1 { font-size: 32px; }
+  }
+</style>

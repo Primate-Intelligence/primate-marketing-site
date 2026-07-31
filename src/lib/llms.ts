@@ -69,6 +69,7 @@ ${docLines}
 
 - [Home](${SITE}/): Product overview — markdown twin at /index.md
 - [Pricing](${SITE}/pricing): $0.01/video-second metered credits — markdown twin at /pricing.md
+- [Performance & latency](${SITE}/performance): Measured production p50/p95 latency, throughput, and accuracy benchmarks — markdown twin at /performance.md
 - [Use Cases](${SITE}/use-cases): Eight markets, one model — markdown twin at /use-cases.md
 - [Team](${SITE}/team): Founders — markdown twin at /team.md
 - [Values](${SITE}/values): Seven principles — markdown twin at /values.md

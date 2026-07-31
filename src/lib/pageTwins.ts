@@ -11,6 +11,15 @@ import { TEAM, TEAM_HERO } from '../data/team';
 import { VALUES, VALUES_HERO, VALUES_TEAM } from '../data/values';
 import { CAREERS_HERO, LOOK_FOR, OFFER, OPEN_ROLES } from '../data/careers';
 import { PRICING_FAQ } from './faq';
+import {
+  STREAMING_ROWS,
+  ASYNC_ROWS,
+  ACCURACY_ROWS,
+  ACCURACY_SOURCE,
+  METHODOLOGY,
+  MEASURED_AT,
+  PERFORMANCE_FAQ,
+} from '../data/performance';
 
 const SITE = 'https://primateintelligence.ai';
 
@@ -163,6 +172,48 @@ ${values}
 ## ${VALUES_TEAM.heading}
 
 ${team}
+`;
+}
+
+export function performanceMd(): string {
+  const specTable = (rows: typeof STREAMING_ROWS) =>
+    [
+      '| Metric | p50 | p95 | Samples | Notes |',
+      '|---|---|---|---|---|',
+      ...rows.map((r) => `| ${r.metric} | ${r.p50} | ${r.p95} | ${r.n} | ${r.notes} |`),
+    ].join('\n');
+  const accuracyTable = [
+    '| Benchmark | Result | Protocol |',
+    '|---|---|---|',
+    ...ACCURACY_ROWS.map((r) => `| ${r.benchmark} | ${r.result} | ${r.protocol} |`),
+  ].join('\n');
+  const faq = PERFORMANCE_FAQ.map((f) => `### ${f.q}\n\n${f.a}`).join('\n\n');
+  return `${header('Performance & latency', '/performance')}
+# Performance & latency
+
+Measured on the live production API (api.primateintelligence.ai), ${MEASURED_AT}. Repeatable with a free key: \`POST https://api.primateintelligence.ai/v1/sandbox\` (no signup).
+
+## Streaming analysis (live video over WebRTC)
+
+${specTable(STREAMING_ROWS)}
+
+## Async analysis (upload, then ask)
+
+${specTable(ASYNC_ROWS)}
+
+## Accuracy — published benchmarks
+
+${accuracyTable}
+
+Source: [${ACCURACY_SOURCE.label}](${SITE}${ACCURACY_SOURCE.href}) (${ACCURACY_SOURCE.author}, ${ACCURACY_SOURCE.date}).
+
+## Methodology
+
+${METHODOLOGY.map((m) => `- ${m}`).join('\n')}
+
+## FAQ
+
+${faq}
 `;
 }
 
