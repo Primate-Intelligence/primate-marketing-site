@@ -1,41 +1,70 @@
 ---
-/**
- * /technology — listing page for technology posts (PRI-516).
- *
- * Deliberately minimal: technology posts are data-driven pages (see
- * src/data/darwinPreview.ts), not a content collection — there's one post
- * today. If this section grows past ~3 posts, promote it to a proper
- * content collection mirroring src/content/blog.
- */
 import Base from '../../layouts/Base.astro';
-import { POST } from '../../data/darwinPreview';
-import { formatDate } from '../../lib/blog';
+import ComingSoon from '../../components/ComingSoon.astro';
 
-const posts = [POST];
+const subpages = [
+  {
+    href: '/technology/how-jepa-works',
+    title: 'How JEPA works',
+    desc: 'Joint-embedding predictive architecture — semantic understanding without a language model in the perception loop.',
+  },
+  {
+    href: '/technology/determinism',
+    title: 'Determinism',
+    desc: 'Same input, same output, every time — why repeatability is the defining property for production video systems.',
+  },
+  {
+    href: '/technology/benchmarks',
+    title: 'Benchmarks',
+    desc: 'What we measure, against which baselines, and honest failure modes.',
+  },
+  {
+    href: '/technology/real-time',
+    title: 'Real-time streaming',
+    desc: 'WebRTC ingestion, per-GPU stream backends, and what "real-time" actually costs.',
+  },
+];
 ---
 
 <Base
   title="Technology"
-  description="How Primate Intelligence works — model releases, architecture notes, and capability updates from the team building real-time video intelligence."
+  description="Darwin is a JEPA-based predictive world model for video — fast, deterministic, and deployable at the edge. Learn how it works."
   canonicalPath="/technology"
+  mdTwin="/technology.md"
 >
   <div class="page">
     <section class="hero">
-      <p class="eyebrow">Under the Hood</p>
-      <h1>Technology</h1>
-      <p class="lede">Model releases, architecture notes, and capability updates from the team.</p>
+      <p class="eyebrow">Technology</p>
+      <h1>World models, not video models</h1>
+      <p class="lede">
+        Primate Intelligence builds Darwin, a JEPA-based predictive world model for video.
+      </p>
     </section>
 
-    <section class="posts">
-      <div class="grid">
-        {posts.map((post) => (
-          <a class="card" href={`/technology/${post.slug}`}>
-            <span class="tag">Model release</span>
-            <h2>{post.title}</h2>
-            <p class="excerpt">{post.excerpt}</p>
-            <div class="meta">
-              <time datetime={post.date}>{formatDate(post.date)}</time>
-            </div>
+    <section class="content">
+      <p>
+        Generative video models learn to render pixels; world models learn what happens next
+        and why — the actual substrate of understanding. The difference is architectural.
+        Generative models optimize for visual plausibility; world models optimize for
+        predictive accuracy in representation space.
+      </p>
+      <p>
+        Prediction in representation space — not pixel space — is what makes Darwin fast,
+        deterministic, and deployable at the edge. There is no decoder generating hallucinated
+        frames, no language model sampling stochastically at the perception layer. Just
+        a model that watches video the way a systems engineer needs: deterministic,
+        timestamped, confidence-scored, queryable in plain English.
+      </p>
+
+      <ComingSoon note="The full 'World models, not video models' essay is coming during our August launch." />
+
+      <h2>Explore the technology</h2>
+      <div class="card-grid">
+        {subpages.map((s) => (
+          <a class="card" href={s.href}>
+            <h3>{s.title}</h3>
+            <p>{s.desc}</p>
+            <span class="arrow" aria-hidden="true">→</span>
           </a>
         ))}
       </div>
@@ -44,47 +73,41 @@ const posts = [POST];
 </Base>
 
 <style>
-  .page { max-width: 1120px; margin: 0 auto; padding: 64px 24px 96px; }
-  .hero { text-align: center; margin-bottom: 56px; }
+  .page { max-width: 800px; margin: 0 auto; padding: 64px 24px 96px; }
+  .hero { margin-bottom: 40px; }
   .eyebrow {
-    font-size: 13px;
+    font-family: var(--font-mono);
+    font-size: 12px;
+    font-weight: 500;
     text-transform: uppercase;
-    letter-spacing: 0.08em;
-    color: var(--color-text-muted);
-    margin: 0 0 14px;
+    letter-spacing: 0.1em;
+    color: var(--color-signal);
+    margin: 0 0 12px;
   }
-  h1 { font-size: 44px; font-weight: 700; letter-spacing: -0.02em; margin: 0 0 14px; }
-  .lede { font-size: 16px; color: var(--color-text-muted); max-width: 480px; margin: 0 auto; }
-  .grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+  h1 { font-size: 44px; font-weight: 700; letter-spacing: -0.02em; line-height: 1.2; margin: 0 0 16px; }
+  .lede { font-size: 18px; color: var(--color-text-muted); line-height: 1.6; margin: 0; }
+  .content p { font-size: 17px; line-height: 1.75; color: var(--color-text-primary); opacity: 0.85; margin: 0 0 16px; }
+  h2 { font-size: 26px; font-weight: 600; letter-spacing: -0.015em; margin: 48px 0 20px; }
+
+  .card-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
   .card {
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
     background: var(--color-bg-surface);
     border: 1px solid var(--color-border);
-    border-radius: 8px;
-    padding: 28px;
+    border-radius: 6px;
+    padding: 24px;
     color: inherit;
-    transition: border-color var(--duration-fast) var(--ease-standard);
+    display: flex;
+    flex-direction: column;
+    position: relative;
   }
-  .card:hover { border-color: var(--color-signal); }
-  .tag {
-    align-self: flex-start;
-    font-size: 11px;
-    font-weight: 600;
-    padding: 4px 10px;
-    border-radius: 999px;
-    background: var(--color-signal-subtle);
-    color: var(--color-signal);
-  }
-  h2 { font-size: 20px; font-weight: 600; letter-spacing: -0.01em; line-height: 1.35; margin: 0; }
-  .excerpt { font-size: 14px; color: var(--color-text-muted); line-height: 1.6; margin: 0; flex: 1; }
-  .meta { font-size: 13px; color: var(--color-text-muted); }
+  .card:hover { border-color: rgba(27, 79, 224, 0.4); color: inherit; }
+  .card h3 { font-size: 16px; font-weight: 600; margin: 0 0 8px; }
+  .card p { font-size: 13px; color: var(--color-text-muted); line-height: 1.5; margin: 0; flex: 1; opacity: 1; }
+  .arrow { position: absolute; bottom: 20px; right: 20px; color: var(--color-signal); font-size: 16px; }
 
-  @media (max-width: 960px) { .grid { grid-template-columns: repeat(2, 1fr); } }
   @media (max-width: 640px) {
-    .grid { grid-template-columns: 1fr; }
-    h1 { font-size: 34px; }
+    h1 { font-size: 32px; }
+    .card-grid { grid-template-columns: 1fr; }
     .page { padding: 44px 20px 64px; }
   }
 </style>

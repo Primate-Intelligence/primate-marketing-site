@@ -4,6 +4,19 @@ import { getPublishedPosts, formatDate } from '../../lib/blog';
 
 const posts = await getPublishedPosts();
 
+// Map first matching tag to a display category
+function getCategory(tags: string[]): string {
+  for (const tag of tags) {
+    if (tag === 'Announcement') return 'Announcements';
+    if (tag === 'Perspective' || tag === 'Founding' || tag === 'Market Analysis') return 'Perspective';
+    if (tag === 'Engineering' || tag === 'Infrastructure') return 'Engineering';
+    if (tag === 'Research' || tag === 'JEPA' || tag === 'Benchmarks') return 'Research';
+  }
+  return 'Perspective'; // fallback
+}
+
+const categories = ['All', 'Announcements', 'Perspective', 'Engineering', 'Research'];
+
 const blogLd = {
   '@context': 'https://schema.org',
   '@type': 'Blog',
@@ -33,26 +46,39 @@ const blogLd = {
       <p class="lede">Research notes and perspectives from the Primate Intelligence team.</p>
     </section>
 
+    <div class="filters" role="group" aria-label="Filter by category">
+      {categories.map((cat) => (
+        <button
+          class={`filter-pill${cat === 'All' ? ' active' : ''}`}
+          data-filter={cat}
+          type="button"
+        >{cat}</button>
+      ))}
+    </div>
+
     <section class="posts">
       {posts.length === 0 ? (
         <p class="empty">No posts yet.</p>
       ) : (
         <div class="grid">
-          {posts.map((post) => (
-            <a class="card" href={`/blog/${post.data.slug}`}>
-              {post.data.tags[0] && <span class="tag">{post.data.tags[0]}</span>}
-              <h2>{post.data.title}</h2>
-              <p class="excerpt">{post.data.excerpt}</p>
-              <div class="meta">
-                <span class="avatar">{post.data.authorInitials}</span>
-                <span>{post.data.author}</span>
-                <span>·</span>
-                <time datetime={post.data.date}>{formatDate(post.data.date)}</time>
-                <span>·</span>
-                <span>{post.data.readTime}</span>
-              </div>
-            </a>
-          ))}
+          {posts.map((post) => {
+            const cat = getCategory(post.data.tags);
+            return (
+              <a class="card" href={`/blog/${post.data.slug}`} data-category={cat}>
+                {post.data.tags[0] && <span class="tag">{post.data.tags[0]}</span>}
+                <h2>{post.data.title}</h2>
+                <p class="excerpt">{post.data.excerpt}</p>
+                <div class="meta">
+                  <span class="avatar">{post.data.authorInitials}</span>
+                  <span>{post.data.author}</span>
+                  <span>·</span>
+                  <time datetime={post.data.date}>{formatDate(post.data.date)}</time>
+                  <span>·</span>
+                  <span>{post.data.readTime}</span>
+                </div>
+              </a>
+            );
+          })}
         </div>
       )}
     </section>
@@ -64,9 +90,30 @@ const blogLd = {
   </div>
 </Base>
 
+<script is:inline>
+  (function () {
+    var pills = document.querySelectorAll('.filter-pill');
+    var cards = document.querySelectorAll('.card[data-category]');
+    pills.forEach(function (pill) {
+      pill.addEventListener('click', function () {
+        var filter = pill.getAttribute('data-filter');
+        pills.forEach(function (p) { p.classList.remove('active'); });
+        pill.classList.add('active');
+        cards.forEach(function (card) {
+          if (filter === 'All' || card.getAttribute('data-category') === filter) {
+            card.style.display = '';
+          } else {
+            card.style.display = 'none';
+          }
+        });
+      });
+    });
+  })();
+</script>
+
 <style>
   .page { max-width: 1120px; margin: 0 auto; padding: 64px 24px 96px; }
-  .hero { text-align: center; margin-bottom: 56px; }
+  .hero { text-align: center; margin-bottom: 40px; }
   .eyebrow {
     font-size: 13px;
     text-transform: uppercase;
@@ -76,6 +123,31 @@ const blogLd = {
   }
   h1 { font-size: 44px; font-weight: 700; letter-spacing: -0.02em; margin: 0 0 14px; }
   .lede { font-size: 16px; color: var(--color-text-muted); max-width: 480px; margin: 0 auto; }
+
+  .filters {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 32px;
+  }
+  .filter-pill {
+    background: var(--color-bg-surface);
+    border: 1px solid var(--color-border);
+    border-radius: 999px;
+    padding: 6px 16px;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--color-text-muted);
+    cursor: pointer;
+    transition: all 150ms;
+  }
+  .filter-pill:hover { border-color: var(--color-signal); color: var(--color-signal); }
+  .filter-pill.active {
+    background: var(--color-signal);
+    border-color: var(--color-signal);
+    color: #fff;
+  }
+
   .empty { text-align: center; color: var(--color-text-muted); padding: 64px 0; }
   .grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
   .card {

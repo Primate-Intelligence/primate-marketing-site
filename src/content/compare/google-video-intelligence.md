@@ -1,6 +1,6 @@
 ---
 title: "Primate Vision vs. Google Video Intelligence (2026): Any Question You Can Type vs. a Label Menu Frozen in 2021"
-slug: "primate-vision-vs-google-video-intelligence"
+slug: "google-video-intelligence"
 author: "Matt Miesnieks"
 authorInitials: "MM"
 date: "2026-07-31"
@@ -16,7 +16,7 @@ Here's the thing though: a stable legacy annotator kept running under a real SLA
 
 But it is a pre-LLM product. There is no prompt parameter anywhere in the API. If your question is your own — *"did the forklift enter the loading bay?"* — GVI has no way to hear it. Primate Vision answers exactly that: plain English in, a deterministic verdict out (`yes` / `no` / `indeterminate`), with calibrated confidence, timestamped evidence clips, and an annotated evidence video, live or on demand.
 
-*A note on keeping Google straight: this post is about Google Video Intelligence, the 2017-era annotation API. Gemini — Google's modern, promptable video surface — is a different product with different criticisms, covered in [its own comparison](/blog/primate-vision-vs-gemini). Don't conflate them; we don't.*
+*A note on keeping Google straight: this post is about Google Video Intelligence, the 2017-era annotation API. Gemini — Google's modern, promptable video surface — is a different product with different criticisms, covered in [its own comparison](/compare/gemini). Don't conflate them; we don't.*
 
 ---
 

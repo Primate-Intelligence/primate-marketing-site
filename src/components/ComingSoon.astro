@@ -1,0 +1,30 @@
+---
+interface Props {
+  note?: string;
+}
+const { note = 'Full write-up coming soon — this page is being expanded during our August launch.' } = Astro.props;
+---
+
+<div class="coming-soon">
+  <span class="icon" aria-hidden="true">📝</span>
+  <p>{note}</p>
+</div>
+
+<style>
+  .coming-soon {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 16px 20px;
+    border: 1px solid var(--color-border);
+    border-left: 3px solid var(--color-signal);
+    border-radius: 6px;
+    background: var(--color-bg-secondary);
+    margin: 32px 0;
+    font-size: 14px;
+    color: var(--color-text-muted);
+    line-height: 1.6;
+  }
+  .icon { flex-shrink: 0; font-size: 16px; margin-top: 1px; }
+  p { margin: 0; }
+</style>

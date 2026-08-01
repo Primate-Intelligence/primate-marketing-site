@@ -53,33 +53,105 @@ const organizationLd = {
 
 const ldBlocks = [organizationLd, ...jsonLd];
 
-const nav = [
-  { href: '/pricing', label: 'Pricing' },
-  { href: '/use-cases', label: 'Use cases' },
-  { href: '/docs', label: 'Docs' },
-  { href: '/blog', label: 'Blog' },
-  { href: '/team', label: 'Team' },
+const pathname = Astro.url.pathname;
+const inSection = (prefix: string) =>
+  pathname === prefix || pathname.startsWith(prefix + '/');
+
+const navGroups = [
+  {
+    label: 'Product',
+    active: inSection('/use-cases') || inSection('/performance') || inSection('/agents'),
+    items: [
+      { label: 'Use cases', href: '/use-cases' },
+      { label: 'Performance', href: '/performance' },
+      { label: 'For AI agents', href: '/agents' },
+      { label: 'Live demo', href: 'https://app.primateintelligence.ai/', external: true },
+    ],
+  },
+  {
+    label: 'Technology',
+    active: inSection('/technology'),
+    items: [
+      { label: 'Overview', href: '/technology' },
+      { label: 'How JEPA works', href: '/technology/how-jepa-works' },
+      { label: 'Determinism', href: '/technology/determinism' },
+      { label: 'Benchmarks', href: '/technology/benchmarks' },
+      { label: 'Real-time streaming', href: '/technology/real-time' },
+    ],
+  },
+];
+
+const navFlat = [
+  { label: 'Compare', href: '/compare', active: inSection('/compare') },
+  { label: 'Docs', href: '/docs', active: inSection('/docs') },
+  { label: 'Pricing', href: '/pricing', active: inSection('/pricing') },
+];
+
+const navResourcesGroup = {
+  label: 'Resources',
+  active: inSection('/blog') || inSection('/faq'),
+  items: [
+    { label: 'Blog', href: '/blog' },
+    { label: 'FAQ', href: '/faq' },
+    { label: 'RSS', href: '/rss.xml' },
+    { label: 'llms.txt', href: '/llms.txt' },
+  ],
+};
+
+const navAboutGroup = {
+  label: 'About',
+  active: inSection('/about') || inSection('/team') || inSection('/values') || inSection('/careers'),
+  items: [
+    { label: 'About us', href: '/about' },
+    { label: 'Team', href: '/team' },
+    { label: 'Values', href: '/values' },
+    { label: 'Careers', href: '/careers' },
+  ],
+};
+
+const allNavGroups = [...navGroups, navResourcesGroup, navAboutGroup];
+
+// All mobile nav links flattened for the hamburger panel
+const mobileLinks = [
+  { label: 'Use cases', href: '/use-cases' },
+  { label: 'Performance', href: '/performance' },
+  { label: 'For AI agents', href: '/agents' },
+  { label: 'Live demo', href: 'https://app.primateintelligence.ai/' },
+  { label: 'Technology overview', href: '/technology' },
+  { label: 'How JEPA works', href: '/technology/how-jepa-works' },
+  { label: 'Determinism', href: '/technology/determinism' },
+  { label: 'Benchmarks', href: '/technology/benchmarks' },
+  { label: 'Real-time streaming', href: '/technology/real-time' },
+  { label: 'Compare', href: '/compare' },
+  { label: 'Docs', href: '/docs' },
+  { label: 'Pricing', href: '/pricing' },
+  { label: 'Blog', href: '/blog' },
+  { label: 'FAQ', href: '/faq' },
+  { label: 'About us', href: '/about' },
+  { label: 'Team', href: '/team' },
+  { label: 'Careers', href: '/careers' },
 ];
 
 const footerColumns = [
   {
-    title: 'Product',
+    title: 'Developers',
     links: [
-      { label: 'Primate Vision', href: 'https://primateintelligence.ai/' },
-      { label: 'Pricing', href: '/pricing' },
-      { label: 'Use Cases', href: '/use-cases' },
       { label: 'Docs', href: '/docs' },
-      { label: 'Blog', href: '/blog' },
-      { label: 'Technology', href: '/technology' },
+      { label: 'API reference', href: '/docs/reference' },
+      { label: 'llms.txt', href: '/llms.txt' },
+      { label: 'agents.md', href: '/agents.md' },
       { label: 'MCP Server on Smithery', href: 'https://smithery.ai/servers/matt-uwba/primate-intelligence' },
+      { label: 'RSS', href: '/rss.xml' },
     ],
   },
   {
     title: 'Company',
     links: [
+      { label: 'About', href: '/about' },
       { label: 'Team', href: '/team' },
-      { label: 'Values', href: '/values' },
       { label: 'Careers', href: '/careers' },
+      { label: 'Contact', href: 'mailto:matt@primateintelligence.ai' },
+      { label: 'LinkedIn', href: 'https://www.linkedin.com/company/primate-intelligence/' },
     ],
   },
   {
@@ -174,10 +246,44 @@ const footerColumns = [
             <span class="brand-intelligence">Intelligence</span>
           </span>
         </a>
-        <nav aria-label="Main">
-          {nav.map((item) => <a href={item.href}>{item.label}</a>)}
+
+        <!-- Desktop nav -->
+        <nav class="desktop-nav" aria-label="Main">
+          {allNavGroups.map((group) => (
+            <div class={`nav-group${group.active ? ' active' : ''}`}>
+              <button class="nav-group-trigger" aria-haspopup="true" type="button">
+                {group.label} <span class="caret" aria-hidden="true">▾</span>
+              </button>
+              <div class="nav-dropdown" role="menu">
+                {group.items.map((item) => (
+                  <a
+                    href={item.href}
+                    role="menuitem"
+                    class={pathname === item.href ? 'active' : ''}
+                  >{item.label}</a>
+                ))}
+              </div>
+            </div>
+          ))}
+          {navFlat.map((item) => (
+            <a href={item.href} class={item.active ? 'active' : ''}>{item.label}</a>
+          ))}
           <a class="nav-cta" href="https://app.primateintelligence.ai/">Try Primate Vision</a>
         </nav>
+
+        <!-- Mobile hamburger (hidden on desktop) -->
+        <details class="mobile-menu">
+          <summary class="hamburger" aria-label="Open navigation menu">
+            <span class="ham-icon" aria-hidden="true">☰</span>
+            <span class="ham-close" aria-hidden="true">✕</span>
+          </summary>
+          <div class="mobile-panel">
+            {mobileLinks.map((link) => (
+              <a href={link.href} class={pathname === link.href ? 'active' : ''}>{link.label}</a>
+            ))}
+            <a class="mobile-cta" href="https://app.primateintelligence.ai/">Try Primate Vision →</a>
+          </div>
+        </details>
       </div>
     </header>
 
@@ -219,6 +325,7 @@ const footerColumns = [
 </html>
 
 <style>
+  /* ── Header ────────────────────────────────────────────── */
   .site-header {
     border-bottom: 1px solid var(--color-border);
     background: var(--color-bg-surface);
@@ -240,6 +347,7 @@ const footerColumns = [
     align-items: center;
     gap: 10px;
     color: var(--color-text-primary);
+    flex-shrink: 0;
   }
   .brand-text {
     display: flex;
@@ -251,30 +359,142 @@ const footerColumns = [
   }
   .brand-primate { color: var(--color-text-primary); }
   .brand-intelligence { color: #2058f0; }
-  .site-header nav {
+
+  /* ── Desktop nav ───────────────────────────────────────── */
+  .desktop-nav {
     display: flex;
     align-items: center;
-    gap: 22px;
+    gap: 4px;
     font-size: 14px;
     font-weight: 500;
-    flex-wrap: wrap;
   }
-  .site-header nav a { color: var(--color-text-primary); }
-  .site-header nav a:hover { color: var(--color-signal); }
+  .desktop-nav > a {
+    color: var(--color-text-primary);
+    padding: 6px 10px;
+    border-radius: 4px;
+  }
+  .desktop-nav > a:hover,
+  .desktop-nav > a.active { color: var(--color-signal); }
+
+  /* dropdown groups */
+  .nav-group {
+    position: relative;
+  }
+  .nav-group-trigger {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font: inherit;
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--color-text-primary);
+    padding: 6px 10px;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    gap: 3px;
+  }
+  .nav-group-trigger:hover,
+  .nav-group.active .nav-group-trigger { color: var(--color-signal); }
+  .caret { font-size: 9px; }
+
+  .nav-dropdown {
+    display: none;
+    position: absolute;
+    top: calc(100% + 6px);
+    left: 0;
+    background: var(--color-bg-surface);
+    border: 1px solid var(--color-border);
+    border-radius: 6px;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+    padding: 6px;
+    min-width: 180px;
+    z-index: 100;
+    white-space: nowrap;
+  }
+  .nav-group:hover .nav-dropdown,
+  .nav-group:focus-within .nav-dropdown { display: flex; flex-direction: column; }
+  .nav-dropdown a {
+    color: var(--color-text-primary);
+    font-size: 13px;
+    font-weight: 500;
+    padding: 8px 12px;
+    border-radius: 4px;
+    display: block;
+  }
+  .nav-dropdown a:hover,
+  .nav-dropdown a.active {
+    background: var(--color-signal-subtle);
+    color: var(--color-signal);
+  }
+
   .nav-cta {
     background: var(--color-signal);
     color: #fff !important;
     padding: 8px 16px;
     border-radius: var(--radius-lg);
     font-weight: 600;
+    margin-left: 8px;
   }
   .nav-cta:hover { background: var(--color-signal-hover); }
+
+  /* ── Mobile hamburger ──────────────────────────────────── */
+  .mobile-menu { display: none; }
+  .hamburger {
+    list-style: none;
+    cursor: pointer;
+    padding: 6px 10px;
+    border-radius: 4px;
+    border: 1px solid var(--color-border);
+    font-size: 18px;
+    color: var(--color-text-primary);
+    user-select: none;
+  }
+  .hamburger::-webkit-details-marker { display: none; }
+  .ham-close { display: none; }
+  details[open] .ham-icon { display: none; }
+  details[open] .ham-close { display: inline; }
+
+  .mobile-panel {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background: var(--color-bg-surface);
+    border-bottom: 1px solid var(--color-border);
+    padding: 16px 24px 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    z-index: 50;
+  }
+  .mobile-panel a {
+    color: var(--color-text-primary);
+    font-size: 15px;
+    font-weight: 500;
+    padding: 10px 8px;
+    border-radius: 4px;
+    border-bottom: 1px solid var(--color-border);
+  }
+  .mobile-panel a:last-child { border-bottom: none; }
+  .mobile-panel a:hover, .mobile-panel a.active { color: var(--color-signal); }
+  .mobile-cta {
+    margin-top: 12px;
+    background: var(--color-signal);
+    color: #fff !important;
+    padding: 12px 16px !important;
+    border-radius: 6px;
+    font-weight: 600;
+    text-align: center;
+    border: none !important;
+  }
 
   main {
     flex: 1;
     width: 100%;
   }
 
+  /* ── Footer ────────────────────────────────────────────── */
   .site-footer {
     border-top: 1px solid var(--color-border);
     background: var(--color-bg-secondary);
@@ -324,12 +544,18 @@ const footerColumns = [
   .footer-bottom p { margin: 0; font-size: 12px; }
   .footer-mono { font-family: var(--font-mono); font-size: 11px; }
 
+  /* ── Responsive ────────────────────────────────────────── */
+  @media (max-width: 900px) {
+    .desktop-nav { display: none; }
+    .mobile-menu { display: block; position: relative; }
+  }
+  @media (min-width: 901px) {
+    .mobile-menu { display: none !important; }
+  }
   @media (max-width: 820px) {
     .footer-grid { grid-template-columns: 1fr 1fr; gap: 28px; }
-    .site-header nav { gap: 14px; font-size: 13px; }
   }
   @media (max-width: 520px) {
     .footer-grid { grid-template-columns: 1fr; }
-    .nav-cta { display: none; }
   }
 </style>

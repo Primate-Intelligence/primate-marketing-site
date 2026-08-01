@@ -1,6 +1,6 @@
 ---
-import Base from '../layouts/Base.astro';
-import { USE_CASES_HERO, VERTICALS, USE_CASES_CTA } from '../data/useCases';
+import Base from '../../layouts/Base.astro';
+import { USE_CASES_HERO, VERTICALS, USE_CASES_CTA } from '../../data/useCases';
 
 const itemListLd = {
   '@context': 'https://schema.org',
@@ -13,6 +13,13 @@ const itemListLd = {
     description: v.headline,
   })),
 };
+
+// Subpages exist for these verticals
+const SUBPAGE_MAP: Record<string, string> = {
+  'Smart Cameras / Physical Security': '/use-cases/smart-cameras',
+  'Robotics': '/use-cases/robotics',
+  'Drones / UAV': '/use-cases/drones',
+};
 ---
 
 <Base
@@ -20,6 +27,7 @@ const itemListLd = {
   description="One real-time video intelligence API. Eight markets. Primate Vision addresses every CV pipeline where hallucinations, brittle performance, or cloud inference costs are limiting you."
   canonicalPath="/use-cases"
   jsonLd={[itemListLd]}
+  mdTwin="/use-cases.md"
 >
   <div class="page">
     <section class="hero">
@@ -42,7 +50,12 @@ const itemListLd = {
             <span class="benefit-label">Key benefit</span>
             <p>{v.keyBenefit}</p>
           </div>
-          <a class="card-cta" href="https://app.primateintelligence.ai/">Try Primate Vision <span aria-hidden="true">→</span></a>
+          <div class="card-actions">
+            <a class="card-cta" href="https://app.primateintelligence.ai/">Try Primate Vision <span aria-hidden="true">→</span></a>
+            {SUBPAGE_MAP[v.badge] && (
+              <a class="card-learn" href={SUBPAGE_MAP[v.badge]}>Learn more →</a>
+            )}
+          </div>
         </article>
       ))}
     </section>
@@ -131,7 +144,10 @@ const itemListLd = {
     flex-shrink: 0;
   }
   .benefit p { font-size: 14px; line-height: 1.5; margin: 0; }
+  .card-actions { display: flex; align-items: center; gap: 16px; flex-wrap: wrap; }
   .card-cta { display: inline-flex; align-items: center; gap: 6px; font-size: 14px; font-weight: 500; }
+  .card-learn { font-size: 13px; font-weight: 500; color: var(--color-text-muted); }
+  .card-learn:hover { color: var(--color-signal); }
 
   .bottom-cta {
     margin-top: 72px;

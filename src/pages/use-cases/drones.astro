@@ -1,0 +1,62 @@
+---
+import Base from '../../layouts/Base.astro';
+import ComingSoon from '../../components/ComingSoon.astro';
+---
+
+<Base
+  title="Drones — Use Case"
+  description="Survey and inspection event detection over long flights — timestamped events instead of hours of footage review."
+  canonicalPath="/use-cases/drones"
+  mdTwin="/use-cases/drones.md"
+>
+  <div class="page">
+    <a class="back" href="/use-cases">← Use cases</a>
+    <section class="hero">
+      <p class="eyebrow">Drones / UAV</p>
+      <h1>Understood, not just recorded</h1>
+      <p class="lede">
+        Timestamped events instead of hours of footage review.
+      </p>
+    </section>
+
+    <section class="content">
+      <p>
+        A two-hour inspection flight produces two hours of footage. Without scene understanding,
+        that footage requires a human reviewer to watch every second. With Primate Vision,
+        you ask a question — "flag any section of fence with visible damage" or "identify
+        moments when a person enters the restricted zone" — and get back a list of timestamped
+        events with annotated evidence clips. The flight becomes a structured log, not a
+        video file.
+      </p>
+      <p>
+        Darwin's edge-capable architecture runs on Jetson-grade hardware for onboard inference,
+        eliminating the cloud round-trip that makes real-time aerial analysis impractical.
+        For post-flight batch processing, the same model processes footage at significantly
+        faster-than-realtime speeds. Either way, the output is deterministic: the same flight
+        footage produces the same event list, every time.
+      </p>
+
+      <ComingSoon note="Drone survey workflow guide and edge deployment examples — coming during our August launch." />
+    </section>
+  </div>
+</Base>
+
+<style>
+  .page { max-width: 760px; margin: 0 auto; padding: 64px 24px 96px; }
+  .back { font-size: 14px; color: var(--color-text-muted); display: block; margin-bottom: 32px; }
+  .back:hover { color: var(--color-signal); }
+  .hero { margin-bottom: 40px; }
+  .eyebrow {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--color-signal);
+    margin: 0 0 12px;
+  }
+  h1 { font-size: 44px; font-weight: 700; letter-spacing: -0.02em; line-height: 1.2; margin: 0 0 16px; }
+  .lede { font-size: 18px; color: var(--color-text-muted); line-height: 1.6; margin: 0; }
+  .content p { font-size: 17px; line-height: 1.75; color: var(--color-text-primary); opacity: 0.85; margin: 0 0 16px; }
+  @media (max-width: 640px) { h1 { font-size: 32px; } .page { padding: 44px 20px 64px; } }
+</style>

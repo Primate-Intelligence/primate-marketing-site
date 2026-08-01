@@ -1,0 +1,127 @@
+---
+import Base from '../layouts/Base.astro';
+import ComingSoon from '../components/ComingSoon.astro';
+
+const faqs = [
+  {
+    q: 'What is Primate Vision?',
+    a: 'Primate Vision is a real-time video intelligence API. You upload a video (or point at a live stream), ask a question in plain English, and get back a deterministic verdict — yes / no / indeterminate — with a calibrated confidence score, timestamped evidence segments, and an annotated overlay clip. No model training, no labeling, no fragile CV pipeline to maintain.',
+  },
+  {
+    q: 'How is Primate Vision different from a VLM like GPT-4o or Gemini?',
+    a: 'VLMs sample frames, run a language model over the result, and generate text. The output is stochastic — ask twice, get two different answers. Primate Vision uses Darwin, a JEPA-based world model that predicts in representation space, not pixel space. Language only enters at the query layer. The result is deterministic: same video, same prompt, same verdict. VLMs also max out around 1 frame per second at scale; Darwin sustains 11.8 fps on production hardware with 45ms p50 per-frame inference.',
+  },
+  {
+    q: 'What does "deterministic" mean here, and why does it matter?',
+    a: 'Deterministic means that given the same video and the same prompt, Darwin returns the same verdict, the same confidence score, and the same timestamped evidence — every time. For production systems (security, compliance, robotics, manufacturing QA), a model that gives different answers on different days cannot be audited, tested, or trusted as an engineering component. Determinism is not a nice-to-have; it is the minimum bar for shipping AI into physical systems.',
+  },
+  {
+    q: 'What is JEPA, or a "world model"?',
+    a: 'JEPA stands for Joint-Embedding Predictive Architecture — a model that learns by predicting the representation of future states, not by reconstructing pixels. World models learn what happens next and why. Darwin uses JEPA to build a compact internal model of a video scene, then predicts forward in representation space. The result is semantic understanding without a language model in the perception loop. See the full deep-dive at /technology/how-jepa-works.',
+  },
+  {
+    q: 'Can I try it for free?',
+    a: 'Yes. Create an account and you receive a signup grant of 6,000 seconds ($60 face value, expires 30 days after creation). Add a payment method and get another 6,000 seconds ($60 face value, $0 setup charge). Total free tier: 12,000 seconds / $120 face value. If you\'re an AI agent, you can mint a sandbox key instantly with no signup at all: POST https://api.primateintelligence.ai/v1/sandbox.',
+  },
+  {
+    q: 'Can my AI agent use Primate Vision without my involvement?',
+    a: 'Yes. An agent can POST /v1/sandbox to get a free test key with no signup, discover the API via /llms.txt, /agents.md, and the MCP server on Smithery, run a full analysis, and return results — all without human involvement. A human only enters the loop when the agent needs to use paid credits.',
+  },
+  {
+    q: 'Does it work on live streams, or only uploaded video?',
+    a: 'Both. Primate Vision supports WebRTC live-stream ingestion for real-time analysis — results arrive on a data channel while the stream is still running. It also supports file uploads (up to 2 GiB) and URL-based ingest. See /technology/real-time for how live streaming works, and /docs/guides/streaming for the technical setup.',
+  },
+  {
+    q: 'What about 24/7 continuous monitoring pricing?',
+    a: 'The published self-serve rate of $0.01/video-second is not designed for continuous 24/7 deployments. A nonstop 30-day stream would cost $25,920/month at self-serve rates. Continuous monitoring deployments run on highly discounted enterprise plans with volume commitments. Contact us at sales@primateintelligence.ai.',
+  },
+  {
+    q: 'What happens to my video data?',
+    a: 'Your video data is processed to produce analysis results and is not used to train models. For the full details on data handling, retention, and security, see the Privacy Policy at /privacy and the security model in the docs at /docs/guides/security-model.',
+  },
+  {
+    q: 'Where can I read the API docs?',
+    a: 'Full documentation is at /docs. The API reference (every endpoint and schema, generated from the OpenAPI 3.1 contract) is at /docs/reference. The OpenAPI spec itself is at https://api.primateintelligence.ai/v1/openapi.json.',
+  },
+];
+
+const faqLd = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: faqs.map((f) => ({
+    '@type': 'Question',
+    name: f.q,
+    acceptedAnswer: {
+      '@type': 'Answer',
+      text: f.a,
+    },
+  })),
+};
+---
+
+<Base
+  title="FAQ"
+  description="Frequently asked questions about Primate Vision — what it is, how it works, pricing, streaming, AI agent access, and data handling."
+  canonicalPath="/faq"
+  jsonLd={[faqLd]}
+  mdTwin="/faq.md"
+>
+  <div class="page">
+    <section class="hero">
+      <p class="eyebrow">Support</p>
+      <h1>Frequently asked questions</h1>
+      <p class="lede">Answers drawn from the docs, pricing page, and performance data.</p>
+    </section>
+
+    <section class="faq-list">
+      {faqs.map((item) => (
+        <div class="faq-item">
+          <h2>{item.q}</h2>
+          <p>{item.a}</p>
+        </div>
+      ))}
+    </section>
+
+    <ComingSoon note="More questions? We're expanding this FAQ during the August launch. Email us at matt@primateintelligence.ai." />
+  </div>
+</Base>
+
+<style>
+  .page { max-width: 760px; margin: 0 auto; padding: 64px 24px 96px; }
+  .hero { text-align: center; margin-bottom: 56px; }
+  .eyebrow {
+    font-size: 13px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--color-text-muted);
+    margin: 0 0 14px;
+  }
+  h1 { font-size: 44px; font-weight: 700; letter-spacing: -0.02em; margin: 0 0 14px; }
+  .lede { font-size: 16px; color: var(--color-text-muted); max-width: 480px; margin: 0 auto; }
+
+  .faq-list { display: flex; flex-direction: column; gap: 0; }
+  .faq-item {
+    padding: 32px 0;
+    border-bottom: 1px solid var(--color-border);
+  }
+  .faq-item:first-child { border-top: 1px solid var(--color-border); }
+  h2 {
+    font-size: 20px;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    margin: 0 0 12px;
+    line-height: 1.35;
+  }
+  p {
+    font-size: 16px;
+    line-height: 1.75;
+    color: var(--color-text-primary);
+    opacity: 0.85;
+    margin: 0;
+  }
+  @media (max-width: 640px) {
+    h1 { font-size: 32px; }
+    .page { padding: 44px 20px 64px; }
+    h2 { font-size: 18px; }
+  }
+</style>

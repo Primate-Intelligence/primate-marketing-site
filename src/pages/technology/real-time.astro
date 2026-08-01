@@ -1,0 +1,70 @@
+---
+import Base from '../../layouts/Base.astro';
+import ComingSoon from '../../components/ComingSoon.astro';
+---
+
+<Base
+  title="Real-time streaming"
+  description="How Primate Vision streams live video into a JEPA model and returns narration in real time — WebRTC ingestion, per-GPU stream backends, and what real-time actually costs."
+  canonicalPath="/technology/real-time"
+  mdTwin="/technology/real-time.md"
+>
+  <div class="page">
+    <a class="back" href="/technology">← Technology</a>
+    <section class="hero">
+      <p class="eyebrow">Technology</p>
+      <h1>Real-time streaming</h1>
+      <p class="lede">
+        Live video into a JEPA model. Results back while the video plays.
+      </p>
+    </section>
+
+    <section class="content">
+      <p>
+        Primate Vision ingests live video over WebRTC — the same protocol that powers
+        video calls — and returns analysis results on a data channel while the stream
+        is still running. WebRTC gives us sub-second ingestion latency, adaptive bitrate,
+        and broad device support without requiring a separate streaming infrastructure
+        layer. You point a camera (or stream a file at live speed) and ask a question;
+        results appear as the video plays.
+      </p>
+      <p>
+        On the backend, each active stream is assigned to a per-GPU worker that runs
+        Darwin's JEPA encoder continuously. The key trade-off is time-to-first-frame
+        (TTFF) versus sustained throughput: a cold stream worker takes longer to produce
+        the first result than a warm one. We publish p50 and p95 TTFF numbers on the
+        <a href="/performance">performance page</a>. Sustained streaming analysis runs
+        at 11.8 fps on production hardware, with 45ms p50 per-frame inference.
+        "Real-time" means the analysis keeps up with the video — not that it completes
+        before the frame arrives.
+      </p>
+      <p>
+        See also: <a href="/docs/guides/streaming">Streaming guide in docs</a>.
+      </p>
+
+      <ComingSoon note="The full engineering story — WebRTC internals, queue architecture, and edge deployment — coming during our August launch." />
+    </section>
+  </div>
+</Base>
+
+<style>
+  .page { max-width: 760px; margin: 0 auto; padding: 64px 24px 96px; }
+  .back { font-size: 14px; color: var(--color-text-muted); display: block; margin-bottom: 32px; }
+  .back:hover { color: var(--color-signal); }
+  .hero { margin-bottom: 40px; }
+  .eyebrow {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--color-signal);
+    margin: 0 0 12px;
+  }
+  h1 { font-size: 44px; font-weight: 700; letter-spacing: -0.02em; line-height: 1.2; margin: 0 0 16px; }
+  .lede { font-size: 18px; color: var(--color-text-muted); line-height: 1.6; margin: 0; }
+  .content p { font-size: 17px; line-height: 1.75; color: var(--color-text-primary); opacity: 0.85; margin: 0 0 16px; }
+  .content a { color: var(--color-signal); }
+  .content a:hover { text-decoration: underline; }
+  @media (max-width: 640px) { h1 { font-size: 32px; } .page { padding: 44px 20px 64px; } }
+</style>

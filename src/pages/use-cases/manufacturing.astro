@@ -1,0 +1,62 @@
+---
+import Base from '../../layouts/Base.astro';
+import ComingSoon from '../../components/ComingSoon.astro';
+---
+
+<Base
+  title="Manufacturing — Use Case"
+  description="Process-step verification — confirm each assembly step happened, in order, with timestamps."
+  canonicalPath="/use-cases/manufacturing"
+  mdTwin="/use-cases/manufacturing.md"
+>
+  <div class="page">
+    <a class="back" href="/use-cases">← Use cases</a>
+    <section class="hero">
+      <p class="eyebrow">Manufacturing</p>
+      <h1>Process-step verification</h1>
+      <p class="lede">
+        Confirm each assembly step happened, in order, with timestamps.
+      </p>
+    </section>
+
+    <section class="content">
+      <p>
+        Manufacturing quality control requires more than object detection — it requires
+        temporal understanding. Did the torque wrench touch the bolt before the cover went
+        on? Did the operator wear gloves during the chemical handling step? Were the
+        components installed in the correct sequence? These are temporal questions that
+        require a model that understands the video as a sequence of events, not a collection
+        of frames.
+      </p>
+      <p>
+        Darwin watches assembly line video and returns structured, timestamped verification
+        results: which steps occurred, in what order, with what confidence. The outputs are
+        deterministic — the same assembly footage produces the same verification report,
+        making them auditable and legally defensible. Non-conformances come with timestamped
+        evidence clips, ready for root cause analysis or regulatory documentation.
+      </p>
+
+      <ComingSoon note="Manufacturing process verification guide and integration examples — coming during our August launch." />
+    </section>
+  </div>
+</Base>
+
+<style>
+  .page { max-width: 760px; margin: 0 auto; padding: 64px 24px 96px; }
+  .back { font-size: 14px; color: var(--color-text-muted); display: block; margin-bottom: 32px; }
+  .back:hover { color: var(--color-signal); }
+  .hero { margin-bottom: 40px; }
+  .eyebrow {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--color-signal);
+    margin: 0 0 12px;
+  }
+  h1 { font-size: 44px; font-weight: 700; letter-spacing: -0.02em; line-height: 1.2; margin: 0 0 16px; }
+  .lede { font-size: 18px; color: var(--color-text-muted); line-height: 1.6; margin: 0; }
+  .content p { font-size: 17px; line-height: 1.75; color: var(--color-text-primary); opacity: 0.85; margin: 0 0 16px; }
+  @media (max-width: 640px) { h1 { font-size: 32px; } .page { padding: 44px 20px 64px; } }
+</style>

@@ -1,6 +1,6 @@
 ---
 title: "Primate Vision vs. Sieve (2026): The Video API That Quietly Left the Market"
-slug: "primate-vision-vs-sieve"
+slug: "sieve"
 author: "Matt Miesnieks"
 authorInitials: "MM"
 date: "2026-07-31"
@@ -16,7 +16,7 @@ Sometime between January and July 2026, Sieve (YC W22, formerly sievedata.com) p
 
 What Sieve does now is genuinely impressive — embedding a billion videos to curate exabyte-scale training data is real engineering — but it's a different business, sold to a different buyer. If you're a model-training team shopping for licensed video data, Sieve is worth your call and I say so below. If you're a developer who needs to *analyze* video — ask a question of a stream or a file and get an answer you can act on — Sieve is no longer an option at any price. Primate Vision is the managed API built for exactly that.
 
-*This is part of our [full 2026 video-AI landscape comparison](/blog/primate-vision-vs-video-ai-landscape-2026).*
+*This is part of our [full 2026 video-AI landscape comparison](/compare/video-ai-landscape-2026).*
 
 ---
 
@@ -69,7 +69,7 @@ That last capability — licensing and consent management for training data at p
 1. **Metered — $0.01 per second of source video** ($0.60/min), flat and fps-independent. Queued time free; failed jobs free. A 30-second clip → verdict + confidence + timestamped clips + annotated evidence video = $0.30. A `validate_only` dry-run estimates cost before you spend a credit.
 2. **[Enterprise — contact us](https://primateintelligence.ai/pricing#enterprise)** for 24/7 continuous monitoring and camera fleets: dedicated capacity or on-site deployment at a small fraction of the metered rate, under highly discounted enterprise plans.
 
-For cross-library consistency: the metered lane normalizes to $36/camera-hour†. With Sieve there's nothing to compare it against — but if you're weighing Primate against vendors still in the category, the full normalized table lives in the [hub post](/blog/primate-vision-vs-video-ai-landscape-2026).
+For cross-library consistency: the metered lane normalizes to $36/camera-hour†. With Sieve there's nothing to compare it against — but if you're weighing Primate against vendors still in the category, the full normalized table lives in the [hub post](/compare/video-ai-landscape-2026).
 
 † *Metered rate normalized for comparison. Primate does not sell 24/7 continuous monitoring at the metered rate — continuous and fleet workloads use enterprise plans; [contact us](https://primateintelligence.ai/pricing#enterprise).*
 

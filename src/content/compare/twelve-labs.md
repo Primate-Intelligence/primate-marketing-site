@@ -1,6 +1,6 @@
 ---
 title: "Primate Vision vs. Twelve Labs (2026): Real-Time Verdicts vs. Archive Search"
-slug: "primate-vision-vs-twelve-labs"
+slug: "twelve-labs"
 author: "Matt Miesnieks"
 authorInitials: "MM"
 date: "2026-07-31"
@@ -14,7 +14,7 @@ People compare us to Twelve Labs constantly, and the comparison is mostly a cate
 
 Different products, answering different questions. If your videos are already recorded and your problem is *finding moments*, choose Twelve Labs. If your problem is *knowing whether something is happening* — on a camera, right now, with an answer you can act on — Twelve Labs cannot do it at all. Primate Vision was built for exactly that.
 
-*This is part of our [full 2026 video-AI landscape comparison](/blog/primate-vision-vs-video-ai-landscape-2026).*
+*This is part of our [full 2026 video-AI landscape comparison](/compare/video-ai-landscape-2026).*
 
 ---
 
