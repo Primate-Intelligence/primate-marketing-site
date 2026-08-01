@@ -251,7 +251,7 @@ const footerColumns = [
         <nav class="desktop-nav" aria-label="Main">
           {allNavGroups.map((group) => (
             <div class={`nav-group${group.active ? ' active' : ''}`}>
-              <button class="nav-group-trigger" aria-haspopup="true" type="button">
+              <button class="nav-group-trigger" aria-haspopup="true" aria-expanded="false" type="button">
                 {group.label} <span class="caret" aria-hidden="true">▾</span>
               </button>
               <div class="nav-dropdown" role="menu">
@@ -270,6 +270,48 @@ const footerColumns = [
           ))}
           <a class="nav-cta" href="https://app.primateintelligence.ai/">Try Primate Vision</a>
         </nav>
+
+        <!-- Hover-intent for desktop dropdowns: grace period on mouseleave so
+             diagonal cursor paths toward a submenu don't snap the menu shut;
+             click/tap toggles for trackpads and touch; Escape + outside-click close. -->
+        <script>
+          const CLOSE_GRACE_MS = 300;
+          document.querySelectorAll('.desktop-nav .nav-group').forEach((group) => {
+            const trigger = group.querySelector('.nav-group-trigger');
+            let closeTimer;
+            const setOpen = (open) => {
+              group.classList.toggle('open', open);
+              if (trigger) trigger.setAttribute('aria-expanded', String(open));
+            };
+            group.addEventListener('mouseenter', () => {
+              clearTimeout(closeTimer);
+              setOpen(true);
+            });
+            group.addEventListener('mouseleave', () => {
+              clearTimeout(closeTimer);
+              closeTimer = setTimeout(() => setOpen(false), CLOSE_GRACE_MS);
+            });
+            if (trigger) trigger.addEventListener('click', (e) => {
+              e.stopPropagation();
+              const willOpen = !group.classList.contains('open');
+              document.querySelectorAll('.desktop-nav .nav-group.open').forEach((g) => {
+                if (g !== group) {
+                  g.classList.remove('open');
+                  g.querySelector('.nav-group-trigger')?.setAttribute('aria-expanded', 'false');
+                }
+              });
+              setOpen(willOpen);
+            });
+          });
+          const closeAll = () => document.querySelectorAll('.desktop-nav .nav-group.open').forEach((g) => {
+            g.classList.remove('open');
+            g.querySelector('.nav-group-trigger')?.setAttribute('aria-expanded', 'false');
+          });
+          document.addEventListener('click', (e) => {
+            if (!(e.target instanceof Element) || !e.target.closest('.nav-group')) closeAll();
+          });
+          document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeAll(); });
+        </script>
 
         <!-- Mobile hamburger (hidden on desktop) -->
         <details class="mobile-menu">
@@ -412,7 +454,19 @@ const footerColumns = [
     z-index: 100;
     white-space: nowrap;
   }
+  /* Invisible hover bridge across the 6px visual gap between trigger and
+     dropdown — without it, crossing the gap fires mouseleave and the menu
+     snaps shut mid-movement (reported by Matt 2026-08-01). */
+  .nav-dropdown::before {
+    content: '';
+    position: absolute;
+    top: -10px;
+    left: -8px;
+    right: -8px;
+    height: 10px;
+  }
   .nav-group:hover .nav-dropdown,
+  .nav-group.open .nav-dropdown,
   .nav-group:focus-within .nav-dropdown { display: flex; flex-direction: column; }
   .nav-dropdown a {
     color: var(--color-text-primary);
