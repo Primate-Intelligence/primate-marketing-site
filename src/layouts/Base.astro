@@ -1,5 +1,6 @@
 ---
 import '../styles/tokens.css';
+import { APP_HREF } from '../lib/appUrl';
 
 interface Props {
   title: string;
@@ -27,6 +28,10 @@ const {
 } = Astro.props;
 
 const site = Astro.site ?? new URL('https://primateintelligence.ai');
+// Dev/staging builds (PUBLIC_SITE_ENV=dev on the dev-branch Vercel deploy) must
+// never be indexed — canonical URLs still point at prod, and noindex keeps the
+// mirror out of search results.
+const isDevEnv = import.meta.env.PUBLIC_SITE_ENV === 'dev';
 const canonical = new URL(canonicalPath ?? Astro.url.pathname, site).href;
 const ogImageAbs = new URL(ogImage, site).href;
 const fullTitle = `${title} · Primate Intelligence`;
@@ -65,7 +70,7 @@ const navGroups = [
       { label: 'Use cases', href: '/use-cases' },
       { label: 'Performance', href: '/performance' },
       { label: 'For AI agents', href: '/agents' },
-      { label: 'Live demo', href: 'https://app.primateintelligence.ai/', external: true },
+      { label: 'Live demo', href: APP_HREF, external: true },
     ],
   },
   {
@@ -116,7 +121,7 @@ const mobileLinks = [
   { label: 'Use cases', href: '/use-cases' },
   { label: 'Performance', href: '/performance' },
   { label: 'For AI agents', href: '/agents' },
-  { label: 'Live demo', href: 'https://app.primateintelligence.ai/' },
+  { label: 'Live demo', href: APP_HREF },
   { label: 'Technology overview', href: '/technology' },
   { label: 'How JEPA works', href: '/technology/how-jepa-works' },
   { label: 'Determinism', href: '/technology/determinism' },
@@ -175,6 +180,7 @@ const footerColumns = [
     <title>{fullTitle}</title>
     <meta name="description" content={description} />
     <link rel="canonical" href={canonical} />
+    {isDevEnv && <meta name="robots" content="noindex, nofollow" />}
     {mdTwin && <link rel="alternate" type="text/markdown" href={mdTwin} />}
     <link rel="alternate" type="application/rss+xml" title="Primate Intelligence Blog" href="/rss.xml" />
     <link rel="sitemap" href="/sitemap-index.xml" />
@@ -268,7 +274,7 @@ const footerColumns = [
           {navFlat.map((item) => (
             <a href={item.href} class={item.active ? 'active' : ''}>{item.label}</a>
           ))}
-          <a class="nav-cta" href="https://app.primateintelligence.ai/">Try Primate Vision</a>
+          <a class="nav-cta" href={APP_HREF}>Try Primate Vision</a>
         </nav>
 
         <!-- Hover-intent for desktop dropdowns: grace period on mouseleave so
@@ -323,7 +329,7 @@ const footerColumns = [
             {mobileLinks.map((link) => (
               <a href={link.href} class={pathname === link.href ? 'active' : ''}>{link.label}</a>
             ))}
-            <a class="mobile-cta" href="https://app.primateintelligence.ai/">Try Primate Vision →</a>
+            <a class="mobile-cta" href={APP_HREF}>Try Primate Vision →</a>
           </div>
         </details>
       </div>

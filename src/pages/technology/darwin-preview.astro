@@ -8,6 +8,7 @@
  * imports src/data/action_classes.json, copied from the inference repo).
  */
 import Base from '../../layouts/Base.astro';
+import { APP_HREF } from '../../lib/appUrl';
 import {
   POST,
   INTRO_PARAGRAPHS,
@@ -105,7 +106,7 @@ const mailtoHref = `mailto:${DESIGN_PARTNER.email}?subject=${encodeURIComponent(
 
     <div class="cta-row">
       <a class="btn" href={mailtoHref}>{DESIGN_PARTNER.ctaLabel} →</a>
-      <a class="btn outline" href="https://app.primateintelligence.ai/">Try it now</a>
+      <a class="btn outline" href={APP_HREF}>Try it now</a>
     </div>
 
     <div class="prose">

@@ -1,6 +1,7 @@
 ---
 import Base from '../layouts/Base.astro';
 import Carousel from '../components/Carousel.astro';
+import { APP_HREF } from '../lib/appUrl';
 
 const websiteLd = {
   '@context': 'https://schema.org',
@@ -53,7 +54,7 @@ curl -s -X POST https://api.primateintelligence.ai/v1/analyses \\
           Live answers, structured data, and alerts — no training, no labeling.
         </p>
         <p class="cta-row">
-          <a class="cta" href="https://app.primateintelligence.ai/">Try it live</a>
+          <a class="cta" href={APP_HREF}>Try it live</a>
           <a class="cta secondary" href="/use-cases">See use cases</a>
         </p>
       </div>
@@ -99,7 +100,7 @@ curl -s -X POST https://api.primateintelligence.ai/v1/analyses \\
       <h2>Ready to test it on your footage?</h2>
       <p>Upload a short video. Ask a question. See the result in ~10 seconds.</p>
       <p class="cta-row center">
-        <a class="cta" href="https://app.primateintelligence.ai/">Try Primate Vision →</a>
+        <a class="cta" href={APP_HREF}>Try Primate Vision →</a>
         <a class="cta-link" href="https://cal.com/mattmiesnieks/customer-discovery">Talk to us about your use case →</a>
       </p>
     </div>

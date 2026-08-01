@@ -1,4 +1,5 @@
 import type { APIRoute } from 'astro';
+import { APP_HREF } from '../../lib/appUrl';
 import {
   POST,
   INTRO_PARAGRAPHS,
@@ -33,7 +34,7 @@ ${actions.map((a) => `- ${a}`).join('\n')}
 
 ${DESIGN_PARTNER.body}
 
-Contact: ${DESIGN_PARTNER.email} (subject: "${DESIGN_PARTNER.emailSubject}") · Try it: https://app.primateintelligence.ai/
+Contact: ${DESIGN_PARTNER.email} (subject: "${DESIGN_PARTNER.emailSubject}") · Try it: ${APP_HREF}
 
 ${FEEDBACK_ASK}
 `;

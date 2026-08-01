@@ -1,6 +1,7 @@
 ---
 import Base from '../../layouts/Base.astro';
 import { USE_CASES_HERO, VERTICALS, USE_CASES_CTA } from '../../data/useCases';
+import { APP_HREF } from '../../lib/appUrl';
 
 const itemListLd = {
   '@context': 'https://schema.org',
@@ -51,7 +52,7 @@ const SUBPAGE_MAP: Record<string, string> = {
             <p>{v.keyBenefit}</p>
           </div>
           <div class="card-actions">
-            <a class="card-cta" href="https://app.primateintelligence.ai/">Try Primate Vision <span aria-hidden="true">→</span></a>
+            <a class="card-cta" href={APP_HREF}>Try Primate Vision <span aria-hidden="true">→</span></a>
             {SUBPAGE_MAP[v.badge] && (
               <a class="card-learn" href={SUBPAGE_MAP[v.badge]}>Learn more →</a>
             )}
