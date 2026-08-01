@@ -32,4 +32,21 @@ const docs = defineCollection({
   }),
 });
 
-export const collections = { blog, docs };
+// Comparison posts migrated from blog/ (menu-IA restructure). Slugs come from
+// frontmatter — NOT filenames — matching the same pattern as the blog collection.
+const compare = defineCollection({
+  loader: glob({ pattern: '**/*.md', base: './src/content/compare' }),
+  schema: z.object({
+    title: z.string(),
+    slug: z.string(),
+    author: z.string(),
+    authorInitials: z.string(),
+    date: z.string(),
+    readTime: z.string(),
+    tags: z.array(z.string()),
+    status: z.enum(['published', 'draft']),
+    excerpt: z.string(),
+  }),
+});
+
+export const collections = { blog, docs, compare };
