@@ -61,6 +61,8 @@ const staticPages = {
   '/terms/': 'src/pages/terms.astro',
   '/use-cases/': 'src/pages/use-cases.astro',
   '/values/': 'src/pages/values.astro',
+  '/technology/': 'src/pages/technology/index.astro',
+  '/technology/darwin-preview/': 'src/pages/technology/darwin-preview.astro',
 };
 for (const [url, src] of Object.entries(staticPages)) add(url, [src]);
 

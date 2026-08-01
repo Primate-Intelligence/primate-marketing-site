@@ -80,6 +80,8 @@ ${docLines}
 - [Blog](${SITE}/blog): Research notes and perspectives — RSS at /rss.xml
 - Every blog post has a markdown twin: append .md to the post URL (e.g. /blog/how-jepa-works.md)
 ${postLines}
+- [Technology](${SITE}/technology): Model releases and capability updates
+- [darwin-preview](${SITE}/technology/darwin-preview): The darwin-preview model — full supported-actions vocabulary (532 classes) — markdown twin at /technology/darwin-preview.md
 
 ## Legal
 

@@ -1,0 +1,250 @@
+---
+/**
+ * /technology/darwin-preview — darwin-preview announcement + the full
+ * supported-actions vocabulary (PRI-516). The product links here when a
+ * prompt targets an action outside the supported list.
+ *
+ * All copy and the action list come from src/data/darwinPreview.ts (which
+ * imports src/data/action_classes.json, copied from the inference repo).
+ */
+import Base from '../../layouts/Base.astro';
+import {
+  POST,
+  INTRO_PARAGRAPHS,
+  ACTIONS_INTRO,
+  ACTION_CLASSES,
+  DESIGN_PARTNER,
+  FEEDBACK_ASK,
+} from '../../data/darwinPreview';
+import { formatDate } from '../../lib/blog';
+
+// Group alphabetically by first letter for scannability.
+const groups = new Map<string, string[]>();
+for (const action of [...ACTION_CLASSES].sort((a, b) => a.localeCompare(b))) {
+  const letter = action[0].toUpperCase();
+  if (!groups.has(letter)) groups.set(letter, []);
+  groups.get(letter)!.push(action);
+}
+
+const articleLd = {
+  '@context': 'https://schema.org',
+  '@type': 'TechArticle',
+  headline: POST.title,
+  description: POST.excerpt,
+  datePublished: POST.date,
+  author: { '@type': 'Organization', name: 'Primate Intelligence' },
+  publisher: {
+    '@type': 'Organization',
+    name: 'Primate Intelligence',
+    logo: {
+      '@type': 'ImageObject',
+      url: 'https://primateintelligence.ai/Darwin_v3_vinyl_transparent.png',
+    },
+  },
+  mainEntityOfPage: `https://primateintelligence.ai/technology/${POST.slug}`,
+};
+
+const mailtoHref = `mailto:${DESIGN_PARTNER.email}?subject=${encodeURIComponent(DESIGN_PARTNER.emailSubject)}`;
+---
+
+<Base
+  title={POST.title}
+  description={POST.excerpt}
+  canonicalPath={`/technology/${POST.slug}`}
+  ogType="article"
+  jsonLd={[articleLd]}
+  mdTwin={`/technology/${POST.slug}.md`}
+>
+  <article class="post">
+    <header>
+      <a class="back" href="/technology">← Technology</a>
+      <div class="tags"><span class="tag">Model release</span></div>
+      <h1>{POST.title}</h1>
+      <div class="meta">
+        <time datetime={POST.date}>{formatDate(POST.date, 'long')}</time>
+      </div>
+      <hr />
+    </header>
+
+    <div class="prose">
+      {INTRO_PARAGRAPHS.map((p) => <p>{p}</p>)}
+
+      <h2 id="supported-actions">What darwin-preview can detect today</h2>
+      <p>{ACTIONS_INTRO}</p>
+    </div>
+
+    <div class="actions-block">
+      <div class="actions-toolbar">
+        <input
+          id="action-filter"
+          type="search"
+          placeholder={`Filter ${ACTION_CLASSES.length} actions…`}
+          aria-label="Filter supported actions"
+          autocomplete="off"
+        />
+        <span class="actions-count" id="action-count">{ACTION_CLASSES.length} actions</span>
+      </div>
+
+      <div id="action-groups">
+        {[...groups.entries()].map(([letter, actions]) => (
+          <section class="letter-group" data-letter={letter}>
+            <h3 class="letter">{letter}</h3>
+            <ul class="action-list">
+              {actions.map((action) => <li class="action" data-action={action.toLowerCase()}>{action}</li>)}
+            </ul>
+          </section>
+        ))}
+        <p class="no-match" id="no-match" hidden>No matching actions. Prompts outside this vocabulary may produce unreliable results.</p>
+      </div>
+    </div>
+
+    <div class="prose">
+      <h2>{DESIGN_PARTNER.heading}</h2>
+      <p>{DESIGN_PARTNER.body}</p>
+    </div>
+
+    <div class="cta-row">
+      <a class="btn" href={mailtoHref}>{DESIGN_PARTNER.ctaLabel} →</a>
+      <a class="btn outline" href="https://app.primateintelligence.ai/">Try it now</a>
+    </div>
+
+    <div class="prose">
+      <p>{FEEDBACK_ASK}</p>
+    </div>
+
+    <footer>
+      <p class="md-note">
+        Prefer raw text? This post is available as
+        <a href={`/technology/${POST.slug}.md`}>markdown</a>.
+      </p>
+    </footer>
+  </article>
+</Base>
+
+<script>
+  // Progressive enhancement: client-side filter over the action list.
+  // Without JS the page is a complete grouped alphabetical list.
+  const input = document.getElementById('action-filter') as HTMLInputElement | null;
+  const count = document.getElementById('action-count');
+  const noMatch = document.getElementById('no-match');
+  const groups = [...document.querySelectorAll<HTMLElement>('.letter-group')];
+  const total = document.querySelectorAll('.action').length;
+
+  input?.addEventListener('input', () => {
+    const q = input.value.trim().toLowerCase();
+    let visible = 0;
+    for (const group of groups) {
+      let groupVisible = 0;
+      for (const item of group.querySelectorAll<HTMLElement>('.action')) {
+        const hit = q === '' || (item.dataset.action ?? '').includes(q);
+        item.hidden = !hit;
+        if (hit) groupVisible++;
+      }
+      group.hidden = groupVisible === 0;
+      visible += groupVisible;
+    }
+    if (count) count.textContent = q === '' ? `${total} actions` : `${visible} of ${total} actions`;
+    if (noMatch) noMatch.hidden = visible !== 0;
+  });
+</script>
+
+<style>
+  .post { max-width: 760px; margin: 0 auto; padding: 64px 24px 96px; }
+  .back { font-size: 14px; color: var(--color-text-muted); }
+  .back:hover { color: var(--color-signal); }
+  .tags { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 24px; }
+  .tag {
+    font-size: 11px;
+    font-weight: 600;
+    padding: 4px 10px;
+    border-radius: 999px;
+    background: var(--color-signal-subtle);
+    color: var(--color-signal);
+  }
+  h1 { font-size: 40px; font-weight: 700; letter-spacing: -0.02em; line-height: 1.2; margin: 24px 0 0; }
+  .meta { margin-top: 24px; font-size: 14px; color: var(--color-text-muted); }
+  hr { border: none; border-top: 1px solid var(--color-border); margin: 32px 0 40px; }
+
+  .prose { font-size: 17px; line-height: 1.75; }
+  .prose p { margin: 0 0 20px; }
+  .prose h2 { font-size: 26px; font-weight: 600; letter-spacing: -0.015em; margin: 40px 0 16px; }
+
+  .actions-block {
+    margin: 8px 0 40px;
+    border: 1px solid var(--color-border);
+    border-radius: 8px;
+    background: var(--color-bg-surface);
+    padding: 24px;
+  }
+  .actions-toolbar {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 20px;
+  }
+  #action-filter {
+    flex: 1;
+    font: inherit;
+    font-size: 15px;
+    color: var(--color-text-primary);
+    background: var(--color-bg-primary);
+    border: 1px solid var(--color-border);
+    border-radius: 6px;
+    padding: 10px 14px;
+  }
+  #action-filter:focus { outline: 2px solid var(--color-signal); outline-offset: -1px; }
+  .actions-count { font-size: 13px; color: var(--color-text-muted); white-space: nowrap; }
+
+  .letter-group { margin-bottom: 18px; }
+  .letter {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--color-text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin: 0 0 8px;
+    border-bottom: 1px solid var(--color-border);
+    padding-bottom: 4px;
+  }
+  .action-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 4px 16px;
+  }
+  .action { font-size: 14px; line-height: 1.5; color: var(--color-text-primary); }
+  .no-match { font-size: 14px; color: var(--color-text-muted); margin: 0; }
+
+  .cta-row { display: flex; gap: 12px; flex-wrap: wrap; margin: 8px 0 32px; }
+  .btn {
+    display: inline-block;
+    background: var(--color-signal);
+    color: #fff;
+    font-weight: 600;
+    font-size: 15px;
+    padding: 12px 24px;
+    border-radius: 6px;
+    transition: background var(--duration-fast) var(--ease-standard);
+  }
+  .btn:hover { background: var(--color-signal-hover); color: #fff; }
+  .btn.outline {
+    background: transparent;
+    color: var(--color-signal);
+    border: 1px solid var(--color-signal);
+  }
+  .btn.outline:hover { background: var(--color-signal-subtle); }
+
+  footer { margin-top: 40px; border-top: 1px solid var(--color-border); padding-top: 24px; }
+  .md-note { font-size: 14px; color: var(--color-text-muted); margin: 0; }
+
+  @media (max-width: 700px) {
+    .action-list { grid-template-columns: repeat(2, 1fr); }
+    h1 { font-size: 30px; }
+    .post { padding: 44px 20px 64px; }
+  }
+  @media (max-width: 460px) {
+    .action-list { grid-template-columns: 1fr; }
+  }
+</style>
