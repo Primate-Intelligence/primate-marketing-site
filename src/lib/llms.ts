@@ -1,13 +1,8 @@
 /**
- * llms.txt / llms-full.txt generators (PRI-504).
+ * llms.txt / llms-full.txt generators (PRI-504; updated for menu-IA restructure).
  *
- * Both are built from the docs corpus + blog collection — the same sources
- * that render the HTML pages — so they can never drift from the site.
- *
- * Docs URLs point at the www host (Matt 2026-07-29: docs consolidate on
- * www.primateintelligence.ai/docs). The www domain is attached to this
- * project at the P4 flip (PRI-505); until then the canonical llms.txt in
- * production remains the SPA-served one at the apex.
+ * Both are built from the docs corpus + blog collection + compare collection — the same
+ * sources that render the HTML pages — so they can never drift from the site.
  *
  * agents.md / changelog.md content in llms-full.txt comes from the committed
  * snapshots in src/snapshots/ (drift vs the API-canonical copies fails CI via
@@ -16,6 +11,7 @@
 import { getDocsPages, docMarkdownTwin, API } from './docsCorpus';
 import { referenceMarkdown } from './openapiRef';
 import { getPublishedPosts, toMarkdownTwin } from './blog';
+import { getCompareEntries, toMarkdownTwin as compareMarkdownTwin } from './compare';
 
 /** Host where the docs canonically live after the P4 flip. */
 export const DOCS_HOST = 'https://www.primateintelligence.ai';
@@ -25,6 +21,7 @@ const SITE = 'https://primateintelligence.ai';
 export async function llmsTxt(): Promise<string> {
   const pages = await getDocsPages();
   const posts = await getPublishedPosts();
+  const comparePosts = await getCompareEntries();
 
   const docLines = pages
     .map((p) => `- [${p.title}](${DOCS_HOST}/docs/${p.slug}.md): ${p.description}`)
@@ -33,6 +30,11 @@ export async function llmsTxt(): Promise<string> {
   const postLines = posts
     .slice(0, 4)
     .map((p) => `- [${p.data.title}](${SITE}/blog/${p.data.slug}): ${p.data.excerpt}`)
+    .join('\n');
+
+  const compareLines = comparePosts
+    .slice(0, 3)
+    .map((p) => `- [${p.data.title}](${SITE}/compare/${p.data.slug}): ${p.data.excerpt}`)
     .join('\n');
 
   return `# Primate Vision API — Primate Intelligence
@@ -71,14 +73,30 @@ ${docLines}
 - [Pricing](${SITE}/pricing): $0.01/video-second metered credits — markdown twin at /pricing.md
 - [Performance & latency](${SITE}/performance): Measured production p50/p95 latency, throughput, and accuracy benchmarks — markdown twin at /performance.md
 - [Use Cases](${SITE}/use-cases): Eight markets, one model — markdown twin at /use-cases.md
+- [For AI agents](${SITE}/agents): Zero-touch integration for AI agents — markdown twin at /agents-page.md
+- [Technology](${SITE}/technology): How Darwin (JEPA world model) works — markdown twin at /technology.md
+- [Technology — How JEPA works](${SITE}/technology/how-jepa-works): Joint-embedding predictive architecture explained
+- [Technology — Determinism](${SITE}/technology/determinism): Why same-input → same-output matters for production
+- [Technology — Benchmarks](${SITE}/technology/benchmarks): Action detection, temporal localization, published results
+- [Technology — Real-time streaming](${SITE}/technology/real-time): WebRTC ingestion and streaming architecture
 - [Team](${SITE}/team): Founders — markdown twin at /team.md
+- [About](${SITE}/about): Mission, founders, founding story — markdown twin at /about.md
 - [Values](${SITE}/values): Seven principles — markdown twin at /values.md
 - [Careers](${SITE}/careers): Open roles — markdown twin at /careers.md
+- [FAQ](${SITE}/faq): Frequently asked questions — markdown twin at /faq.md
+
+## Compare
+
+Honest, spec-table-driven comparisons of Primate Vision against every major video understanding API.
+Each comparison has a markdown twin: append .md to the compare URL (e.g. /compare/twelve-labs.md).
+
+- [Compare hub](${SITE}/compare): All comparisons — markdown twin at /compare.md
+${compareLines}
 
 ## Learn
 
 - [Blog](${SITE}/blog): Research notes and perspectives — RSS at /rss.xml
-- Every blog post has a markdown twin: append .md to the post URL (e.g. /blog/how-jepa-works.md)
+- Every blog post has a markdown twin: append .md to the post URL (e.g. /blog/jepa-deep-dive.md)
 ${postLines}
 - [Technology](${SITE}/technology): Model releases and capability updates
 - [Darwin-preview-1.3B](${SITE}/technology/darwin-preview): The Darwin-preview-1.3B model — full supported-actions vocabulary (532 classes) — markdown twin at /technology/darwin-preview.md
@@ -94,6 +112,7 @@ ${postLines}
 export async function llmsFullTxt(): Promise<string> {
   const pages = await getDocsPages();
   const posts = await getPublishedPosts();
+  const comparePosts = await getCompareEntries();
 
   const segments: string[] = [
     `# Primate Vision API — full docs corpus (llms-full.txt)
@@ -113,6 +132,11 @@ export async function llmsFullTxt(): Promise<string> {
   for (const post of posts) {
     segments.push(
       `\n---\n\n<!-- source: ${SITE}/blog/${post.data.slug}.md -->\n\n${toMarkdownTwin(post)}`,
+    );
+  }
+  for (const post of comparePosts) {
+    segments.push(
+      `\n---\n\n<!-- source: ${SITE}/compare/${post.data.slug}.md -->\n\n${compareMarkdownTwin(post)}`,
     );
   }
   return segments.join('\n');

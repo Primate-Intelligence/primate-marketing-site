@@ -66,6 +66,76 @@
   ],
   "redirects": [
     {
+      "source": "/blog/primate-vision-vs-twelve-labs",
+      "destination": "/compare/twelve-labs",
+      "statusCode": 301
+    },
+    {
+      "source": "/blog/primate-vision-vs-google-video-intelligence",
+      "destination": "/compare/google-video-intelligence",
+      "statusCode": 301
+    },
+    {
+      "source": "/blog/primate-vision-vs-aws-rekognition",
+      "destination": "/compare/aws-rekognition",
+      "statusCode": 301
+    },
+    {
+      "source": "/blog/primate-vision-vs-gemini",
+      "destination": "/compare/gemini",
+      "statusCode": 301
+    },
+    {
+      "source": "/blog/primate-vision-vs-openai",
+      "destination": "/compare/openai",
+      "statusCode": 301
+    },
+    {
+      "source": "/blog/primate-vision-vs-azure-video-indexer",
+      "destination": "/compare/azure-video-indexer",
+      "statusCode": 301
+    },
+    {
+      "source": "/blog/primate-vision-vs-nvidia-vss",
+      "destination": "/compare/nvidia-vss",
+      "statusCode": 301
+    },
+    {
+      "source": "/blog/primate-vision-vs-roboflow-ultralytics",
+      "destination": "/compare/roboflow-ultralytics",
+      "statusCode": 301
+    },
+    {
+      "source": "/blog/primate-vision-vs-open-vlms",
+      "destination": "/compare/open-vlms",
+      "statusCode": 301
+    },
+    {
+      "source": "/blog/primate-vision-vs-sieve",
+      "destination": "/compare/sieve",
+      "statusCode": 301
+    },
+    {
+      "source": "/blog/primate-vision-vs-video-ai-landscape-2026",
+      "destination": "/compare/video-ai-landscape-2026",
+      "statusCode": 301
+    },
+    {
+      "source": "/blog/best-video-understanding-apis-2026",
+      "destination": "/compare/best-video-understanding-apis-2026",
+      "statusCode": 301
+    },
+    {
+      "source": "/blog/how-jepa-works",
+      "destination": "/technology/how-jepa-works",
+      "statusCode": 301
+    },
+    {
+      "source": "/blog/benchmarks-deep-dive",
+      "destination": "/technology/benchmarks",
+      "statusCode": 301
+    },
+    {
       "source": "/login",
       "destination": "https://app.primateintelligence.ai/login",
       "statusCode": 301
