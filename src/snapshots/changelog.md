@@ -5,6 +5,132 @@ Full field contracts: [openapi.json](./openapi.json) · [agents.md](./agents.md)
 
 ---
 
+## 2026-07-31 — docs/SDK/MCP — DX artifact chain for the PRI-496 public capabilities (PRI-530)
+
+- **Docs**: the mid-stream `update_prompt` → `prompt_updated` protocol is now fully documented (agents.md streaming lifecycle step 5 + openapi POST /v1/streams description), alongside the `status` event vocabulary (`prompt_context | combined_prompt | recalculating`) and the narrative opt-ins. `/llms.txt` gains a Live-narrative section and the client-token (pvct_) line.
+- **TypeScript SDK `@primate-intelligence/sdk@0.3.0`**: real `Narrative` type (was a `{text?}` stub), `StreamCreateParams.options.narrative` + `recording`, `Stream.recording`, `streams.recording()`, `videos.listAnalyses()`, `analyses.rerun()`, `Analysis.rerun_eligible`, `Video.media`, `StreamDetection.narrative_update`, `connectStream` `onNarrative`/`onStatus` callbacks + `StreamStatusMessage`.
+- **Python SDK `primate-intelligence==0.3.0`**: `streams.recording()`, `videos.list_analyses()`, `analyses.rerun()`; docstrings for the narrative opt-ins and the update_prompt protocol.
+- **MCP server 0.3.0** (hosted `/mcp` + `@primate-intelligence/mcp`): 13 tools — adds `get_video` (status + media playback URL), `list_video_analyses`, `rerun_analysis`; `create_analysis` gains `narrative: true`. Output schemas corrected (`narrative {status, entries}`, `Video.media`).
+- **Samples**: S6 (TS) and S7 (Python/aiortc) now exercise narrative, status events, mid-stream `update_prompt`, and (S6) session-recording retrieval.
+- All shapes verified against the live dev API (recorded narrative stream with status events + update_prompt, 2026-07-31). No API behavior change — documentation/tooling parity only.
+
+---
+
+## 2026-07-31 — internal — web-app library routes accept public ids (PRI-496 Lane B)
+
+- Internal-only (first-party web app; NOT part of the published contract): `GET /v1/user-videos` list rows now carry `public_id` (`video_…`) + `status`; the `/v1/user-videos/:id…` routes accept either the internal UUID or the public `video_` id; `PUT …/results` resolves public `an_` analysis ids to the internal job FK. Enables the web app's cutover to public `POST /v1/analyses` re-runs. Public OpenAPI document unchanged.
+
+---
+
+## 2026-07-31 — fix — narrative-opted-in public streams now activate the engine's narrative path (PRI-510/PRI-496)
+
+- Public streams created with `options: {narrative: true}` now send the engine-config serialization (`narrative_enabled: true`) to the inference engine — previously the engine's narrative path never activated for public streams, so `narrative_update` objects (and the new `status` events) could never appear even with the feature enabled. Non-opted-in streams are unchanged. Public prompt echo now strips ALL internal serializations (byte-identical up to the first `|||`).
+
+---
+
+## 2026-07-31 — fix — stream recording key stored verbatim from the sidecar (PRI-496)
+
+- The public recording linkage now stores the sidecar-reported S3 key **verbatim** (`{env}/recordings/…`) instead of stripping the env prefix. The sidecar's env label is the authoritative namespace of the object it wrote; the API's `NODE_ENV`-derived prefix disagrees on dev (Railway builds run `NODE_ENV=production`), which made dev recording URLs point at `prod/`. Caught in dev verification; prod behavior unchanged (labels agree there).
+
+---
+
+## 2026-07-31 — additive — free re-runs for platform-incident failures (PRI-493) + demo videos documented (PRI-496)
+
+- **Failed analyses now carry `rerun_eligible: boolean`** — `true` when the failure occurred during a declared platform incident (or ops flagged it). Field is present only on `failed` analyses; absent elsewhere. Additive.
+- **New `POST /v1/analyses/{id}/rerun`** — creates a **fresh analysis at no charge** from an eligible failed one (same video, prompt/query, model, options; new id; `usage` stays null — never billed). One free re-run per failed analysis; ineligible → `409 rerun_not_eligible` (new registry code). If the re-run's dispatch fails (503) the free re-run is NOT consumed. Normal capacity/brownout gates still apply.
+- **`GET /v1/demo-videos` is now documented** in openapi.json/agents.md as a public (unauthenticated) onboarding surface: curated sample videos with precomputed results per example prompt. Documented subset is the stable contract.
+- Decisions recorded for the remaining small gaps: stream limits already ship in the `POST /v1/streams` response (`limits`); `/v1/feedback` and `/v1/prompts` remain console-internal.
+
+---
+
+## 2026-07-31 — additive — stream session recordings + public status events (PRI-496)
+
+- **`POST /v1/streams` accepts `recording: true`** (optional boolean, default false): opt into retrieval of the server-side session recording. The stream then carries a new nullable `recording: {status}` object (`recording` · `available` · `failed` · `none`); streams that don't opt in keep `recording: null` — no existing field changed.
+- **New `GET /v1/streams/{id}/recording`** — returns `{object: "stream_recording", stream_id, url, expires_at, content_type, container}` with a **signed playback URL, fresh on every GET, 1-hour TTL** (sign-on-read, same semantics as `Analysis.artifacts`). The recording is a raw H.264 Annex-B elementary stream — lossless remux to MP4 with `ffmpeg -i in.h264 -c copy out.mp4`. 404 when recording wasn't enabled; 409 while the stream is active, when capture failed, or when nothing was stored.
+- **New additive `status` server→client event on the `/v1/streams/{id}/signal` WS**: `{type: "status", status: "prompt_context"|"combined_prompt"|"recalculating", message?}` — the narrative-ordering vocabulary, forwarded ONLY for streams that opted into `options: {narrative: true}` (and only while the narrative feature flag is enabled). Closed set at the edge; internal serializations are stripped from `message`. Existing vocabulary (`ready/queued/answer/ice/live/result/prompt_updated/metering/warning/end/error/pong`) is untouched; non-opted-in streams see zero change.
+
+---
+
+## 2026-07-31 — additive — video library parity: source playback URL + per-video analysis history (PRI-496)
+
+- Fixture videos (the sandbox plane's canned sample) return `media: null` — they are pseudo-objects with no real S3 source; a signed URL would 404.
+- **`Video.media` is now populated** on `ready` videos: `{url, expires_at}` — a signed playback URL for the original source video, generated **fresh on every read** with a 1-hour TTL (sign-on-read, same semantics as `Analysis.artifacts`). Re-fetch the video for a new URL after expiry; old videos always stay playable. `media` is `null` for non-ready videos and rows without a stored source object. New nullable field — additive, no existing field changed.
+- **New `GET /v1/videos/{id}/analyses`** — lists every analysis run against a video (newest first), same list envelope + filters (`status`, `limit`, `starting_after`) as `GET /v1/analyses`. Resource-nested spelling of `GET /v1/analyses?video_id={id}`; both work. This plus `media` plus `artifacts` gives the public plane full video-library semantics (list, replay, per-video result history).
+
+---
+
+## 2026-07-30 — breaking (gated) — GitHub OAuth gate on the free grant upgrade (PRI-479)
+
+- **`POST /v1/keys/upgrade` now requires a verified GitHub account** when the gate is enabled (it is, on dev + prod). Calling without a `github_token` returns **`403 github_verification_required`** whose `details` carry the full device-flow bootstrap: `client_id`, `device_code_url`, `access_token_url`. Complete GitHub's standard device flow (no scopes requested — identity only) and retry with `{"github_token": "gho_..."}`.
+- **One free grant per GitHub account, ever.** The numeric GitHub account id is stamped on the user row (DB unique index); a GitHub account that already claimed its grant gets **`409 github_account_already_used`**. The OAuth token itself is verified with GitHub and discarded — never stored.
+- New error codes in the §15 registry: `github_verification_required` (403), `github_token_invalid` (401), `github_account_already_used` (409).
+- Why: the upgrade was IP-rate-limited only — a key-churning agent rotating IPs could harvest unlimited 6,000s GPU grants. GitHub's own abuse controls now bound free grants at one per real account; IP caps remain as secondary defense.
+- Sandbox provisioning (`POST /v1/sandbox`) and the billed device-code claim flow (`POST /v1/keys/request`) are unchanged.
+
+---
+
+## 2026-07-30 — fix — internal/fixture accounts excluded from product metrics (PRI-472)
+
+- **New `users.is_internal` flag** (migration 036: `boolean NOT NULL DEFAULT false` + partial index + pre-filtered `analytics_users` view). Backfilled for the Anthropic directory-review fixture, all loadtest accounts, and E2E fixtures.
+- **All admin analytics endpoints now exclude internal accounts**: `/v1/admin/analytics/growth` (totals, signups, activation, W1 retention, MRR/ARR/paying users, North-Star minutes), `/v1/admin/pmf` (signups_total, activation funnel, repeat-user retention), `/v1/admin/analytics/credits` (card attach rate, refill conversion, API activation), `/v1/admin/analytics/verticals` (user vertical/replacing breakdowns).
+- **Clerk `user.created` webhook** now propagates `public_metadata.internal_fixture: true` → `users.is_internal`, so future fixture accounts are excluded at creation.
+- Historical note: metric values step down slightly vs. previous reports (fixture activity was previously counted — e.g. 105 loadtest users on prod). This is a correction, not a regression.
+- Admin response fields only — no public API schema change.
+
+---
+
+## 2026-07-30 — additive — API host agent onramp: GET / index + GET /robots.txt (PRI-492)
+
+- **`GET /` now returns a JSON index** instead of a 404 error envelope: `{name, description, openapi, docs, llms, agents, changelog, mcp, sandbox, health}` — an agent probing the API host root gets pointers to every machine-readable surface (OpenAPI spec, llms.txt, agents.md, MCP endpoint, one-POST sandbox key).
+- **`GET /robots.txt` now returns 200 text/plain** (allow all) instead of the 404 JSON envelope, and points crawlers at `/llms.txt`, `/v1/openapi.json`, and `/docs/agents.md`.
+- Both endpoints are unauthenticated. No existing route changed; no schema change.
+
+---
+
+## 2026-07-30 — fix — GET /v1/models: darwin-1.3 capabilities.streaming corrected to true (PRI-496)
+
+- The model catalog still said `capabilities: {streaming: false}` from before real-time streams shipped. Streaming has been live for weeks (`POST /v1/streams`); the flag now says so. Data correction only — no schema change.
+
+---
+
+## 2026-07-30 — additive — Analysis.artifacts now populated: annotated result video URL (PRI-496)
+
+- **`GET /v1/analyses/{id}` (and list) now populates `artifacts`** for completed analyses that produced an annotated result video: `{annotated_video_url, expires_at}` per the existing `ArtifactsSchema`. The URL is a **fresh 1-hour signed CDN link generated on every read** — when it expires, re-fetch the analysis for a new one (old results always stay retrievable). Analyses without an annotated video (and all non-completed statuses) continue to return `artifacts: null`.
+- The schema stub has been in the contract since P3 — this makes it live. Zero breaking changes; agents that treated `artifacts` as always-null should start reading it.
+
+---
+
+## 2026-07-30 — additive — narrative over the public API: options.narrative on analyses + streams (PRI-510)
+
+- **`POST /v1/analyses` (and `/batch`) `options.narrative: true` is now honored.** The completed analysis carries a populated `narrative` object per the existing `NarrativeSchema`: `{status: "generating"|"ready"|"failed", entries: [{t_s, text}]}` — timestamped event sentences generated after completion (poll `GET /v1/analyses/{id}`; the `analysis.completed` webhook may still show `status: "generating"`). Omitted/false preserves the previous behavior exactly (`options: {narrative: false}`, `narrative: null`). Narrative is **included in the analysis price** — no surcharge, no usage-shape change.
+- **`POST /v1/streams` accepts `options: {narrative: boolean}`** (previously rejected as an unknown field). Opted-in streams receive a `narrative_update` object (`{t_s, text}`) on result-frame detections whenever the engine produces a new sentence — event-driven, not per frame; the key is absent on frames without one. Disabled/omitted streams never see it. Terminal `results_summary.last_detections` continues to strip it (frozen shape).
+- **Test mode (`pv_test_`)**: opted-in canned analyses return a deterministic canned narrative (`status: "ready"`) — fixture plane, zero quota.
+- The schema fields (`options.narrative`, nullable `narrative`, `NarrativeSchema`) were already in the contract as forward-compatible stubs — this release makes them live. Zero breaking changes (oasdiff clean).
+
+---
+
+## 2026-07-30 — internal — inference-WS replacement-storm alerts now reach Sentry (PRI-418); load-test metric renamed to metadata_ratio (PRI-360)
+
+- **Replacement-storm detector alerts to Sentry** (PRI-418): when inference-WS replacements exceed the threshold (default 10/60s), the existing error-level structured log is now also sent via `Sentry.captureMessage` at error level, so storms like the 2026-07-02 duplicate-sidecar incident page instead of only landing in stdout. Cooldown unchanged (max one alert per 5 min). No public API contract change.
+- **Load-test harness: `metadata_ratio` metric added** (PRI-360): the k6 shared metrics library gains a `metadata_ratio` Rate (fraction of incoming sidecar WS messages that are `metadata` frames), wired into `09-stream-baseline.js`. Replaces the informal "ack ratio" name — the counted frames are metadata, not acks. Tooling-only; no runtime behaviour change.
+
+---
+
+## 2026-07-29 — additive — batch discount is config-driven and served by GET /v1/credit-pricing (PRI-508)
+
+- **`GET /v1/credit-pricing` now returns `batch_discount_pct`, `batch_min_prompts`, and `batch_max_prompts`.** The `POST /v1/analyses/batch` discount (each prompt after the first) was a hardcoded constant that could drift from the documented "50%"; it now lives in the same `credit_price_config` row as every other price knob and is served publicly here. **Read the discount from this endpoint instead of hardcoding it** — a pricing change is a config update, not an API version bump. Current values match shipped behaviour exactly: `batch_discount_pct: 50`, `batch_min_prompts: 2`, `batch_max_prompts: 10`.
+- **`discount_pct` in batch responses** (`analysis_batch.pricing`, `analysis_batch_preview.prompts[].discount_pct`) now reflects the configured value (still `50` today). The preview per-prompt field is documented as an integer rather than the literal set `0 | 50` — `0` still means the full-price first prompt.
+- No behaviour change at current config: batch pricing, bounds, and copy are byte-identical until the config row changes.
+
+---
+
+## 2026-07-29 — fix — /v1/test-fixture video URL follows the app.* replatform; anonymous sandbox IP cap now per-client
+
+- **`GET /v1/test-fixture` `test_video_url` updated** to `https://app.primateintelligence.ai/empty-state/forklift-demo.mp4`. The web replatform moved the product SPA (which serves the fixture file) to `app.primateintelligence.ai`; the old apex path stopped resolving when the apex became the marketing site. If you pinned the old URL in CI, update it — the file bytes are unchanged. The canonical pinned demo asset `https://primateintelligence.ai/demos/empty-state/forklift-demo.mp4` is unaffected.
+- **`POST /v1/sandbox` IP cap fixed to key on the real client IP.** Previously the daily provision cap could key on a shared proxy hop, which made the limit far stricter than documented for users behind the same edge. No contract change — same `sandbox_limit_exceeded` error, same documented 3/day per-IP semantics, now enforced per actual client.
+
+---
+
 ## 2026-07-29 — docs-only — POST /v1/parse documented in openapi.json; GET /v1/analyses status-filter vocabulary documented
 
 - **`POST /v1/parse` is now in the OpenAPI document** (PRI-496 P0). The endpoint has been live for months (stateless prompt compiler: `{prompt}` → `{compiled_query, parse_mode: "haiku"|"heuristic"}`; auth optional; 30 req/min per IP; errors `empty_prompt` 400 / `parse_failed` 422 / `parse_unavailable` 503) but was undocumented — for agents, undocumented is nonexistent. No behavior change. Also added to the `/llms.txt` key-endpoints list.

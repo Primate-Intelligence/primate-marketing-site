@@ -1,411 +1,447 @@
 {
+  "object": "list",
   "data": [
     {
       "code": "invalid_api_key",
-      "docs_url": "https://primateintelligence.ai/docs/errors#invalid_api_key",
-      "idem": false,
       "kind": "http",
-      "message": "API key is invalid. Check the key, env var, and whitespace.",
+      "status": 401,
       "retryable": false,
-      "status": 401
+      "idem": false,
+      "message": "API key is invalid. Check the key, env var, and whitespace.",
+      "docs_url": "https://primateintelligence.ai/docs/errors#invalid_api_key"
     },
     {
       "code": "key_revoked",
-      "docs_url": "https://primateintelligence.ai/docs/errors#key_revoked",
-      "idem": false,
       "kind": "http",
-      "message": "This API key has been revoked. Rotate or create a new key.",
+      "status": 401,
       "retryable": false,
-      "status": 401
+      "idem": false,
+      "message": "This API key has been revoked. Rotate or create a new key.",
+      "docs_url": "https://primateintelligence.ai/docs/errors#key_revoked"
     },
     {
       "code": "key_expired",
-      "docs_url": "https://primateintelligence.ai/docs/errors#key_expired",
-      "idem": false,
       "kind": "http",
-      "message": "This API key has expired. Create a new key.",
+      "status": 401,
       "retryable": false,
-      "status": 401
+      "idem": false,
+      "message": "This API key has expired. Create a new key.",
+      "docs_url": "https://primateintelligence.ai/docs/errors#key_expired"
     },
     {
       "code": "token_expired",
-      "docs_url": "https://primateintelligence.ai/docs/errors#token_expired",
-      "idem": false,
       "kind": "http",
-      "message": "Client token has expired. Mint a new token from your server (client tokens are never refreshable).",
+      "status": 401,
       "retryable": false,
-      "status": 401
+      "idem": false,
+      "message": "Client token has expired. Mint a new token from your server (client tokens are never refreshable).",
+      "docs_url": "https://primateintelligence.ai/docs/errors#token_expired"
     },
     {
       "code": "insufficient_scope",
-      "docs_url": "https://primateintelligence.ai/docs/errors#insufficient_scope",
-      "idem": false,
       "kind": "http",
-      "message": "The key does not carry the scope required for this operation.",
+      "status": 403,
       "retryable": false,
-      "status": 403
+      "idem": false,
+      "message": "The key does not carry the scope required for this operation.",
+      "docs_url": "https://primateintelligence.ai/docs/errors#insufficient_scope"
     },
     {
       "code": "account_restricted",
-      "docs_url": "https://primateintelligence.ai/docs/errors#account_restricted",
-      "idem": false,
       "kind": "http",
-      "message": "Account is restricted. Complete signup/verification.",
+      "status": 403,
       "retryable": false,
-      "status": 403
+      "idem": false,
+      "message": "Account is restricted. Complete signup/verification.",
+      "docs_url": "https://primateintelligence.ai/docs/errors#account_restricted"
     },
     {
       "code": "test_mode_only",
-      "docs_url": "https://primateintelligence.ai/docs/errors#test_mode_only",
-      "idem": false,
       "kind": "http",
-      "message": "Operation not available in this key mode.",
+      "status": 403,
       "retryable": false,
-      "status": 403
+      "idem": false,
+      "message": "Operation not available in this key mode.",
+      "docs_url": "https://primateintelligence.ai/docs/errors#test_mode_only"
     },
     {
       "code": "test_key_fixture_only",
-      "docs_url": "https://primateintelligence.ai/docs/errors#test_key_fixture_only",
-      "idem": false,
       "kind": "http",
-      "message": "Test keys can only analyze the provided fixture video. Create a live key to analyze your own uploads.",
+      "status": 403,
       "retryable": false,
-      "status": 403
+      "idem": false,
+      "message": "Test keys can only analyze the provided fixture video. Create a live key to analyze your own uploads.",
+      "docs_url": "https://primateintelligence.ai/docs/errors#test_key_fixture_only"
     },
     {
       "code": "validation_failed",
-      "docs_url": "https://primateintelligence.ai/docs/errors#validation_failed",
-      "idem": false,
       "kind": "http",
-      "message": "Request validation failed. All violations are listed in error.errors[].",
+      "status": 400,
       "retryable": false,
-      "status": 400
+      "idem": false,
+      "message": "Request validation failed. All violations are listed in error.errors[].",
+      "docs_url": "https://primateintelligence.ai/docs/errors#validation_failed"
     },
     {
       "code": "unsupported_media_type",
-      "docs_url": "https://primateintelligence.ai/docs/errors#unsupported_media_type",
-      "idem": false,
       "kind": "http",
-      "message": "Send video/mp4 or video/quicktime with a correct Content-Type.",
+      "status": 415,
       "retryable": false,
-      "status": 415
+      "idem": false,
+      "message": "Send video/mp4 or video/quicktime with a correct Content-Type.",
+      "docs_url": "https://primateintelligence.ai/docs/errors#unsupported_media_type"
     },
     {
       "code": "payload_too_large",
-      "docs_url": "https://primateintelligence.ai/docs/errors#payload_too_large",
-      "idem": false,
       "kind": "http",
-      "message": "Payload exceeds the 100MB multipart cap. Use the presigned upload path.",
+      "status": 413,
       "retryable": false,
-      "status": 413
+      "idem": false,
+      "message": "Payload exceeds the 100MB multipart cap. Use the presigned upload path.",
+      "docs_url": "https://primateintelligence.ai/docs/errors#payload_too_large"
     },
     {
       "code": "resource_not_found",
-      "docs_url": "https://primateintelligence.ai/docs/errors#resource_not_found",
-      "idem": false,
       "kind": "http",
-      "message": "No such resource. IDs are account-scoped; check the ID and prefix.",
+      "status": 404,
       "retryable": false,
-      "status": 404
+      "idem": false,
+      "message": "No such resource. IDs are account-scoped; check the ID and prefix.",
+      "docs_url": "https://primateintelligence.ai/docs/errors#resource_not_found"
     },
     {
       "code": "resource_conflict",
-      "docs_url": "https://primateintelligence.ai/docs/errors#resource_conflict",
-      "idem": false,
       "kind": "http",
-      "message": "Invalid state transition. GET the resource for its current state.",
+      "status": 409,
       "retryable": false,
-      "status": 409
+      "idem": false,
+      "message": "Invalid state transition. GET the resource for its current state.",
+      "docs_url": "https://primateintelligence.ai/docs/errors#resource_conflict"
     },
     {
       "code": "idempotency_key_reused",
-      "docs_url": "https://primateintelligence.ai/docs/errors#idempotency_key_reused",
-      "idem": false,
       "kind": "http",
-      "message": "Idempotency-Key was reused with a different request body.",
+      "status": 409,
       "retryable": false,
-      "status": 409
+      "idem": false,
+      "message": "Idempotency-Key was reused with a different request body.",
+      "docs_url": "https://primateintelligence.ai/docs/errors#idempotency_key_reused"
     },
     {
       "code": "idempotency_unavailable",
-      "docs_url": "https://primateintelligence.ai/docs/errors#idempotency_unavailable",
-      "idem": true,
       "kind": "http",
-      "message": "Idempotency store unavailable. Retry with the same key after Retry-After.",
+      "status": 409,
       "retryable": true,
-      "status": 409
+      "idem": true,
+      "message": "Idempotency store unavailable. Retry with the same key after Retry-After.",
+      "docs_url": "https://primateintelligence.ai/docs/errors#idempotency_unavailable"
     },
     {
       "code": "stream_already_active",
-      "docs_url": "https://primateintelligence.ai/docs/errors#stream_already_active",
-      "idem": false,
       "kind": "http",
-      "message": "An active stream already exists on this account. End it (POST /v1/streams/{id}/end) or wait for it to finish.",
+      "status": 409,
       "retryable": false,
-      "status": 409
+      "idem": false,
+      "message": "An active stream already exists on this account. End it (POST /v1/streams/{id}/end) or wait for it to finish.",
+      "docs_url": "https://primateintelligence.ai/docs/errors#stream_already_active"
     },
     {
       "code": "upload_incomplete",
-      "docs_url": "https://primateintelligence.ai/docs/errors#upload_incomplete",
-      "idem": false,
       "kind": "http",
-      "message": "Upload incomplete or size mismatch. Re-create the video and complete within 24h.",
+      "status": 400,
       "retryable": false,
-      "status": 400
+      "idem": false,
+      "message": "Upload incomplete or size mismatch. Re-create the video and complete within 24h.",
+      "docs_url": "https://primateintelligence.ai/docs/errors#upload_incomplete"
     },
     {
       "code": "video_unreadable",
-      "docs_url": "https://primateintelligence.ai/docs/errors#video_unreadable",
-      "idem": false,
       "kind": "http",
-      "message": "Container/codec unsupported. Re-encode to H.264 MP4.",
+      "status": 400,
       "retryable": false,
-      "status": 400
+      "idem": false,
+      "message": "Container/codec unsupported. Re-encode to H.264 MP4.",
+      "docs_url": "https://primateintelligence.ai/docs/errors#video_unreadable"
     },
     {
       "code": "video_too_large",
-      "docs_url": "https://primateintelligence.ai/docs/errors#video_too_large",
-      "idem": false,
       "kind": "http",
-      "message": "Video exceeds the 2 GiB limit.",
+      "status": 400,
       "retryable": false,
-      "status": 400
+      "idem": false,
+      "message": "Video exceeds the 2 GiB limit.",
+      "docs_url": "https://primateintelligence.ai/docs/errors#video_too_large"
     },
     {
       "code": "video_too_long",
-      "docs_url": "https://primateintelligence.ai/docs/errors#video_too_long",
-      "idem": false,
       "kind": "http",
-      "message": "Video exceeds the plan duration limit. Upgrade or trim.",
+      "status": 400,
       "retryable": false,
-      "status": 400
+      "idem": false,
+      "message": "Video exceeds the plan duration limit. Upgrade or trim.",
+      "docs_url": "https://primateintelligence.ai/docs/errors#video_too_long"
     },
     {
       "code": "url_fetch_failed",
-      "docs_url": "https://primateintelligence.ai/docs/errors#url_fetch_failed",
-      "idem": false,
       "kind": "http",
-      "message": "Source URL unreachable or timed out.",
+      "status": 400,
       "retryable": true,
-      "status": 400
+      "idem": false,
+      "message": "Source URL unreachable or timed out.",
+      "docs_url": "https://primateintelligence.ai/docs/errors#url_fetch_failed"
     },
     {
       "code": "url_forbidden",
-      "docs_url": "https://primateintelligence.ai/docs/errors#url_forbidden",
-      "idem": false,
       "kind": "http",
-      "message": "URL scheme or host blocked by the ingest policy.",
+      "status": 400,
       "retryable": false,
-      "status": 400
+      "idem": false,
+      "message": "URL scheme or host blocked by the ingest policy.",
+      "docs_url": "https://primateintelligence.ai/docs/errors#url_forbidden"
     },
     {
       "code": "prompt_empty",
-      "docs_url": "https://primateintelligence.ai/docs/errors#prompt_empty",
-      "idem": false,
       "kind": "http",
-      "message": "Provide prompt or query.",
+      "status": 400,
       "retryable": false,
-      "status": 400
+      "idem": false,
+      "message": "Provide prompt or query.",
+      "docs_url": "https://primateintelligence.ai/docs/errors#prompt_empty"
     },
     {
       "code": "prompt_too_long",
-      "docs_url": "https://primateintelligence.ai/docs/errors#prompt_too_long",
-      "idem": false,
       "kind": "http",
-      "message": "Prompt exceeds 2000 characters.",
+      "status": 400,
       "retryable": false,
-      "status": 400
+      "idem": false,
+      "message": "Prompt exceeds 2000 characters.",
+      "docs_url": "https://primateintelligence.ai/docs/errors#prompt_too_long"
     },
     {
       "code": "query_invalid",
-      "docs_url": "https://primateintelligence.ai/docs/errors#query_invalid",
-      "idem": false,
       "kind": "http",
-      "message": "Body fails the CompiledQuery schema; param names the field.",
+      "status": 400,
       "retryable": false,
-      "status": 400
+      "idem": false,
+      "message": "Body fails the CompiledQuery schema; param names the field.",
+      "docs_url": "https://primateintelligence.ai/docs/errors#query_invalid"
     },
     {
       "code": "parse_failed",
-      "docs_url": "https://primateintelligence.ai/docs/errors#parse_failed",
-      "idem": false,
       "kind": "http",
-      "message": "The compiler could not produce a query. Rephrase or send a structured query.",
+      "status": 422,
       "retryable": true,
-      "status": 422
+      "idem": false,
+      "message": "The compiler could not produce a query. Rephrase or send a structured query.",
+      "docs_url": "https://primateintelligence.ai/docs/errors#parse_failed"
     },
     {
       "code": "model_not_found",
-      "docs_url": "https://primateintelligence.ai/docs/errors#model_not_found",
-      "idem": false,
       "kind": "http",
-      "message": "Unknown model. See GET /v1/models.",
+      "status": 400,
       "retryable": false,
-      "status": 400
+      "idem": false,
+      "message": "Unknown model. See GET /v1/models.",
+      "docs_url": "https://primateintelligence.ai/docs/errors#model_not_found"
     },
     {
       "code": "model_deprecated",
-      "docs_url": "https://primateintelligence.ai/docs/errors#model_deprecated",
-      "idem": false,
       "kind": "http",
-      "message": "Model is deprecated. Pin a supported version; see the changelog.",
+      "status": 400,
       "retryable": false,
-      "status": 400
+      "idem": false,
+      "message": "Model is deprecated. Pin a supported version; see the changelog.",
+      "docs_url": "https://primateintelligence.ai/docs/errors#model_deprecated"
     },
     {
       "code": "analysis_not_cancelable",
-      "docs_url": "https://primateintelligence.ai/docs/errors#analysis_not_cancelable",
-      "idem": false,
       "kind": "http",
-      "message": "Analysis is already in a terminal state.",
+      "status": 409,
       "retryable": false,
-      "status": 409
+      "idem": false,
+      "message": "Analysis is already in a terminal state.",
+      "docs_url": "https://primateintelligence.ai/docs/errors#analysis_not_cancelable"
+    },
+    {
+      "code": "rerun_not_eligible",
+      "kind": "http",
+      "status": 409,
+      "retryable": false,
+      "idem": false,
+      "message": "This analysis is not eligible for a free re-run. Eligible: failed during a platform incident (rerun_eligible: true on the failed analysis) and not already re-run.",
+      "docs_url": "https://primateintelligence.ai/docs/errors#rerun_not_eligible"
     },
     {
       "code": "rate_limit_exceeded",
-      "docs_url": "https://primateintelligence.ai/docs/errors#rate_limit_exceeded",
-      "idem": true,
       "kind": "http",
-      "message": "Rate limit exceeded. Back off per Retry-After.",
+      "status": 429,
       "retryable": true,
-      "status": 429
+      "idem": true,
+      "message": "Rate limit exceeded. Back off per Retry-After.",
+      "docs_url": "https://primateintelligence.ai/docs/errors#rate_limit_exceeded"
     },
     {
       "code": "concurrency_limit_exceeded",
-      "docs_url": "https://primateintelligence.ai/docs/errors#concurrency_limit_exceeded",
-      "idem": true,
       "kind": "http",
-      "message": "Concurrent analysis limit reached. Wait for an active analysis to finish.",
+      "status": 429,
       "retryable": true,
-      "status": 429
+      "idem": true,
+      "message": "Concurrent analysis limit reached. Wait for an active analysis to finish.",
+      "docs_url": "https://primateintelligence.ai/docs/errors#concurrency_limit_exceeded"
     },
     {
       "code": "quota_exceeded",
-      "docs_url": "https://primateintelligence.ai/docs/errors#quota_exceeded",
-      "idem": false,
       "kind": "http",
-      "message": "Quota exceeded for a metered limit. See details.meter.",
+      "status": 429,
       "retryable": false,
-      "status": 429
+      "idem": false,
+      "message": "Quota exceeded for a metered limit. See details.meter.",
+      "docs_url": "https://primateintelligence.ai/docs/errors#quota_exceeded"
     },
     {
       "code": "insufficient_credits",
-      "docs_url": "https://primateintelligence.ai/docs/errors#insufficient_credits",
-      "idem": false,
       "kind": "http",
-      "message": "Insufficient credits. Add credits or enable auto-refill.",
+      "status": 402,
       "retryable": false,
-      "status": 402
+      "idem": false,
+      "message": "Insufficient credits. Add credits or enable auto-refill.",
+      "docs_url": "https://primateintelligence.ai/docs/errors#insufficient_credits"
     },
     {
       "code": "grant_exhausted",
-      "docs_url": "https://primateintelligence.ai/docs/errors#grant_exhausted",
-      "idem": false,
       "kind": "http",
-      "message": "Free grant exhausted. Claim a full account via POST /v1/keys/request to continue.",
+      "status": 402,
       "retryable": false,
-      "status": 402
+      "idem": false,
+      "message": "Free grant exhausted. Claim a full account via POST /v1/keys/request to continue.",
+      "docs_url": "https://primateintelligence.ai/docs/errors#grant_exhausted"
     },
     {
       "code": "capacity_exhausted",
-      "docs_url": "https://primateintelligence.ai/docs/errors#capacity_exhausted",
-      "idem": true,
       "kind": "http",
-      "message": "Platform queue is full. Honor Retry-After.",
+      "status": 503,
       "retryable": true,
-      "status": 503
+      "idem": true,
+      "message": "Platform queue is full. Honor Retry-After.",
+      "docs_url": "https://primateintelligence.ai/docs/errors#capacity_exhausted"
     },
     {
       "code": "sandbox_limit_exceeded",
-      "docs_url": "https://primateintelligence.ai/docs/errors#sandbox_limit_exceeded",
-      "idem": true,
       "kind": "http",
-      "message": "Sandbox provisioning limit reached for this IP. Retry after the window resets, or sign up for a live key.",
+      "status": 429,
       "retryable": true,
-      "status": 429
+      "idem": true,
+      "message": "Sandbox provisioning limit reached for this IP. Retry after the window resets, or sign up for a live key.",
+      "docs_url": "https://primateintelligence.ai/docs/errors#sandbox_limit_exceeded"
     },
     {
       "code": "upgrade_limit_exceeded",
-      "docs_url": "https://primateintelligence.ai/docs/errors#upgrade_limit_exceeded",
-      "idem": false,
       "kind": "http",
-      "message": "Too many upgrade attempts from this IP. Retry after the window resets.",
+      "status": 429,
       "retryable": false,
-      "status": 429
+      "idem": false,
+      "message": "Too many upgrade attempts from this IP. Retry after the window resets.",
+      "docs_url": "https://primateintelligence.ai/docs/errors#upgrade_limit_exceeded"
+    },
+    {
+      "code": "github_verification_required",
+      "kind": "http",
+      "status": 403,
+      "retryable": false,
+      "idem": false,
+      "message": "A verified GitHub account is required for the free grant. Complete the GitHub device flow and retry with github_token.",
+      "docs_url": "https://primateintelligence.ai/docs/errors#github_verification_required"
+    },
+    {
+      "code": "github_token_invalid",
+      "kind": "http",
+      "status": 401,
+      "retryable": false,
+      "idem": false,
+      "message": "The github_token could not be verified with GitHub. Complete the device flow again and retry.",
+      "docs_url": "https://primateintelligence.ai/docs/errors#github_token_invalid"
+    },
+    {
+      "code": "github_account_already_used",
+      "kind": "http",
+      "status": 409,
+      "retryable": false,
+      "idem": false,
+      "message": "This GitHub account has already claimed a free grant. One free grant per GitHub account, ever.",
+      "docs_url": "https://primateintelligence.ai/docs/errors#github_account_already_used"
     },
     {
       "code": "device_code_expired",
-      "docs_url": "https://primateintelligence.ai/docs/errors#device_code_expired",
-      "idem": false,
       "kind": "http",
-      "message": "Device code has expired or been consumed. Start a new request.",
+      "status": 410,
       "retryable": false,
-      "status": 410
+      "idem": false,
+      "message": "Device code has expired or been consumed. Start a new request.",
+      "docs_url": "https://primateintelligence.ai/docs/errors#device_code_expired"
     },
     {
       "code": "inference_unavailable",
-      "docs_url": "https://primateintelligence.ai/docs/errors#inference_unavailable",
-      "idem": true,
       "kind": "http",
-      "message": "Transient inference backend outage. Retry with backoff.",
+      "status": 503,
       "retryable": true,
-      "status": 503
+      "idem": true,
+      "message": "Transient inference backend outage. Retry with backoff.",
+      "docs_url": "https://primateintelligence.ai/docs/errors#inference_unavailable"
     },
     {
       "code": "upstream_error",
-      "docs_url": "https://primateintelligence.ai/docs/errors#upstream_error",
-      "idem": false,
       "kind": "http",
-      "message": "Inference upstream returned an error. Message is sanitized \u2014 no internal paths or stack traces.",
+      "status": 502,
       "retryable": false,
-      "status": 502
+      "idem": false,
+      "message": "Inference upstream returned an error. Message is sanitized — no internal paths or stack traces.",
+      "docs_url": "https://primateintelligence.ai/docs/errors#upstream_error"
     },
     {
       "code": "db_unavailable",
-      "docs_url": "https://primateintelligence.ai/docs/errors#db_unavailable",
-      "idem": true,
       "kind": "http",
-      "message": "Transient database outage. Retry with backoff.",
+      "status": 503,
       "retryable": true,
-      "status": 503
+      "idem": true,
+      "message": "Transient database outage. Retry with backoff.",
+      "docs_url": "https://primateintelligence.ai/docs/errors#db_unavailable"
     },
     {
       "code": "internal_error",
-      "docs_url": "https://primateintelligence.ai/docs/errors#internal_error",
-      "idem": true,
       "kind": "http",
-      "message": "Internal error. Includes request_id; contact support if persistent.",
+      "status": 500,
       "retryable": true,
-      "status": 500
+      "idem": true,
+      "message": "Internal error. Includes request_id; contact support if persistent.",
+      "docs_url": "https://primateintelligence.ai/docs/errors#internal_error"
     },
     {
       "code": "webhook_endpoint_limit",
-      "docs_url": "https://primateintelligence.ai/docs/errors#webhook_endpoint_limit",
-      "idem": false,
       "kind": "http",
-      "message": "At most 10 webhook endpoints per account.",
+      "status": 400,
       "retryable": false,
-      "status": 400
+      "idem": false,
+      "message": "At most 10 webhook endpoints per account.",
+      "docs_url": "https://primateintelligence.ai/docs/errors#webhook_endpoint_limit"
     },
     {
       "code": "inference_error",
-      "docs_url": "https://primateintelligence.ai/docs/errors#inference_error",
-      "idem": false,
       "kind": "resource",
-      "message": "Model failed on this input. Safe to create a new analysis; persistent failures on one video \u2192 support with request_id.",
+      "status": null,
       "retryable": false,
-      "status": null
+      "idem": false,
+      "message": "Model failed on this input. Safe to create a new analysis; persistent failures on one video → support with request_id.",
+      "docs_url": "https://primateintelligence.ai/docs/errors#inference_error"
     },
     {
       "code": "stuck_timeout",
-      "docs_url": "https://primateintelligence.ai/docs/errors#stuck_timeout",
-      "idem": false,
       "kind": "resource",
-      "message": "The platform lost the job past the sweep window. Not billed; resubmit.",
+      "status": null,
       "retryable": false,
-      "status": null
+      "idem": false,
+      "message": "The platform lost the job past the sweep window. Not billed; resubmit.",
+      "docs_url": "https://primateintelligence.ai/docs/errors#stuck_timeout"
     }
   ],
-  "has_more": false,
-  "object": "list"
+  "has_more": false
 }

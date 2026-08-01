@@ -12,20 +12,45 @@ Machine-consumable reference for AI agents integrating with the Primate Intellig
 POST /v1/sandbox
 ```
 
-Returns a `pv_test_` key, a `fixture_video_id`, and a `fixture_prompt`. No auth required.
+Returns a `pv_test_` key, a `fixture_video_id`, and a `fixture_prompt`. No auth required. Provisioning is IP-capped per client (rolling 24h) — hitting the cap returns `429 sandbox_limit_exceeded` with `retry_after`.
 
 **Response includes:**
 - `livemode: false` — all sandbox responses are always test-mode
 - `upgrade` — instructions for upgrading to a live key (see below)
 
-### 2. Upgrade to a free live key (no account required)
+### 2. Upgrade to a free live key (GitHub-verified)
 
-Call `POST /v1/keys/upgrade` with your `pv_test_` key. Receives a real `pv_live_` key with a **6,000-second free credit grant**. No email, no card, no human-in-the-loop.
+Call `POST /v1/keys/upgrade` with your `pv_test_` key. Receives a real `pv_live_` key with a **6,000-second free credit grant**. No email, no card — but a **verified GitHub account is required** (one free grant per GitHub account, ever).
+
+**Step A — first call returns the GitHub device-flow bootstrap:**
 
 ```http
 POST /v1/keys/upgrade
 Authorization: Bearer pv_test_<your-sandbox-key>
 ```
+
+Returns `403 github_verification_required`. The error `details` carry everything needed:
+`client_id`, `device_code_url` (`https://github.com/login/device/code`), and `access_token_url` (`https://github.com/login/oauth/access_token`).
+
+**Step B — GitHub device flow (standard):**
+
+1. `POST https://github.com/login/device/code` with `client_id` (and `Accept: application/json`) → `{device_code, user_code, verification_uri, interval}`
+2. Show the user `verification_uri` + `user_code` (or open it in a browser); the user signs in to GitHub and enters the code
+3. Poll `POST https://github.com/login/oauth/access_token` with `client_id`, `device_code`, `grant_type=urn:ietf:params:oauth:grant-type:device_code` every `interval` seconds until it returns `access_token`
+
+No scopes are requested — the token only proves account identity.
+
+**Step C — retry the upgrade with the token:**
+
+```http
+POST /v1/keys/upgrade
+Authorization: Bearer pv_test_<your-sandbox-key>
+Content-Type: application/json
+
+{"github_token": "gho_..."}
+```
+
+The token is verified with GitHub and **discarded — never stored** (only the numeric GitHub account id is retained to enforce one-grant-per-account). A GitHub account that already claimed its grant gets `409 github_account_already_used` — use the billed claim flow (step 3) instead.
 
 Response includes a `pv_live_` key and `tier: "free_grant"`. Free-grant keys:
 - Run real GPU inference (`livemode: true`)
@@ -103,6 +128,26 @@ Agents can use these fields to verify the right file arrived before submitting a
 
 ---
 
+## Free Re-runs (platform incidents)
+
+When an analysis **fails because of a platform incident** (GPU outage, degraded inference), the failed analysis carries **`rerun_eligible: true`**. Call `POST /v1/analyses/{id}/rerun` to create a **fresh analysis at no charge** — same video, prompt/query, model, and options; new `an_` id; `usage` stays `null` on the re-run (never billed). One free re-run per failed analysis. Analyses that fail for non-platform reasons return `409 rerun_not_eligible`. If the re-run dispatch itself fails (503), your free re-run is NOT consumed — retry later.
+
+---
+
+## Demo Videos (public onboarding samples)
+
+`GET /v1/demo-videos` (no auth) returns curated sample videos with **precomputed results** for example prompts — `{videos: [{id, display_name, duration_seconds, thumbnail_url, results_by_prompt}]}` where `results_by_prompt` maps prompt text → `{answer, confidence, query_type, video_url, computed_at}`. Use these to inspect real result shapes before uploading anything. Documented subset only — extra fields exist but may change.
+
+---
+
+## Video Playback & Result History (PRI-496)
+
+**Source playback** — `GET /v1/videos/{id}` (and the list) populates `media: {url, expires_at}` on `ready` videos: a signed playback URL for the original source video, **fresh on every read with a 1-hour TTL**. When it expires, re-fetch the video for a new one — old videos always stay playable. `media` is `null` while the video is not ready or has no stored source object.
+
+**Per-video result history** — `GET /v1/videos/{id}/analyses` lists every analysis run against a video (newest first), with the same list envelope and filters as `GET /v1/analyses` (`status`, `limit`, `starting_after`). It is the resource-nested spelling of `GET /v1/analyses?video_id={id}` — use whichever fits your client. Together with `Analysis.artifacts` (annotated result video, also sign-on-read) this gives full library semantics: list videos, replay sources, and rebuild each video's analysis history.
+
+---
+
 ## Error Codes
 
 | Code | HTTP | Retryable | Description |
@@ -126,8 +171,9 @@ POST /v1/sandbox
   → pv_test_ key (livemode: false, fixture-only, 7-day TTL)
       │
       ▼
-POST /v1/keys/upgrade   (auth: pv_test_ key)
+POST /v1/keys/upgrade   (auth: pv_test_ key + github_token from GitHub device flow)
   → pv_live_ key (livemode: true, tier: free_grant, 6,000s grant, 30-day idle expiry)
+     (one free grant per GitHub account — duplicate → 409 github_account_already_used)
       │  (grant exhausted → 402 grant_exhausted)
       ▼
 POST /v1/keys/request  →  GET /v1/keys/request/{code}  →  billed pv_live_ key
@@ -188,8 +234,12 @@ Test keys (`pv_test_…`) also work and return deterministic fixture results. Ge
 curl -X POST https://api.primateintelligence.ai/v1/sandbox
 
 # Upgrade to a live key with a 6,000-second free credit grant
+# (requires a GitHub device-flow token — calling without one returns 403
+#  github_verification_required with the client_id + URLs to complete it)
 curl -X POST https://api.primateintelligence.ai/v1/keys/upgrade \
-  -H "Authorization: Bearer pv_test_<your-sandbox-key>"
+  -H "Authorization: Bearer pv_test_<your-sandbox-key>" \
+  -H "Content-Type: application/json" \
+  -d '{"github_token": "gho_..."}'
 ```
 
 Requests without a valid key receive a 401 JSON-RPC error with provisioning guidance.
@@ -209,7 +259,7 @@ responses — and every result carries `structuredContent` conforming to it, alo
 human-readable JSON text content.
 
 **`wait_for_analysis` response envelope:** the tool returns `{ analysis, retry }` — the
-[Analysis resource](https://primateintelligence.ai/docs/api#analyses) unmodified under `analysis`,
+[Analysis resource](https://primateintelligence.ai/docs/reference#analyses) unmodified under `analysis`,
 plus `retry: null` when the analysis reached a terminal state, or
 `retry: { reason: "timeout", note }` when the wait expired (call `wait_for_analysis` or
 `get_analysis` again). Earlier versions merged an `_mcp_note` field into the analysis object on
@@ -282,6 +332,8 @@ The server is also listed in the MCP registry at `ai.primateintelligence/mcp` wi
 - `usage.credit_balance_after` — the balance immediately after **this** analysis settled. Immutable point-in-time snapshot — it never changes as later analyses run. A `null` value (`snapshot_unavailable`) means the analysis settled before the snapshot feature shipped (migration 075) and the original balance is unknowable; treat it as missing data rather than zero.
 - `livemode: true` = real GPU inference. Never relay `livemode: false` results as evidence about real content.
 - `origin` ∈ `api | console | system` — how the analysis was created (public API, dashboard upload, or internal). **System-initiated analyses are never billed** — only `api`/`console` analyses reserve and settle credits.
+- `narrative` (when created with `options: {narrative: true}`): `{status: "generating"|"ready"|"failed", entries: [{t_s, text}]}` — timestamped event sentences for the video. Generation runs asynchronously **after** the analysis completes: the first completed read may show `status: "generating"` with empty entries — poll the GET until `ready`. Included in the analysis price (no surcharge). Without the opt-in: `narrative: null`, always.
+- `artifacts` (completed analyses with an annotated result video): `{annotated_video_url, expires_at}` — a **fresh 1-hour signed URL on every GET**; when it expires, re-fetch the analysis for a new one. `null` when no annotated video exists.
 
 ---
 
@@ -376,7 +428,7 @@ Authorization: Bearer pv_live_<key>
 }
 ```
 
-**Pricing rule:** the first prompt bills at full price; each additional prompt bills at **50%**. Credits are reserved at the discounted rate, so the discount is observable directly in the ledger (`GET /v1/credits` will show a smaller `seconds_delta` for analysis 2+).
+**Pricing rule:** the first prompt bills at full price; each additional prompt is discounted by `batch_discount_pct` (served by `GET /v1/credit-pricing`; currently **50%**, i.e. additional prompts bill at half price). The discount is config-driven — read it from the endpoint instead of hardcoding. Credits are reserved at the discounted rate, so the discount is observable directly in the ledger (`GET /v1/credits` will show a smaller `seconds_delta` for analysis 2+).
 
 **Worked example:** 6-second video at 1¢/s:
 - Prompt 1 (full price): 6s × 1¢ = **6¢**
@@ -433,6 +485,8 @@ Estimates are `null` when the video has no known duration (still processing or U
 
 ## Streaming (real-time video over WebRTC)
 
+`GET /v1/models` advertises streaming support per model — `darwin-1.3` carries `capabilities: {prompt, structured_query, narrative, streaming: true}`.
+
 Streams analyze live video in real time — same prompt semantics and same result contract as file analyses, delivered per-frame over a signaling WebSocket.
 
 ### Lifecycle
@@ -445,6 +499,7 @@ POST /v1/streams → queued|ready → (WS join → offer/answer/ICE) → live �
 2. `POST /v1/client_tokens {scopes: ["streams:signal"], stream_id, ttl_s}` → `pvct_` token for the device. The signaling WS **never** accepts secret keys.
 3. Connect `signaling.url?token=pvct_…`, send `join`, receive `ready` (or `queued {position}`), then standard WebRTC offer/answer + **bidirectional trickle ICE** (`ice {candidate}` messages flow both ways — the server trickles late-gathered srflx/relay candidates after its answer; keep consuming them).
 4. `live` → `result {frame_num, detections}` per analyzed frame, `metering {elapsed_s, billed_s, session_remaining_s}` every 5s, `warning {remaining_s}` before credit exhaustion, `end {reason}`.
+5. Mid-stream, send `{"type": "update_prompt", "prompt": "…"}` (client→server, ≤2000 chars) to change the question without reconnecting — the server recompiles it, applies it to the live engine, and confirms with `{"type": "prompt_updated"}`. Subsequent result frames echo the new prompt. Invalid prompts return `{"type": "error", "code": "validation_failed" | "parse_failed"}` and the old prompt stays active. On narrative-opted-in streams, expect `status` events (e.g. `recalculating`) as the engine rebuilds context after the update.
 
 ### Metering tick fields
 
@@ -491,6 +546,25 @@ Each `result.detections[]` row:
 - `query_type`, `search_terms`, `prompt_intent`: same vocabulary as `POST /v1/parse`
 - `frame_num`, `elapsed_s`, `session_id`, `session_fps`
 - `timing`: server-side latency telemetry (per-stage breakdowns: inference, encode, per-hop p50s). Rich, production-grade, safe to log — field names may grow, existing names are stable.
+- `narrative_update` (only when the stream was created with `options: {narrative: true}`): `{t_s, text}` — a new narrative sentence, emitted event-driven when the engine detects an appearance/disappearance/action, NOT per frame. Absent (not `null`) on frames without one. Terminal `results_summary.last_detections` never carries it.
+
+### Status events (narrative-opted-in streams only, PRI-496)
+
+Streams created with `options: {narrative: true}` also receive a `status` server→client event on the signaling WS:
+
+```json
+{"type": "status", "status": "prompt_context" | "combined_prompt" | "recalculating", "message": "…"}
+```
+
+Use these to order/annotate narrative entries (e.g. mark when the engine is recalculating context after a prompt update). The vocabulary is a **closed set** — exactly these three values; internal engine statuses never leak. Streams without the narrative opt-in never receive `status` events (their event vocabulary is unchanged).
+
+### Session recordings (PRI-496)
+
+Create the stream with **`recording: true`** (top-level boolean) to retrieve the server-side session recording afterwards:
+
+1. The stream resource carries `recording: {status}` — `recording` while live, `available` once ended with a stored recording, `failed` if capture failed, `none` if nothing was stored. Streams without the opt-in have `recording: null`.
+2. Once ended with `recording.status: "available"`, call **`GET /v1/streams/{id}/recording`** → `{url, expires_at, content_type: "video/h264", container: "h264-annex-b"}`. The URL is **signed fresh on every GET with a 1-hour TTL** — re-fetch for a new one; old recordings always stay retrievable.
+3. The recording is a raw H.264 Annex-B elementary stream (the exact annotated frames the client saw). Lossless remux to MP4: `ffmpeg -i recording.h264 -c copy recording.mp4`.
 
 ### end_reason vocabulary (honest by construction)
 
@@ -538,6 +612,8 @@ Key fields:
 | `price_per_second_cents` | Price per billed video-second, in cents |
 | `signup_grant_seconds` | Free credit-seconds on signup / free-grant upgrade |
 | `allowed_purchase_cents` | Preset top-up amounts |
+| `batch_discount_pct` | Percent discount for each prompt after the first in `POST /v1/analyses/batch` |
+| `batch_min_prompts` / `batch_max_prompts` | Allowed prompts-per-batch range |
 
 **Cost of an analysis** = `usage.billed_seconds × price_per_second_cents`.
 

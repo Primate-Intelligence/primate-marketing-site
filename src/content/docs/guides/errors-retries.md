@@ -70,6 +70,10 @@ Two codes never appear as HTTP errors — only inside a failed resource's `error
 
 Check `analysis.error` / `video.error` when `status` is `failed`.
 
+### Free re-runs after platform incidents
+
+Failed analyses carry **`rerun_eligible: boolean`** (present only on `failed` status) — `true` when the failure occurred during a declared platform incident or was flagged by ops. When eligible, **`POST /v1/analyses/{id}/rerun`** creates a **fresh analysis at no charge** — same video, prompt, model, and options; new id; `usage` stays `null` (never billed). One free re-run per failed analysis; calling on an ineligible analysis returns `409 rerun_not_eligible`. Check `rerun_eligible` before writing your own retry — a free re-run beats paying for a resubmit.
+
 ## A worked retry loop (Python, no SDK)
 
 ```python

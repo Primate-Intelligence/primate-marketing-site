@@ -90,3 +90,11 @@ awaiting_upload → uploading → processing → ready
 ```
 
 `DELETE /v1/videos/{id}` removes the video (409 `resource_conflict` while analyses are still running against it). Deletion propagates from S3 + CDN within 72h; signed URLs expire within 1h regardless.
+
+## Your video library (playback + history)
+
+Uploaded videos stay usable as a library — three fields/endpoints together give full list-replay-history semantics:
+
+- **`Video.media`** — ready videos carry `media: {url, expires_at}`, a signed playback URL for the original source video. Sign-on-read: generated **fresh on every GET with a 1-hour TTL** — re-fetch the video for a new URL after expiry; old videos always stay playable. `media` is `null` for non-ready videos and sandbox fixture videos.
+- **`GET /v1/videos/{id}/analyses`** — every analysis ever run against a video, newest first, with the same list envelope + filters (`status`, `limit`, `starting_after`) as `GET /v1/analyses`. (Equivalent spelling: `GET /v1/analyses?video_id={id}`.)
+- **`Analysis.artifacts`** — completed analyses with an annotated result video carry `annotated_video_url` (same sign-on-read semantics).

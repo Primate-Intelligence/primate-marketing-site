@@ -21,10 +21,15 @@ POST /v1/streams → queued|ready → (WS join → offer/answer/ICE) → live �
 curl -s -X POST https://api.primateintelligence.ai/v1/streams \
   -H "Authorization: Bearer $PRIMATE_API_KEY" \
   -H "Content-Type: application/json" \
-  -d '{"prompt": "Is there a person in the frame?"}'
+  -d '{"prompt": "Is there a person in the frame?", "options": {"narrative": true}, "recording": true}'
 ```
 
 The response carries everything the client needs: `signaling.url` (a WebSocket), `ice_servers` (STUN/TURN with credentials), `limits` (`max_session_s`, `warn_at_remaining_s`), and `queue_position`/`estimated_start_s` when capacity is busy.
+
+Two optional opt-ins at create time:
+
+- **`options: {narrative: true}`** — [live narrative](#live-narrative-opt-in): result detections carry `narrative_update` sentences, and the WS delivers `status` ordering events. No surcharge.
+- **`recording: true`** — [session recording](#session-recordings-opt-in): retrieve the annotated session video after the stream ends.
 
 2. **Mint a client token** for the browser/device (the signaling WS **never** accepts secret keys):
 
@@ -45,10 +50,12 @@ const session = await connectStream({
   clientToken,               // pvct_… minted in step 2
   mediaStream: await navigator.mediaDevices.getUserMedia({ video: true }),
   onResult: (r) => console.log(r.frame_num, r.detections),
-  onWarning: (remainingS) => showCountdown(remainingS),
+  onNarrative: (n) => log(`${n.t_s}s: ${n.text}`),        // narrative streams only
+  onStatus: (s) => log(`engine: ${s.status}`),            // narrative streams only
+  onWarning: (w) => (w.code ? diagnose(w) : showCountdown(w.remaining_s)),
   onEnd: (reason) => cleanup(reason),
 });
-// change the question mid-stream:
+// change the question mid-stream (server confirms with prompt_updated):
 session.updatePrompt('Is there a forklift moving?');
 // done:
 session.end();
@@ -59,7 +66,7 @@ Under the hood: WS `join` → `ready` (or `queued {position}`) → WebRTC `offer
 ## Signaling protocol (build your own client)
 
 Messages you send: `join`, `offer {sdp}`, `ice {candidate}`, `update_prompt {prompt}`, `end`, `ping`.
-Messages you receive: `queued {position, estimated_start_s}`, `ready`, `answer {sdp}`, `ice {candidate}`, `live`, `result {frame_num, detections}`, `metering {…}`, `warning {…}`, `end {reason}`, `error {code, message}`, `pong`.
+Messages you receive: `queued {position, estimated_start_s}`, `ready`, `answer {sdp}`, `ice {candidate}`, `live`, `result {frame_num, detections}`, `prompt_updated`, `status {…}` (narrative streams only), `metering {…}`, `warning {…}`, `end {reason}`, `error {code, message}`, `pong`.
 
 There are two kinds of `warning`: the credit-exhaustion countdown (`warning {remaining_s}`, no `code` field) and diagnostic warnings that carry a `code` field — see [No-media warning](#no-media-warning-the-server-tells-you-when-your-media-is-the-problem) below. Distinguish them by the presence of `code`.
 
@@ -70,6 +77,31 @@ A Python/aiortc backend example (robotics-style, no browser — including a "str
 ### Result contract (identical to file analyses)
 
 Each `result.detections[]` row uses the same enums and casing as the file API: `answer` is lowercase `yes|no|indeterminate`, `confidence` is 0..1, and `prompt` is echoed exactly as you submitted it. Latency telemetry (per-stage breakdowns) lives under a `timing` object.
+
+### Update the prompt mid-stream
+
+Send `{"type": "update_prompt", "prompt": "…"}` (≤2000 chars) at any point while live — no reconnect, no new stream. The server recompiles the prompt, applies it to the live engine, and confirms with `{"type": "prompt_updated"}`; subsequent result frames echo the new prompt. An invalid prompt returns `{"type": "error", "code": "validation_failed" | "parse_failed"}` and the **old prompt stays active**. On narrative streams, expect a `recalculating` status event while the engine rebuilds context.
+
+### Live narrative (opt-in)
+
+Create the stream with `options: {narrative: true}` and two things change (nothing changes without the opt-in):
+
+1. Result detections carry a **`narrative_update`** object — `{t_s, text}`, a new narrative sentence — whenever the engine detects an appearance/disappearance/action. Event-driven, NOT per frame: absent (not `null`) on frames without one.
+2. The WS delivers additive **`status`** events for ordering/annotating narrative entries:
+
+```json
+{"type": "status", "status": "prompt_context" | "combined_prompt" | "recalculating", "message": "…"}
+```
+
+The vocabulary is a **closed set** — exactly these three values; internal engine statuses never leak. Typical use: mark when the engine is recalculating context right after an `update_prompt`. Included in the per-second price — no surcharge.
+
+### Session recordings (opt-in)
+
+Create the stream with **`recording: true`** (top-level boolean) to retrieve the server-side session recording afterwards:
+
+1. The stream resource carries `recording: {status}` — `recording` while live, `available` once ended with a stored recording, `failed`, or `none`. Streams without the opt-in have `recording: null`.
+2. Once `available`, call `GET /v1/streams/{id}/recording` → `{url, expires_at, content_type: "video/h264", container: "h264-annex-b"}`. The URL is **signed fresh on every GET, 1-hour TTL** — re-fetch for a new one; old recordings always stay retrievable.
+3. The recording is a raw H.264 Annex-B elementary stream (the exact annotated frames the client saw). Lossless remux to MP4: `ffmpeg -i recording.h264 -c copy recording.mp4`.
 
 ### Result sampling — results are sampled, not per-frame
 

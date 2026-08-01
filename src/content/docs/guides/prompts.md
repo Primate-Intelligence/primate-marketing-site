@@ -109,6 +109,16 @@ Clip objects carry `start_s`, `end_s`, `confidence`. Present for presence, actio
 
 How the question was classified: `object`, `action`, `compound`, `attribute`, or `open_ended`.
 
+### `narrative` (opt-in)
+
+Create the analysis with `options: {narrative: true}` and the completed analysis carries a top-level `narrative` object — timestamped event sentences describing what happened in the video:
+
+```json
+{"narrative": {"status": "ready", "entries": [{"t_s": 3.2, "text": "A person enters from the left."}]}}
+```
+
+Generation runs **asynchronously after the analysis completes**: the first completed read may show `status: "generating"` with empty entries — keep polling the GET until `ready` (or `failed`). Included in the analysis price, no surcharge. Without the opt-in, `narrative` is always `null`. (Streams have a live equivalent — see [Streaming § Live narrative](/docs/guides/streaming#live-narrative-opt-in).)
+
 ---
 
 ## Unassessable components
