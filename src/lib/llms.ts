@@ -81,7 +81,7 @@ ${docLines}
 - Every blog post has a markdown twin: append .md to the post URL (e.g. /blog/how-jepa-works.md)
 ${postLines}
 - [Technology](${SITE}/technology): Model releases and capability updates
-- [darwin-preview](${SITE}/technology/darwin-preview): The darwin-preview model — full supported-actions vocabulary (532 classes) — markdown twin at /technology/darwin-preview.md
+- [Darwin-preview-1.3B](${SITE}/technology/darwin-preview): The Darwin-preview-1.3B model — full supported-actions vocabulary (532 classes) — markdown twin at /technology/darwin-preview.md
 
 ## Legal
 

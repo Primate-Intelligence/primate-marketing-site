@@ -23,7 +23,7 @@ site: Primate Intelligence
 
 ${INTRO_PARAGRAPHS.join('\n\n')}
 
-## What darwin-preview can detect today
+## What Darwin-preview-1.3B can detect today
 
 ${ACTIONS_INTRO}
 
