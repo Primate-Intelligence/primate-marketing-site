@@ -1,6 +1,6 @@
 ---
 title: "Primate Vision vs. Roboflow / Ultralytics (2026): Detections vs. Verdicts"
-slug: "primate-vision-vs-roboflow-ultralytics"
+slug: "roboflow-ultralytics"
 author: "Matt Miesnieks"
 authorInitials: "MM"
 date: "2026-07-31"
@@ -14,7 +14,7 @@ The Roboflow + Ultralytics ecosystem is the best per-frame object-detection stac
 
 But their output is **detections, not answers**. Boxes and class confidences per frame, with no temporal understanding, no event semantics, and no verdicts. Primate Vision answers the question the frames add up to — "did the forklift enter the loading zone?" — with a **deterministic verdict** (yes / no / indeterminate), a calibrated 0–1 confidence, timestamped evidence segments, and an annotated evidence video, live over managed WebRTC or against an uploaded file.
 
-*This is part of our [full 2026 video-AI landscape comparison](/blog/primate-vision-vs-video-ai-landscape-2026).*
+*This is part of our [full 2026 video-AI landscape comparison](/compare/video-ai-landscape-2026).*
 
 ---
 

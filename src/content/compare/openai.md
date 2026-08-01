@@ -1,6 +1,6 @@
 ---
 title: "Primate Vision vs. OpenAI (2026): A Video API vs. a Frame-Extraction Workaround"
-slug: "primate-vision-vs-openai"
+slug: "openai"
 author: "Matt Miesnieks"
 authorInitials: "MM"
 date: "2026-07-31"
@@ -16,7 +16,7 @@ And the direction of travel is away from video, not toward it. The only video-re
 
 None of this makes OpenAI bad. GPT-5.6's visual reasoning over stills — charts, receipts, screenshots, documents — is the best available, and I'll say so repeatedly below. But if your input is *video* — moving, time-ordered, possibly live — OpenAI doesn't sell the product. Primate Vision is exactly that product: live WebRTC streams and 2 GiB uploads at native frame rates, returning a deterministic verdict — yes / no / indeterminate — with calibrated confidence, timestamped evidence, and published latency.
 
-*This is part of our [full 2026 video-AI landscape comparison](/blog/primate-vision-vs-video-ai-landscape-2026).*
+*This is part of our [full 2026 video-AI landscape comparison](/compare/video-ai-landscape-2026).*
 
 ---
 

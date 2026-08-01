@@ -1,6 +1,6 @@
 ---
 title: "Primate Vision vs. AWS Rekognition + Bedrock Nova (2026): The Door AWS Closed"
-slug: "primate-vision-vs-aws-rekognition"
+slug: "aws-rekognition"
 author: "Matt Miesnieks"
 authorInitials: "MM"
 date: "2026-07-31"
@@ -16,7 +16,7 @@ Read that again. The largest cloud on earth decided real-time video analysis was
 
 Primate Vision is the managed real-time lane AWS exited: live WebRTC ingest at native frame rates, plain-English questions, and a **deterministic verdict** — yes / no / indeterminate — with calibrated confidence, timestamps, and an annotated evidence video.
 
-*This is part of our [full 2026 video-AI landscape comparison](/blog/primate-vision-vs-video-ai-landscape-2026).*
+*This is part of our [full 2026 video-AI landscape comparison](/compare/video-ai-landscape-2026).*
 
 ---
 

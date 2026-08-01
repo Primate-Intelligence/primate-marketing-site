@@ -1,6 +1,6 @@
 ---
 title: "Primate Vision vs. Gemini (API + Live) (2026): 1fps Stills vs. Native Frame Rate"
-slug: "primate-vision-vs-gemini"
+slug: "gemini"
 author: "Matt Miesnieks"
 authorInitials: "MM"
 date: "2026-07-31"
@@ -14,7 +14,7 @@ Let me start with the concession, because it's a big one: Gemini is the stronges
 
 But for *real-time video analysis*, the spec sheet decides, not the marketing. Gemini Live's video input is hard-capped at **1fps JPEG stills**. Audio+video sessions last **2 minutes** without context compression. And the meter **re-bills the entire session context on every turn**. Primate Vision watches live video at native frame rates over managed WebRTC (45ms p50 per-frame inference) and returns a **deterministic verdict** — yes / no / indeterminate — with calibrated confidence, timestamps, and an annotated evidence video, on a flat per-second meter.
 
-*A note on keeping Google straight: this post is about **Gemini** — Google's modern multimodal surface. Google Video Intelligence, the 2017-era annotation API, is a different product with different criticisms; we cover it in the [full landscape comparison](/blog/primate-vision-vs-video-ai-landscape-2026). Don't conflate them — we don't.*
+*A note on keeping Google straight: this post is about **Gemini** — Google's modern multimodal surface. Google Video Intelligence, the 2017-era annotation API, is a different product with different criticisms; we cover it in the [full landscape comparison](/compare/video-ai-landscape-2026). Don't conflate them — we don't.*
 
 ---
 

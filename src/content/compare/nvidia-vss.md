@@ -1,6 +1,6 @@
 ---
 title: "Primate Vision vs. NVIDIA VSS (2026): A Managed API vs. a Build-It-Yourself Blueprint"
-slug: "primate-vision-vs-nvidia-vss"
+slug: "nvidia-vss"
 author: "Matt Miesnieks"
 authorInitials: "MM"
 date: "2026-07-31"
@@ -16,7 +16,7 @@ It is also, by NVIDIA's own documentation, not a product. It's a reference archi
 
 Primate Vision is the managed inverse: one API call, a **deterministic verdict** (yes / no / indeterminate) with calibrated confidence, timestamped evidence, an annotated evidence video, and a published 45ms p50 latency — with nothing to deploy. Which one you want comes down to two questions: do you own GPUs and an infra team, and can your data leave the building?
 
-*This is part of our [full 2026 video-AI landscape comparison](/blog/primate-vision-vs-video-ai-landscape-2026).*
+*This is part of our [full 2026 video-AI landscape comparison](/compare/video-ai-landscape-2026).*
 
 ---
 

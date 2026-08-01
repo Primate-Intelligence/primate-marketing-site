@@ -1,6 +1,6 @@
 ---
 title: "Primate Vision vs. Azure Video Indexer (2026): An Insight Catalog vs. a Live Answer"
-slug: "primate-vision-vs-azure-video-indexer"
+slug: "azure-video-indexer"
 author: "Matt Miesnieks"
 authorInitials: "MM"
 date: "2026-07-31"
@@ -16,7 +16,7 @@ Microsoft walked away from live video analysis. Twice. That history is the most 
 
 What remains is a genuinely good product for a different job: upload a file, get ~30 insight types — transcript, translation, OCR, faces, celebrities, topics, scenes, moderation — on one shared timeline, inside the Azure compliance umbrella. For cataloging stored media at scale it's also far cheaper per hour than we are, and I'll print those numbers below. But it's a catalog, not an answer. Primate Vision watches video **live, at native frame rates**, takes a plain-English question, and returns a deterministic verdict — yes / no / indeterminate — with calibrated confidence and evidence you can watch.
 
-*This is part of our [full 2026 video-AI landscape comparison](/blog/primate-vision-vs-video-ai-landscape-2026).*
+*This is part of our [full 2026 video-AI landscape comparison](/compare/video-ai-landscape-2026).*
 
 ---
 

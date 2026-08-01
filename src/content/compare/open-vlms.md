@@ -1,6 +1,6 @@
 ---
 title: "Primate Vision vs. Self-Hosted Open VLMs (2026): Buying Answers vs. Building a Video Pipeline"
-slug: "primate-vision-vs-open-vlms"
+slug: "open-vlms"
 author: "Matt Miesnieks"
 authorInitials: "MM"
 date: "2026-07-31"
@@ -18,7 +18,7 @@ No open model ships a streaming ingestion layer, a calibrated verdict, evidence 
 
 The real comparison isn't model vs. model. It's a parts list vs. an answer.
 
-*This is part of our [full 2026 video-AI landscape comparison](/blog/primate-vision-vs-video-ai-landscape-2026).*
+*This is part of our [full 2026 video-AI landscape comparison](/compare/video-ai-landscape-2026).*
 
 ---
 
