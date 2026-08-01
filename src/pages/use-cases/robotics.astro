@@ -1,0 +1,61 @@
+---
+import Base from '../../layouts/Base.astro';
+import ComingSoon from '../../components/ComingSoon.astro';
+---
+
+<Base
+  title="Robotics — Use Case"
+  description="Scene state for manipulation and navigation — deterministic, low-latency perception that runs on edge compute. One API replaces YOLO, SAM, and custom glue."
+  canonicalPath="/use-cases/robotics"
+  mdTwin="/use-cases/robotics.md"
+>
+  <div class="page">
+    <a class="back" href="/use-cases">← Use cases</a>
+    <section class="hero">
+      <p class="eyebrow">Robotics</p>
+      <h1>Robots that understand before they act</h1>
+      <p class="lede">
+        Deterministic, low-latency perception that runs on edge compute.
+      </p>
+    </section>
+
+    <section class="content">
+      <p>
+        General-purpose robots need to understand object relationships and predict the
+        consequences of actions — not just detect what's in view. The current state of the
+        art is a fragmented stack: YOLO for detection, SAM for segmentation, custom post-processing
+        for relationship inference, and handwritten glue that breaks every time the environment
+        changes. Each component adds latency, adds a failure mode, and adds a training budget.
+      </p>
+      <p>
+        Darwin replaces that stack with a single API call. It runs on Jetson-grade edge hardware
+        with 45ms p50 per-frame inference, produces deterministic outputs with calibrated
+        confidence scores, and works zero-shot across environments. The same model that understands
+        a warehouse picking task understands a kitchen manipulation task — because it learned
+        to understand video, not to detect a specific set of objects.
+      </p>
+
+      <ComingSoon note="Robotics integration guide and edge deployment examples — coming during our August launch." />
+    </section>
+  </div>
+</Base>
+
+<style>
+  .page { max-width: 760px; margin: 0 auto; padding: 64px 24px 96px; }
+  .back { font-size: 14px; color: var(--color-text-muted); display: block; margin-bottom: 32px; }
+  .back:hover { color: var(--color-signal); }
+  .hero { margin-bottom: 40px; }
+  .eyebrow {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--color-signal);
+    margin: 0 0 12px;
+  }
+  h1 { font-size: 44px; font-weight: 700; letter-spacing: -0.02em; line-height: 1.2; margin: 0 0 16px; }
+  .lede { font-size: 18px; color: var(--color-text-muted); line-height: 1.6; margin: 0; }
+  .content p { font-size: 17px; line-height: 1.75; color: var(--color-text-primary); opacity: 0.85; margin: 0 0 16px; }
+  @media (max-width: 640px) { h1 { font-size: 32px; } .page { padding: 44px 20px 64px; } }
+</style>

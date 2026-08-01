@@ -1,0 +1,129 @@
+---
+import Base from '../layouts/Base.astro';
+import ComingSoon from '../components/ComingSoon.astro';
+---
+
+<Base
+  title="Built for AI agents"
+  description="Primate Vision is the first video understanding API an AI agent can integrate end-to-end with zero human touch. Mint a sandbox key, discover the API via llms.txt, run an analysis, return results."
+  canonicalPath="/agents"
+  mdTwin="/agents-page.md"
+>
+  <div class="page">
+    <section class="hero">
+      <p class="eyebrow">For AI agents</p>
+      <h1>Built for AI agents</h1>
+      <p class="lede">
+        Zero human touch from discovery to first result.
+      </p>
+    </section>
+
+    <section class="content">
+      <p>
+        Primate Vision is the first video understanding API an AI agent can integrate
+        end-to-end with zero human touch: the agent mints its own sandbox key
+        (<code>POST /v1/sandbox</code> — no signup, no card), discovers the API via
+        machine-readable surfaces, runs an analysis, and returns results to the user.
+        A human only enters the loop when money is owed.
+      </p>
+
+      <h2>Get a key — no email, no card</h2>
+      <pre><code>curl -X POST https://api.primateintelligence.ai/v1/sandbox</code></pre>
+      <p>
+        Returns a <code>pv_test_*</code> key instantly. The key is good for a metered
+        free grant — enough to run real analyses. No signup flow, no OAuth redirect,
+        no human waiting at the other end.
+      </p>
+
+      <h2>Discovery surfaces</h2>
+      <ul class="surfaces">
+        <li>
+          <a href="/llms.txt"><code>/llms.txt</code></a> — agent-readable index of the entire API
+          and every product page, in plain text
+        </li>
+        <li>
+          <a href="/llms-full.txt"><code>/llms-full.txt</code></a> — full docs corpus in one file
+        </li>
+        <li>
+          <a href="/agents.md"><code>/agents.md</code></a> — agent quickstart guide with copy-paste
+          curl commands
+        </li>
+        <li>
+          Markdown twins of every page — append <code>.md</code> to any URL
+          (e.g. <code>/pricing.md</code>, <code>/compare/twelve-labs.md</code>)
+        </li>
+        <li>
+          <a href="https://smithery.ai/servers/matt-uwba/primate-intelligence">MCP server on Smithery</a>
+          — drop into any MCP-capable agent with <code>npx @primate-intelligence/mcp</code>
+        </li>
+      </ul>
+
+      <h2>Full API docs</h2>
+      <p>
+        <a href="/docs">Read the docs →</a> · OpenAPI 3.1 contract at
+        <code>https://api.primateintelligence.ai/v1/openapi.json</code>
+      </p>
+
+      <ComingSoon note="The full 'Let Claude analyze your video' walkthrough — coming during our August launch." />
+    </section>
+  </div>
+</Base>
+
+<style>
+  .page { max-width: 760px; margin: 0 auto; padding: 64px 24px 96px; }
+  .hero { margin-bottom: 40px; }
+  .eyebrow {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--color-signal);
+    margin: 0 0 12px;
+  }
+  h1 { font-size: 44px; font-weight: 700; letter-spacing: -0.02em; line-height: 1.2; margin: 0 0 16px; }
+  .lede { font-size: 18px; color: var(--color-text-muted); line-height: 1.6; margin: 0; }
+  .content p { font-size: 17px; line-height: 1.75; color: var(--color-text-primary); opacity: 0.85; margin: 0 0 16px; }
+  .content a { color: var(--color-signal); }
+  .content a:hover { text-decoration: underline; }
+  h2 { font-size: 22px; font-weight: 600; letter-spacing: -0.01em; margin: 40px 0 12px; }
+  pre {
+    background: #1a1916;
+    color: #e6e9f4;
+    border-radius: 8px;
+    padding: 16px 20px;
+    overflow-x: auto;
+    font-size: 13px;
+    line-height: 1.6;
+    margin: 0 0 16px;
+  }
+  pre code { background: none; padding: 0; color: inherit; }
+  code {
+    background: var(--color-bg-secondary);
+    border: 1px solid var(--color-border);
+    border-radius: 3px;
+    padding: 1px 6px;
+    font-size: 13px;
+    font-family: var(--font-mono);
+  }
+  pre code { background: none; border: none; padding: 0; font-size: inherit; }
+
+  .surfaces {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+  .surfaces li {
+    padding: 14px 16px;
+    background: var(--color-bg-surface);
+    border: 1px solid var(--color-border);
+    border-radius: 6px;
+    font-size: 15px;
+    line-height: 1.5;
+  }
+
+  @media (max-width: 640px) { h1 { font-size: 32px; } .page { padding: 44px 20px 64px; } }
+</style>

@@ -1,0 +1,69 @@
+---
+import Base from '../../layouts/Base.astro';
+import ComingSoon from '../../components/ComingSoon.astro';
+---
+
+<Base
+  title="How JEPA works"
+  description="What a joint-embedding predictive architecture is — Darwin builds an internal representation of a scene and predicts forward in representation space."
+  canonicalPath="/technology/how-jepa-works"
+  mdTwin="/technology/how-jepa-works.md"
+>
+  <div class="page">
+    <a class="back" href="/technology">← Technology</a>
+    <section class="hero">
+      <p class="eyebrow">Technology</p>
+      <h1>How JEPA works</h1>
+      <p class="lede">
+        Prediction in representation space, not pixel space — semantic understanding without
+        a language model in the perception loop.
+      </p>
+    </section>
+
+    <section class="content">
+      <p>
+        A joint-embedding predictive architecture (JEPA) is a model that learns by predicting
+        the representation of a future or masked state — not by reconstructing raw pixels.
+        Where a generative model asks "what does this look like?", a JEPA asks "what
+        representation will this produce?" That distinction changes everything about how
+        the model learns to understand scenes.
+      </p>
+      <p>
+        Darwin builds an internal representation of a video scene — a compact embedding
+        that captures the semantic state: what is happening, how objects relate, what is
+        likely to happen next. It then predicts forward in that representation space,
+        giving it semantic understanding without a language model anywhere in the
+        perception loop. Language only enters at the query layer, when a user or agent
+        asks a question in plain English. This is why Darwin's outputs are deterministic:
+        the perception pipeline is pure computation, not sampling.
+      </p>
+      <p>
+        Further reading: <a href="/blog/jepa-deep-dive">JEPA deep dive — Joint-embedding predictive architectures for video</a>.
+      </p>
+
+      <ComingSoon note="The diagram-led JEPA 101 explainer is coming during our August launch." />
+    </section>
+  </div>
+</Base>
+
+<style>
+  .page { max-width: 760px; margin: 0 auto; padding: 64px 24px 96px; }
+  .back { font-size: 14px; color: var(--color-text-muted); display: block; margin-bottom: 32px; }
+  .back:hover { color: var(--color-signal); }
+  .hero { margin-bottom: 40px; }
+  .eyebrow {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--color-signal);
+    margin: 0 0 12px;
+  }
+  h1 { font-size: 44px; font-weight: 700; letter-spacing: -0.02em; line-height: 1.2; margin: 0 0 16px; }
+  .lede { font-size: 18px; color: var(--color-text-muted); line-height: 1.6; margin: 0; }
+  .content p { font-size: 17px; line-height: 1.75; color: var(--color-text-primary); opacity: 0.85; margin: 0 0 16px; }
+  .content a { color: var(--color-signal); }
+  .content a:hover { text-decoration: underline; }
+  @media (max-width: 640px) { h1 { font-size: 32px; } .page { padding: 44px 20px 64px; } }
+</style>

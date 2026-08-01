@@ -1,0 +1,89 @@
+---
+import Base from '../layouts/Base.astro';
+import ComingSoon from '../components/ComingSoon.astro';
+
+const links = [
+  { href: '/team', label: 'Team', desc: 'Founders and advisors.' },
+  { href: '/values', label: 'Values', desc: 'Seven principles that guide how we build.' },
+  { href: '/careers', label: 'Careers', desc: 'Open roles at Primate Intelligence.' },
+];
+---
+
+<Base
+  title="About Primate Intelligence"
+  description="We built Darwin — a JEPA-based perception model that watches video the way a systems engineer needs: deterministic, timestamped, confidence-scored, queryable in plain English."
+  canonicalPath="/about"
+  mdTwin="/about.md"
+>
+  <div class="page">
+    <section class="hero">
+      <p class="eyebrow">About</p>
+      <h1>About Primate Intelligence</h1>
+    </section>
+
+    <section class="content">
+      <p>
+        Video is the largest untapped data source in the world, and the tools to understand
+        it either hallucinate (VLMs) or are brittle single-purpose pipelines (YOLO-era CV).
+        We built Darwin, a JEPA-based perception model that watches video the way a systems
+        engineer needs: deterministic, timestamped, confidence-scored, queryable in plain
+        English — shipped as an API you can try right now, free, no signup, even from
+        your AI agent.
+      </p>
+      <p>
+        Primate Intelligence was founded by Matt Miesnieks (CEO; previously founded 6D.ai,
+        acquired by Niantic) and Mehdi Nikkhah (PhD; led CV engineering and research at
+        6D.ai). We are based in San Jose, CA.
+      </p>
+
+      <ComingSoon note="The full founding story — why we started with video, why we chose JEPA, what we saw in 2024 — is publishing during our August launch." />
+
+      <div class="card-grid">
+        {links.map((l) => (
+          <a class="card" href={l.href}>
+            <h3>{l.label}</h3>
+            <p>{l.desc}</p>
+            <span class="arrow" aria-hidden="true">→</span>
+          </a>
+        ))}
+      </div>
+    </section>
+  </div>
+</Base>
+
+<style>
+  .page { max-width: 760px; margin: 0 auto; padding: 64px 24px 96px; }
+  .hero { margin-bottom: 40px; }
+  .eyebrow {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--color-signal);
+    margin: 0 0 12px;
+  }
+  h1 { font-size: 44px; font-weight: 700; letter-spacing: -0.02em; line-height: 1.2; margin: 0 0 0; }
+  .content p { font-size: 17px; line-height: 1.75; color: var(--color-text-primary); opacity: 0.85; margin: 0 0 16px; }
+
+  .card-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-top: 40px; }
+  .card {
+    background: var(--color-bg-surface);
+    border: 1px solid var(--color-border);
+    border-radius: 6px;
+    padding: 24px;
+    color: inherit;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+  }
+  .card:hover { border-color: rgba(27, 79, 224, 0.4); color: inherit; }
+  .card h3 { font-size: 16px; font-weight: 600; margin: 0 0 8px; }
+  .card p { font-size: 13px; color: var(--color-text-muted); line-height: 1.5; margin: 0; opacity: 1; }
+  .arrow { position: absolute; bottom: 20px; right: 20px; color: var(--color-signal); font-size: 16px; }
+  @media (max-width: 640px) {
+    h1 { font-size: 32px; }
+    .card-grid { grid-template-columns: 1fr; }
+    .page { padding: 44px 20px 64px; }
+  }
+</style>

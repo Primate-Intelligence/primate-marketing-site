@@ -1,0 +1,89 @@
+---
+import Base from '../../layouts/Base.astro';
+import ComingSoon from '../../components/ComingSoon.astro';
+---
+
+<Base
+  title="Benchmarks"
+  description="What we measure (action detection, temporal localization, QA with timestamps), against which baselines, and honest failure modes."
+  canonicalPath="/technology/benchmarks"
+  mdTwin="/technology/benchmarks.md"
+>
+  <div class="page">
+    <a class="back" href="/technology">← Technology</a>
+    <section class="hero">
+      <p class="eyebrow">Technology</p>
+      <h1>Benchmarks</h1>
+      <p class="lede">
+        What we measure, against which baselines, and honest failure modes.
+      </p>
+    </section>
+
+    <section class="content">
+      <p>
+        Our benchmark suite covers three capability dimensions: action detection (does
+        the model correctly identify that a given action occurred?), temporal localization
+        (does it know when — with timestamps?), and question-answering with timestamps
+        (can it answer open-ended questions about video content and cite the evidence?).
+        We run these against YOLO-class detectors, VLM-based approaches (GPT-4o, Gemini),
+        and the V-JEPA 2.1 family — the most honest baselines for each capability class.
+      </p>
+      <p>
+        Darwin beats V-JEPA 2.1 on SSv2 and EK-100 action benchmarks at a fraction of
+        the training cost. On temporal localization tasks it outperforms every VLM we
+        have tested, because VLMs sample frames — Darwin watches video. Honest failure
+        modes are part of the published results: low-contrast scenes and heavily
+        occluded objects remain harder for Darwin than for specialized detectors.
+      </p>
+
+      <div class="link-cards">
+        <a class="link-card" href="/blog/darwin-video-jepa-benchmarks">
+          <strong>Darwin: Video JEPA model that outperforms SOTA models while running on edge CPU</strong>
+          <span>Published benchmark results — the primary reference.</span>
+        </a>
+        <a class="link-card" href="/blog/benchmark-post">
+          <strong>Benchmark post</strong>
+          <span>Methodology and extended results.</span>
+        </a>
+      </div>
+
+      <ComingSoon note="Extended methodology and next model release results — coming during our August launch." />
+    </section>
+  </div>
+</Base>
+
+<style>
+  .page { max-width: 760px; margin: 0 auto; padding: 64px 24px 96px; }
+  .back { font-size: 14px; color: var(--color-text-muted); display: block; margin-bottom: 32px; }
+  .back:hover { color: var(--color-signal); }
+  .hero { margin-bottom: 40px; }
+  .eyebrow {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--color-signal);
+    margin: 0 0 12px;
+  }
+  h1 { font-size: 44px; font-weight: 700; letter-spacing: -0.02em; line-height: 1.2; margin: 0 0 16px; }
+  .lede { font-size: 18px; color: var(--color-text-muted); line-height: 1.6; margin: 0; }
+  .content p { font-size: 17px; line-height: 1.75; color: var(--color-text-primary); opacity: 0.85; margin: 0 0 16px; }
+
+  .link-cards { display: flex; flex-direction: column; gap: 12px; margin: 32px 0; }
+  .link-card {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    padding: 16px 20px;
+    border: 1px solid var(--color-border);
+    border-radius: 6px;
+    background: var(--color-bg-surface);
+    color: inherit;
+    font-size: 14px;
+  }
+  .link-card:hover { border-color: rgba(27, 79, 224, 0.4); }
+  .link-card strong { color: var(--color-signal); font-weight: 600; }
+  .link-card span { color: var(--color-text-muted); }
+  @media (max-width: 640px) { h1 { font-size: 32px; } .page { padding: 44px 20px 64px; } }
+</style>

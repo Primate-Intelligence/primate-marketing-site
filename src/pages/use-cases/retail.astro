@@ -1,0 +1,61 @@
+---
+import Base from '../../layouts/Base.astro';
+import ComingSoon from '../../components/ComingSoon.astro';
+---
+
+<Base
+  title="Retail — Use Case"
+  description="Queue analytics and shelf monitoring in plain English — no per-store model training required."
+  canonicalPath="/use-cases/retail"
+  mdTwin="/use-cases/retail.md"
+>
+  <div class="page">
+    <a class="back" href="/use-cases">← Use cases</a>
+    <section class="hero">
+      <p class="eyebrow">Retail</p>
+      <h1>Queue analytics and shelf monitoring in plain English</h1>
+      <p class="lede">
+        No per-store model training. Just ask.
+      </p>
+    </section>
+
+    <section class="content">
+      <p>
+        Retail environments vary enormously: store layouts change, lighting conditions shift,
+        camera angles differ by location. Traditional CV pipelines require per-store training
+        runs each time any of those variables change — a labeling and retraining budget that
+        scales with your store count, not your revenue. Primate Vision asks the question in
+        plain English and gets a deterministic answer, regardless of the camera or the store.
+      </p>
+      <p>
+        Queue analytics: "How many people are waiting at checkout?" Shelf monitoring:
+        "Is the end-cap display stocked?" Loss prevention: "Did anyone place merchandise in
+        a bag without scanning it?" Each of these is a prompt, not a model. Change the
+        question without changing the infrastructure. The outputs are timestamped and
+        structured — usable as signals in your existing operations dashboard or BI stack.
+      </p>
+
+      <ComingSoon note="Retail deployment guide and example prompts — coming during our August launch." />
+    </section>
+  </div>
+</Base>
+
+<style>
+  .page { max-width: 760px; margin: 0 auto; padding: 64px 24px 96px; }
+  .back { font-size: 14px; color: var(--color-text-muted); display: block; margin-bottom: 32px; }
+  .back:hover { color: var(--color-signal); }
+  .hero { margin-bottom: 40px; }
+  .eyebrow {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--color-signal);
+    margin: 0 0 12px;
+  }
+  h1 { font-size: 44px; font-weight: 700; letter-spacing: -0.02em; line-height: 1.2; margin: 0 0 16px; }
+  .lede { font-size: 18px; color: var(--color-text-muted); line-height: 1.6; margin: 0; }
+  .content p { font-size: 17px; line-height: 1.75; color: var(--color-text-primary); opacity: 0.85; margin: 0 0 16px; }
+  @media (max-width: 640px) { h1 { font-size: 32px; } .page { padding: 44px 20px 64px; } }
+</style>
