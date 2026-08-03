@@ -1,0 +1,28 @@
+# Semgrep static analysis — PRI-547 security hardening
+# Non-blocking initially (continue-on-error) until findings are triaged.
+name: Semgrep
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  schedule:
+    - cron: "23 6 * * 1" # weekly, Monday 06:23 UTC
+
+permissions:
+  contents: read
+
+jobs:
+  semgrep:
+    name: semgrep ci
+    runs-on: ubuntu-latest
+    container:
+      image: semgrep/semgrep
+    continue-on-error: true
+    steps:
+      - uses: actions/checkout@v4
+      - name: semgrep ci (p/default + p/owasp-top-ten)
+        run: semgrep ci --config p/default --config p/owasp-top-ten
+        env:
+          SEMGREP_RULES: ""
