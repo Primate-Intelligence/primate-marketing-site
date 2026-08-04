@@ -66,7 +66,7 @@ import { SLIDES } from '../data/carousel';
     padding: 2px 8px;
     border-radius: 8px;
     margin-bottom: 8px;
-    font-size: 10px;
+    font-size: var(--fs-caption-2);
     font-weight: 700;
     font-family: var(--font-mono);
     letter-spacing: 0.14em;
@@ -76,7 +76,7 @@ import { SLIDES } from '../data/carousel';
     border: 1px solid rgba(32, 88, 240, 0.2);
   }
   .slide-heading {
-    font-size: 18px;
+    font-size: var(--fs-body-lg);
     font-weight: 800;
     letter-spacing: -0.018em;
     line-height: 1.25;
@@ -85,7 +85,7 @@ import { SLIDES } from '../data/carousel';
   }
   .slide-body {
     color: var(--color-text-muted);
-    font-size: 14px;
+    font-size: var(--fs-body-sm);
     line-height: 1.5;
     margin: 0;
   }
@@ -94,7 +94,7 @@ import { SLIDES } from '../data/carousel';
     display: inline-flex;
     align-items: center;
     gap: 4px;
-    font-size: 11px;
+    font-size: var(--fs-caption-1);
     font-weight: 700;
     font-family: var(--font-mono);
     letter-spacing: 0.08em;
@@ -156,8 +156,8 @@ import { SLIDES } from '../data/carousel';
   @media (max-width: 640px) {
     .carousel-slide { grid-template-columns: 1fr 130px; }
     .slide-text { padding: 18px 14px 18px 44px; }
-    .slide-heading { font-size: 15px; }
-    .slide-body { font-size: 13px; }
+    .slide-heading { font-size: var(--fs-body); }
+    .slide-body { font-size: var(--fs-subhead); }
   }
 </style>
 

@@ -56,15 +56,15 @@ const links = [
   .hero { margin-bottom: 40px; }
   .eyebrow {
     font-family: var(--font-mono);
-    font-size: 12px;
+    font-size: var(--fs-footnote);
     font-weight: 500;
     text-transform: uppercase;
     letter-spacing: 0.1em;
     color: var(--color-signal);
     margin: 0 0 12px;
   }
-  h1 { font-size: 44px; font-weight: 700; letter-spacing: -0.02em; line-height: 1.2; margin: 0 0 0; }
-  .content p { font-size: 17px; line-height: 1.75; color: var(--color-text-primary); opacity: 0.85; margin: 0 0 16px; }
+  h1 { font-size: var(--fs-h1); font-weight: 700; letter-spacing: -0.02em; line-height: 1.2; margin: 0 0 0; }
+  .content p { font-size: var(--fs-body-lg); line-height: 1.75; color: var(--color-text-primary); opacity: 0.85; margin: 0 0 16px; }
 
   .card-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-top: 40px; }
   .card {
@@ -78,11 +78,11 @@ const links = [
     position: relative;
   }
   .card:hover { border-color: rgba(27, 79, 224, 0.4); color: inherit; }
-  .card h3 { font-size: 16px; font-weight: 600; margin: 0 0 8px; }
-  .card p { font-size: 13px; color: var(--color-text-muted); line-height: 1.5; margin: 0; opacity: 1; }
-  .arrow { position: absolute; bottom: 20px; right: 20px; color: var(--color-signal); font-size: 16px; }
+  .card h3 { font-size: var(--fs-body); font-weight: 600; margin: 0 0 8px; }
+  .card p { font-size: var(--fs-subhead); color: var(--color-text-muted); line-height: 1.5; margin: 0; opacity: 1; }
+  .arrow { position: absolute; bottom: 20px; right: 20px; color: var(--color-signal); font-size: var(--fs-body); }
   @media (max-width: 640px) {
-    h1 { font-size: 32px; }
+    h1 { font-size: var(--fs-h2); }
     .card-grid { grid-template-columns: 1fr; }
     .page { padding: 44px 20px 64px; }
   }

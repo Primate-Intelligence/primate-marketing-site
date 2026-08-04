@@ -45,22 +45,22 @@ import ComingSoon from '../../components/ComingSoon.astro';
 
 <style>
   .page { max-width: 760px; margin: 0 auto; padding: 64px 24px 96px; }
-  .back { font-size: 14px; color: var(--color-text-muted); display: block; margin-bottom: 32px; }
+  .back { font-size: var(--fs-body-sm); color: var(--color-text-muted); display: block; margin-bottom: 32px; }
   .back:hover { color: var(--color-signal); }
   .hero { margin-bottom: 40px; }
   .eyebrow {
     font-family: var(--font-mono);
-    font-size: 12px;
+    font-size: var(--fs-footnote);
     font-weight: 500;
     text-transform: uppercase;
     letter-spacing: 0.1em;
     color: var(--color-signal);
     margin: 0 0 12px;
   }
-  h1 { font-size: 44px; font-weight: 700; letter-spacing: -0.02em; line-height: 1.2; margin: 0 0 16px; }
-  .lede { font-size: 18px; color: var(--color-text-muted); line-height: 1.6; margin: 0; }
-  .content p { font-size: 17px; line-height: 1.75; color: var(--color-text-primary); opacity: 0.85; margin: 0 0 16px; }
+  h1 { font-size: var(--fs-h1); font-weight: 700; letter-spacing: -0.02em; line-height: 1.2; margin: 0 0 16px; }
+  .lede { font-size: var(--fs-body-lg); color: var(--color-text-muted); line-height: 1.6; margin: 0; }
+  .content p { font-size: var(--fs-body-lg); line-height: 1.75; color: var(--color-text-primary); opacity: 0.85; margin: 0 0 16px; }
   .content a { color: var(--color-signal); }
   .content a:hover { text-decoration: underline; }
-  @media (max-width: 640px) { h1 { font-size: 32px; } .page { padding: 44px 20px 64px; } }
+  @media (max-width: 640px) { h1 { font-size: var(--fs-h2); } .page { padding: 44px 20px 64px; } }
 </style>

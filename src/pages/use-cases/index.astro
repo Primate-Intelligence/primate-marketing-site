@@ -77,16 +77,16 @@ const SUBPAGE_MAP: Record<string, string> = {
   .hero { text-align: center; margin-bottom: 48px; }
   .eyebrow {
     font-family: var(--font-mono);
-    font-size: 12px;
+    font-size: var(--fs-footnote);
     font-weight: 500;
     text-transform: uppercase;
     letter-spacing: 0.1em;
     color: var(--color-signal);
     margin: 0 0 12px;
   }
-  h1 { font-size: 48px; font-weight: 700; letter-spacing: -0.02em; line-height: 1.15; margin: 0 0 16px; }
-  .lede { font-size: 18px; color: var(--color-text-muted); max-width: 640px; margin: 0 auto 12px; line-height: 1.6; }
-  .note { font-size: 13px; color: #a8a39a; max-width: 520px; margin: 0 auto; line-height: 1.6; }
+  h1 { font-size: var(--fs-h1); font-weight: 700; letter-spacing: -0.02em; line-height: 1.15; margin: 0 0 16px; }
+  .lede { font-size: var(--fs-body-lg); color: var(--color-text-muted); max-width: 640px; margin: 0 auto 12px; line-height: 1.6; }
+  .note { font-size: var(--fs-subhead); color: #a8a39a; max-width: 520px; margin: 0 auto; line-height: 1.6; }
 
   .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
   .card {
@@ -100,7 +100,7 @@ const SUBPAGE_MAP: Record<string, string> = {
   .badges { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 20px; }
   .badge {
     font-family: var(--font-mono);
-    font-size: 11px;
+    font-size: var(--fs-caption-1);
     font-weight: 500;
     letter-spacing: 0.06em;
     text-transform: uppercase;
@@ -111,7 +111,7 @@ const SUBPAGE_MAP: Record<string, string> = {
   }
   .status {
     font-family: var(--font-mono);
-    font-size: 11px;
+    font-size: var(--fs-caption-1);
     font-weight: 500;
     letter-spacing: 0.05em;
     text-transform: uppercase;
@@ -122,8 +122,8 @@ const SUBPAGE_MAP: Record<string, string> = {
   .status.green { color: #16a34a; background: rgba(22, 163, 74, 0.08); border-color: rgba(22, 163, 74, 0.3); }
   .status.amber { color: #d97706; background: rgba(217, 119, 6, 0.08); border-color: rgba(217, 119, 6, 0.3); }
   .status.steel { color: #72798a; background: rgba(114, 121, 138, 0.08); border-color: rgba(114, 121, 138, 0.25); }
-  .card h2 { font-size: 21px; font-weight: 600; letter-spacing: -0.01em; line-height: 1.35; margin: 0 0 14px; }
-  .description { font-size: 15px; color: var(--color-text-muted); line-height: 1.65; margin: 0 0 20px; }
+  .card h2 { font-size: var(--fs-title-1); font-weight: 600; letter-spacing: -0.01em; line-height: 1.35; margin: 0 0 14px; }
+  .description { font-size: var(--fs-body); color: var(--color-text-muted); line-height: 1.65; margin: 0 0 20px; }
   .benefit {
     display: flex;
     align-items: flex-start;
@@ -136,7 +136,7 @@ const SUBPAGE_MAP: Record<string, string> = {
   }
   .benefit-label {
     font-family: var(--font-mono);
-    font-size: 11px;
+    font-size: var(--fs-caption-1);
     font-weight: 600;
     letter-spacing: 0.08em;
     text-transform: uppercase;
@@ -144,10 +144,10 @@ const SUBPAGE_MAP: Record<string, string> = {
     margin-top: 2px;
     flex-shrink: 0;
   }
-  .benefit p { font-size: 14px; line-height: 1.5; margin: 0; }
+  .benefit p { font-size: var(--fs-body-sm); line-height: 1.5; margin: 0; }
   .card-actions { display: flex; align-items: center; gap: 16px; flex-wrap: wrap; }
-  .card-cta { display: inline-flex; align-items: center; gap: 6px; font-size: 14px; font-weight: 500; }
-  .card-learn { font-size: 13px; font-weight: 500; color: var(--color-text-muted); }
+  .card-cta { display: inline-flex; align-items: center; gap: 6px; font-size: var(--fs-body-sm); font-weight: 500; }
+  .card-learn { font-size: var(--fs-subhead); font-weight: 500; color: var(--color-text-muted); }
   .card-learn:hover { color: var(--color-signal); }
 
   .bottom-cta {
@@ -156,23 +156,23 @@ const SUBPAGE_MAP: Record<string, string> = {
     border-top: 1px solid var(--color-border);
     text-align: center;
   }
-  .bottom-cta h2 { font-size: 32px; font-weight: 600; letter-spacing: -0.015em; margin: 0 0 14px; }
-  .bottom-cta p { font-size: 17px; color: var(--color-text-muted); margin: 0 0 8px; }
+  .bottom-cta h2 { font-size: var(--fs-h2); font-weight: 600; letter-spacing: -0.015em; margin: 0 0 14px; }
+  .bottom-cta p { font-size: var(--fs-body-lg); color: var(--color-text-muted); margin: 0 0 8px; }
   .cta-row { display: flex; align-items: center; justify-content: center; gap: 18px; margin-top: 28px; flex-wrap: wrap; }
   .cta {
     background: var(--color-signal);
     color: #fff;
     font-weight: 600;
-    font-size: 15px;
+    font-size: var(--fs-body);
     padding: 12px 24px;
     border-radius: 6px;
   }
   .cta:hover { background: var(--color-signal-hover); color: #fff; }
-  .cta-link { font-size: 15px; font-weight: 500; }
+  .cta-link { font-size: var(--fs-body); font-weight: 500; }
 
   @media (max-width: 860px) {
     .grid { grid-template-columns: 1fr; }
-    h1 { font-size: 32px; }
+    h1 { font-size: var(--fs-h2); }
     .page { padding: 36px 20px 60px; }
   }
 </style>

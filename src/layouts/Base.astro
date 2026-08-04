@@ -401,7 +401,7 @@ const footerColumns = [
     display: flex;
     flex-direction: column;
     line-height: 1.12;
-    font-size: 14px;
+    font-size: var(--fs-body-sm);
     font-weight: 400;
     letter-spacing: -0.02em;
   }
@@ -413,7 +413,7 @@ const footerColumns = [
     display: flex;
     align-items: center;
     gap: 4px;
-    font-size: 14px;
+    font-size: var(--fs-body-sm);
     font-weight: 500;
   }
   .desktop-nav > a {
@@ -433,7 +433,7 @@ const footerColumns = [
     border: none;
     cursor: pointer;
     font: inherit;
-    font-size: 14px;
+    font-size: var(--fs-body-sm);
     font-weight: 500;
     color: var(--color-text-primary);
     padding: 6px 10px;
@@ -444,7 +444,7 @@ const footerColumns = [
   }
   .nav-group-trigger:hover,
   .nav-group.active .nav-group-trigger { color: var(--color-signal); }
-  .caret { font-size: 9px; }
+  .caret { font-size: var(--fs-caption-2); }
 
   .nav-dropdown {
     display: none;
@@ -476,7 +476,7 @@ const footerColumns = [
   .nav-group:focus-within .nav-dropdown { display: flex; flex-direction: column; }
   .nav-dropdown a {
     color: var(--color-text-primary);
-    font-size: 13px;
+    font-size: var(--fs-subhead);
     font-weight: 500;
     padding: 8px 12px;
     border-radius: 4px;
@@ -506,7 +506,7 @@ const footerColumns = [
     padding: 6px 10px;
     border-radius: 4px;
     border: 1px solid var(--color-border);
-    font-size: 18px;
+    font-size: var(--fs-body-lg);
     color: var(--color-text-primary);
     user-select: none;
   }
@@ -530,7 +530,7 @@ const footerColumns = [
   }
   .mobile-panel a {
     color: var(--color-text-primary);
-    font-size: 15px;
+    font-size: var(--fs-body);
     font-weight: 500;
     padding: 10px 8px;
     border-radius: 4px;
@@ -558,7 +558,7 @@ const footerColumns = [
   .site-footer {
     border-top: 1px solid var(--color-border);
     background: var(--color-bg-secondary);
-    font-size: 13px;
+    font-size: var(--fs-subhead);
     color: var(--color-text-muted);
   }
   .footer-inner {
@@ -582,7 +582,7 @@ const footerColumns = [
   .footer-tagline { max-width: 260px; line-height: 1.6; margin: 0; }
   .footer-col-title {
     font-family: var(--font-mono);
-    font-size: 10px;
+    font-size: var(--fs-caption-2);
     letter-spacing: 0.1em;
     text-transform: uppercase;
     color: var(--color-text-primary);
@@ -601,8 +601,8 @@ const footerColumns = [
     flex-wrap: wrap;
     gap: 8px;
   }
-  .footer-bottom p { margin: 0; font-size: 12px; }
-  .footer-mono { font-family: var(--font-mono); font-size: 11px; }
+  .footer-bottom p { margin: 0; font-size: var(--fs-footnote); }
+  .footer-mono { font-family: var(--font-mono); font-size: var(--fs-caption-1); }
 
   /* ── Responsive ────────────────────────────────────────── */
   @media (max-width: 900px) {

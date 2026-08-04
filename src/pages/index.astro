@@ -121,14 +121,14 @@ curl -s -X POST https://api.primateintelligence.ai/v1/analyses \\
     align-items: center;
   }
   h1 {
-    font-size: 54px;
+    font-size: var(--fs-display-l);
     line-height: 1.07;
     letter-spacing: -0.028em;
     font-weight: 800;
     margin: 0 0 20px;
   }
   .lede {
-    font-size: 18px;
+    font-size: var(--fs-body-lg);
     line-height: 1.7;
     color: var(--color-text-muted);
     max-width: 520px;
@@ -143,7 +143,7 @@ curl -s -X POST https://api.primateintelligence.ai/v1/analyses \\
     padding: 12px 26px;
     border-radius: var(--radius-lg);
     font-weight: 600;
-    font-size: 15px;
+    font-size: var(--fs-body);
     transition: background var(--duration-fast) var(--ease-standard);
   }
   .cta:hover { background: var(--color-signal-hover); color: #fff; }
@@ -153,7 +153,7 @@ curl -s -X POST https://api.primateintelligence.ai/v1/analyses \\
     border: 1px solid var(--color-border);
   }
   .cta.secondary:hover { border-color: var(--color-signal); }
-  .cta-link { color: var(--color-signal); font-weight: 500; font-size: 15px; }
+  .cta-link { color: var(--color-signal); font-weight: 500; font-size: var(--fs-body); }
   .hero-video video {
     width: 100%;
     border-radius: 12px;
@@ -166,7 +166,7 @@ curl -s -X POST https://api.primateintelligence.ai/v1/analyses \\
   .section-inner.center { text-align: center; }
   .section-eyebrow {
     font-family: var(--font-mono);
-    font-size: 11px;
+    font-size: var(--fs-caption-1);
     font-weight: 600;
     letter-spacing: 0.1em;
     text-transform: uppercase;
@@ -174,7 +174,7 @@ curl -s -X POST https://api.primateintelligence.ai/v1/analyses \\
     margin: 0 0 10px;
   }
   h2 {
-    font-size: 30px;
+    font-size: var(--fs-h3);
     letter-spacing: -0.02em;
     font-weight: 700;
     margin: 0 0 24px;
@@ -193,12 +193,12 @@ curl -s -X POST https://api.primateintelligence.ai/v1/analyses \\
     padding: 22px 24px;
     overflow-x: auto;
     font-family: var(--font-mono);
-    font-size: 13px;
+    font-size: var(--fs-subhead);
     line-height: 1.65;
     margin: 0;
   }
   .code-section pre code { background: none; padding: 0; color: inherit; font-size: inherit; }
-  .code-footnote { font-size: 13px; color: var(--color-text-muted); margin: 14px 0 0; }
+  .code-footnote { font-size: var(--fs-subhead); color: var(--color-text-muted); margin: 14px 0 0; }
 
   .carousel-section { padding: 64px 24px; }
 
@@ -206,12 +206,12 @@ curl -s -X POST https://api.primateintelligence.ai/v1/analyses \\
     border-top: 1px solid var(--color-border);
     padding: 72px 24px 88px;
   }
-  .bottom-cta p { color: var(--color-text-muted); font-size: 16px; }
+  .bottom-cta p { color: var(--color-text-muted); font-size: var(--fs-body); }
 
   @media (max-width: 860px) {
     .hero-inner { grid-template-columns: 1fr; gap: 32px; }
-    h1 { font-size: 36px; }
-    h2 { font-size: 24px; }
+    h1 { font-size: var(--fs-h2); }
+    h2 { font-size: var(--fs-h4); }
     .hero { padding: 40px 20px 40px; }
   }
 </style>

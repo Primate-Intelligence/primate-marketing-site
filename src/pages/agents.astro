@@ -74,26 +74,26 @@ import ComingSoon from '../components/ComingSoon.astro';
   .hero { margin-bottom: 40px; }
   .eyebrow {
     font-family: var(--font-mono);
-    font-size: 12px;
+    font-size: var(--fs-footnote);
     font-weight: 500;
     text-transform: uppercase;
     letter-spacing: 0.1em;
     color: var(--color-signal);
     margin: 0 0 12px;
   }
-  h1 { font-size: 44px; font-weight: 700; letter-spacing: -0.02em; line-height: 1.2; margin: 0 0 16px; }
-  .lede { font-size: 18px; color: var(--color-text-muted); line-height: 1.6; margin: 0; }
-  .content p { font-size: 17px; line-height: 1.75; color: var(--color-text-primary); opacity: 0.85; margin: 0 0 16px; }
+  h1 { font-size: var(--fs-h1); font-weight: 700; letter-spacing: -0.02em; line-height: 1.2; margin: 0 0 16px; }
+  .lede { font-size: var(--fs-body-lg); color: var(--color-text-muted); line-height: 1.6; margin: 0; }
+  .content p { font-size: var(--fs-body-lg); line-height: 1.75; color: var(--color-text-primary); opacity: 0.85; margin: 0 0 16px; }
   .content a { color: var(--color-signal); }
   .content a:hover { text-decoration: underline; }
-  h2 { font-size: 22px; font-weight: 600; letter-spacing: -0.01em; margin: 40px 0 12px; }
+  h2 { font-size: var(--fs-h4); font-weight: 600; letter-spacing: -0.01em; margin: 40px 0 12px; }
   pre {
     background: #1a1916;
     color: #e6e9f4;
     border-radius: 8px;
     padding: 16px 20px;
     overflow-x: auto;
-    font-size: 13px;
+    font-size: var(--fs-subhead);
     line-height: 1.6;
     margin: 0 0 16px;
   }
@@ -103,7 +103,7 @@ import ComingSoon from '../components/ComingSoon.astro';
     border: 1px solid var(--color-border);
     border-radius: 3px;
     padding: 1px 6px;
-    font-size: 13px;
+    font-size: var(--fs-subhead);
     font-family: var(--font-mono);
   }
   pre code { background: none; border: none; padding: 0; font-size: inherit; }
@@ -121,9 +121,9 @@ import ComingSoon from '../components/ComingSoon.astro';
     background: var(--color-bg-surface);
     border: 1px solid var(--color-border);
     border-radius: 6px;
-    font-size: 15px;
+    font-size: var(--fs-body);
     line-height: 1.5;
   }
 
-  @media (max-width: 640px) { h1 { font-size: 32px; } .page { padding: 44px 20px 64px; } }
+  @media (max-width: 640px) { h1 { font-size: var(--fs-h2); } .page { padding: 44px 20px 64px; } }
 </style>

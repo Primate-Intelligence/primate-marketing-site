@@ -94,12 +94,12 @@ const nav = await getDocsNav();
     top: 88px;
     max-height: calc(100vh - 112px);
     overflow-y: auto;
-    font-size: 14px;
+    font-size: var(--fs-body-sm);
   }
   .docs-sidebar .nav-group { margin-bottom: 24px; }
   .docs-sidebar .nav-section {
     font-family: var(--font-mono);
-    font-size: 10px;
+    font-size: var(--fs-caption-2);
     letter-spacing: 0.1em;
     text-transform: uppercase;
     color: var(--color-text-muted);
@@ -126,11 +126,11 @@ const nav = await getDocsNav();
     top: 88px;
     max-height: calc(100vh - 112px);
     overflow-y: auto;
-    font-size: 13px;
+    font-size: var(--fs-subhead);
   }
   .docs-toc .toc-title {
     font-family: var(--font-mono);
-    font-size: 10px;
+    font-size: var(--fs-caption-2);
     letter-spacing: 0.1em;
     text-transform: uppercase;
     color: var(--color-text-muted);
@@ -144,11 +144,11 @@ const nav = await getDocsNav();
   .docs-toc a:hover { color: var(--color-signal); }
 
   .docs-content { min-width: 0; }
-  .docs-content h1 { font-size: 36px; font-weight: 700; letter-spacing: -0.02em; line-height: 1.2; margin: 0 0 20px; }
-  .docs-content h2 { font-size: 24px; font-weight: 700; letter-spacing: -0.01em; margin: 40px 0 14px; scroll-margin-top: 90px; }
-  .docs-content h3 { font-size: 18px; font-weight: 600; margin: 28px 0 10px; scroll-margin-top: 90px; }
-  .docs-content h4 { font-size: 15px; font-weight: 600; margin: 20px 0 8px; }
-  .docs-content p, .docs-content li { font-size: 15px; line-height: 1.7; color: var(--color-text-primary); }
+  .docs-content h1 { font-size: var(--fs-h2); font-weight: 700; letter-spacing: -0.02em; line-height: 1.2; margin: 0 0 20px; }
+  .docs-content h2 { font-size: var(--fs-h4); font-weight: 700; letter-spacing: -0.01em; margin: 40px 0 14px; scroll-margin-top: 90px; }
+  .docs-content h3 { font-size: var(--fs-body-lg); font-weight: 600; margin: 28px 0 10px; scroll-margin-top: 90px; }
+  .docs-content h4 { font-size: var(--fs-body); font-weight: 600; margin: 20px 0 8px; }
+  .docs-content p, .docs-content li { font-size: var(--fs-body); line-height: 1.7; color: var(--color-text-primary); }
   .docs-content p { margin: 0 0 14px; }
   .docs-content ul, .docs-content ol { padding-left: 24px; margin: 0 0 14px; }
   .docs-content li { margin: 4px 0; }
@@ -169,12 +169,12 @@ const nav = await getDocsNav();
     overflow-x: auto;
     margin: 0 0 18px;
   }
-  .docs-content pre code { background: none; padding: 0; font-size: 13px; line-height: 1.6; }
+  .docs-content pre code { background: none; padding: 0; font-size: var(--fs-subhead); line-height: 1.6; }
   .docs-content table {
     border-collapse: collapse;
     width: 100%;
     margin: 0 0 18px;
-    font-size: 14px;
+    font-size: var(--fs-body-sm);
   }
   .docs-content th, .docs-content td {
     border: 1px solid var(--color-border);
@@ -194,7 +194,7 @@ const nav = await getDocsNav();
     margin-top: 48px;
     padding-top: 20px;
     border-top: 1px solid var(--color-border);
-    font-size: 13px;
+    font-size: var(--fs-subhead);
     color: var(--color-text-muted);
   }
 

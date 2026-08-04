@@ -47,14 +47,14 @@ const personLd = TEAM.map((p) => ({
   .page { max-width: 960px; margin: 0 auto; padding: 64px 24px 96px; }
   .hero { text-align: center; margin-bottom: 56px; }
   .eyebrow {
-    font-size: 13px;
+    font-size: var(--fs-subhead);
     font-weight: 500;
     text-transform: uppercase;
     letter-spacing: 0.08em;
     color: var(--color-text-muted);
     margin: 0 0 14px;
   }
-  h1 { font-size: 40px; font-weight: 600; letter-spacing: -0.015em; margin: 0; }
+  h1 { font-size: var(--fs-display-s); font-weight: 600; letter-spacing: -0.015em; margin: 0; }
   .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; }
   .card {
     background: var(--color-bg-surface);
@@ -70,21 +70,21 @@ const personLd = TEAM.map((p) => ({
     object-position: top;
     border: 2px solid var(--color-border);
   }
-  h2 { font-size: 22px; font-weight: 600; margin: 24px 0 4px; }
+  h2 { font-size: var(--fs-h4); font-weight: 600; margin: 24px 0 4px; }
   .title {
-    font-size: 13px;
+    font-size: var(--fs-subhead);
     font-weight: 500;
     text-transform: uppercase;
     letter-spacing: 0.06em;
     color: var(--color-signal);
     margin: 0 0 16px;
   }
-  .bio p { font-size: 14px; color: var(--color-text-muted); line-height: 1.7; margin: 0 0 12px; }
-  .linkedin { display: inline-flex; align-items: center; gap: 6px; font-size: 14px; font-weight: 500; margin-top: 8px; }
+  .bio p { font-size: var(--fs-body-sm); color: var(--color-text-muted); line-height: 1.7; margin: 0 0 12px; }
+  .linkedin { display: inline-flex; align-items: center; gap: 6px; font-size: var(--fs-body-sm); font-weight: 500; margin-top: 8px; }
 
   @media (max-width: 780px) {
     .grid { grid-template-columns: 1fr; }
-    h1 { font-size: 30px; }
+    h1 { font-size: var(--fs-h3); }
     .page { padding: 44px 20px 64px; }
     .headshot { width: 100px; height: 100px; }
   }
