@@ -85,8 +85,8 @@ const nav = await getDocsNav();
     margin: 0 auto;
     display: grid;
     grid-template-columns: 240px minmax(0, 1fr) 220px;
-    gap: 48px;
-    padding: 40px 24px 96px;
+    gap: 96px 48px;
+    padding: 80px 24px 192px;
     align-items: start;
   }
   .docs-sidebar {
@@ -145,8 +145,8 @@ const nav = await getDocsNav();
 
   .docs-content { min-width: 0; }
   .docs-content h1 { font-size: var(--fs-h2); font-weight: 700; letter-spacing: -0.02em; line-height: 1.2; margin: 0 0 20px; }
-  .docs-content h2 { font-size: var(--fs-h4); font-weight: 700; letter-spacing: -0.01em; margin: 40px 0 14px; scroll-margin-top: 90px; }
-  .docs-content h3 { font-size: var(--fs-body-lg); font-weight: 600; margin: 28px 0 10px; scroll-margin-top: 90px; }
+  .docs-content h2 { font-size: var(--fs-h4); font-weight: 700; letter-spacing: -0.01em; margin: 80px 0 28px; scroll-margin-top: 90px; }
+  .docs-content h3 { font-size: var(--fs-body-lg); font-weight: 600; margin: 56px 0 20px; scroll-margin-top: 90px; }
   .docs-content h4 { font-size: var(--fs-body); font-weight: 600; margin: 20px 0 8px; }
   .docs-content p, .docs-content li { font-size: var(--fs-body); line-height: 1.7; color: var(--color-text-primary); }
   .docs-content p { margin: 0 0 14px; }
@@ -189,9 +189,9 @@ const nav = await getDocsNav();
     padding: 4px 0 4px 16px;
     color: var(--color-text-muted);
   }
-  .docs-content hr { border: none; border-top: 1px solid var(--color-border); margin: 32px 0; }
+  .docs-content hr { border: none; border-top: 1px solid var(--color-border); margin: 64px 0; }
   .docs-content .md-note {
-    margin-top: 48px;
+    margin-top: 96px;
     padding-top: 20px;
     border-top: 1px solid var(--color-border);
     font-size: var(--fs-subhead);

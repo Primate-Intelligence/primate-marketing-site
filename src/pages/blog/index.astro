@@ -112,8 +112,8 @@ const blogLd = {
 </script>
 
 <style>
-  .page { max-width: 1120px; margin: 0 auto; padding: 64px 24px 96px; }
-  .hero { text-align: center; margin-bottom: 40px; }
+  .page { max-width: 1120px; margin: 0 auto; padding: 128px 24px 192px; }
+  .hero { text-align: center; margin-bottom: 80px; }
   .eyebrow {
     font-size: var(--fs-subhead);
     text-transform: uppercase;
@@ -128,7 +128,7 @@ const blogLd = {
     display: flex;
     flex-wrap: wrap;
     gap: 8px;
-    margin-bottom: 32px;
+    margin-bottom: 64px;
   }
   .filter-pill {
     background: var(--color-bg-surface);
@@ -148,13 +148,13 @@ const blogLd = {
     color: #fff;
   }
 
-  .empty { text-align: center; color: var(--color-text-muted); padding: 64px 0; }
-  .grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+  .empty { text-align: center; color: var(--color-text-muted); padding: 128px 0; }
+  .grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 48px 24px; }
   .card {
     background: var(--color-bg-surface);
     border: 1px solid var(--color-border);
     border-radius: 3px;
-    padding: 24px;
+    padding: 48px 24px;
     display: flex;
     flex-direction: column;
     color: inherit;
@@ -205,12 +205,12 @@ const blogLd = {
     font-weight: 700;
     flex-shrink: 0;
   }
-  .rss-note { margin-top: 48px; text-align: center; font-size: var(--fs-subhead); color: var(--color-text-muted); }
+  .rss-note { margin-top: 96px; text-align: center; font-size: var(--fs-subhead); color: var(--color-text-muted); }
 
   @media (max-width: 980px) { .grid { grid-template-columns: 1fr 1fr; } }
   @media (max-width: 640px) {
     .grid { grid-template-columns: 1fr; }
     h1 { font-size: var(--fs-h2); }
-    .page { padding: 44px 20px 64px; }
+    .page { padding: 88px 20px 128px; }
   }
 </style>
