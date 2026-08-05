@@ -182,13 +182,13 @@ const pricingLd = {
 </Base>
 
 <style>
-  .page { max-width: 1120px; margin: 0 auto; padding: 64px 24px 80px; }
+  .page { max-width: 1120px; margin: 0 auto; padding: 128px 24px 160px; }
   .hero-grid {
     display: grid;
     grid-template-columns: 3fr 2fr;
-    gap: 48px;
+    gap: 96px 48px;
     align-items: center;
-    margin-bottom: 48px;
+    margin-bottom: 96px;
   }
   h1 { font-size: var(--fs-h1); font-weight: 800; letter-spacing: -0.03em; line-height: 1.1; margin: 0; }
   .lede { font-size: var(--fs-body-lg); line-height: 1.6; color: var(--color-text-muted); margin: 16px 0 0; max-width: 560px; }
@@ -200,19 +200,19 @@ const pricingLd = {
     color: #a8a39a;
     margin: 0 0 12px;
   }
-  .rate-card { background: var(--color-bg-secondary); border-radius: 10px; padding: 28px; }
+  .rate-card { background: var(--color-bg-secondary); border-radius: 10px; padding: 56px 28px; }
   .rate { margin: 0; }
   .rate-num { font-size: var(--fs-h3); font-weight: 800; letter-spacing: -0.02em; }
   .rate-unit { font-size: var(--fs-body-lg); font-weight: 400; color: var(--color-text-muted); }
   .muted { color: var(--color-text-muted); }
   .small { font-size: var(--fs-subhead); line-height: 1.6; }
 
-  .cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; margin-bottom: 32px; }
+  .cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 48px 24px; margin-bottom: 64px; }
   .card {
     background: var(--color-bg-surface);
     border: 1px solid var(--color-border);
     border-radius: 10px;
-    padding: 28px;
+    padding: 56px 28px;
     display: flex;
     flex-direction: column;
     position: relative;
@@ -245,9 +245,9 @@ const pricingLd = {
   .btn.primary { color: #fff; background: var(--color-signal); border: 1px solid var(--color-signal); }
   .btn.primary:hover { background: var(--color-signal-hover); color: #fff; }
 
-  .panels { display: grid; grid-template-columns: 3fr 2fr; gap: 24px; margin-bottom: 40px; }
-  .panel { background: var(--color-bg-secondary); border-radius: 10px; padding: 28px; }
-  .panel h3 { font-size: var(--fs-body-lg); font-weight: 700; margin: 0 0 20px; }
+  .panels { display: grid; grid-template-columns: 3fr 2fr; gap: 48px 24px; margin-bottom: 80px; }
+  .panel { background: var(--color-bg-secondary); border-radius: 10px; padding: 56px 28px; }
+  .panel h3 { font-size: var(--fs-body-lg); font-weight: 700; margin: 0 0 40px; }
   .steps { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
   .step-rule { width: 32px; height: 2px; background: var(--color-text-primary); margin-bottom: 12px; }
   .step-title { font-size: var(--fs-body-sm); font-weight: 600; margin: 0 0 6px; }
@@ -264,11 +264,11 @@ const pricingLd = {
   .pill.green { color: var(--color-success); border-color: rgba(22, 163, 74, 0.33); }
   .pill.muted-pill { color: var(--color-text-muted); border-color: rgba(122, 118, 105, 0.33); }
 
-  .faq { margin-bottom: 40px; }
-  .faq h3 { font-size: var(--fs-body-lg); font-weight: 700; margin: 0 0 16px; }
+  .faq { margin-bottom: 80px; }
+  .faq h3 { font-size: var(--fs-body-lg); font-weight: 700; margin: 0 0 32px; }
   .faq-item {
     border-bottom: 1px solid var(--color-border);
-    padding: 4px 0;
+    padding: 8px 0;
   }
   .faq-item summary {
     font-size: var(--fs-body);
@@ -277,14 +277,14 @@ const pricingLd = {
     cursor: pointer;
     list-style-position: outside;
   }
-  .faq-item p { margin: 0 0 16px; max-width: 760px; }
+  .faq-item p { margin: 0 0 32px; max-width: 760px; }
 
   .footer-strip {
     display: flex;
     justify-content: space-between;
     gap: 8px;
     border-top: 1px solid var(--color-border);
-    padding-top: 20px;
+    padding-top: 40px;
     font-size: var(--fs-footnote);
     color: #a8a39a;
     flex-wrap: wrap;
@@ -294,6 +294,6 @@ const pricingLd = {
   @media (max-width: 860px) {
     .hero-grid, .cards, .panels, .steps { grid-template-columns: 1fr; }
     h1 { font-size: var(--fs-h2); }
-    .page { padding: 40px 20px 60px; }
+    .page { padding: 80px 20px 120px; }
   }
 </style>

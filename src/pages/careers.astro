@@ -45,8 +45,8 @@ import { CAREERS_HERO, LOOK_FOR, OFFER, OPEN_ROLES } from '../data/careers';
 </Base>
 
 <style>
-  .page { max-width: 1024px; margin: 0 auto; padding: 64px 24px 96px; }
-  .hero { text-align: center; max-width: 640px; margin: 0 auto 56px; }
+  .page { max-width: 1024px; margin: 0 auto; padding: 128px 24px 192px; }
+  .hero { text-align: center; max-width: 640px; margin: 0 auto 112px; }
   .eyebrow {
     font-size: var(--fs-subhead);
     font-weight: 500;
@@ -58,9 +58,9 @@ import { CAREERS_HERO, LOOK_FOR, OFFER, OPEN_ROLES } from '../data/careers';
   h1 { font-size: var(--fs-h1); font-weight: 700; letter-spacing: -0.02em; margin: 0 0 14px; }
   .lede { font-size: var(--fs-body); color: var(--color-text-muted); line-height: 1.65; margin: 0; }
 
-  .columns { display: grid; grid-template-columns: 1fr 380px; gap: 64px; }
+  .columns { display: grid; grid-template-columns: 1fr 380px; gap: 128px 64px; }
   h2 { font-size: var(--fs-h3); font-weight: 600; letter-spacing: -0.01em; margin: 0 0 20px; }
-  .offer-heading { margin-top: 48px; }
+  .offer-heading { margin-top: 96px; }
   ul { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 12px; }
   li { display: flex; gap: 12px; font-size: var(--fs-body); color: var(--color-text-muted); line-height: 1.6; }
   .arrow { color: var(--color-signal); flex-shrink: 0; }
@@ -69,13 +69,13 @@ import { CAREERS_HERO, LOOK_FOR, OFFER, OPEN_ROLES } from '../data/careers';
     background: var(--color-bg-surface);
     border: 1px solid var(--color-border);
     border-radius: 8px;
-    padding: 40px 32px;
+    padding: 80px 32px;
     text-align: center;
     align-self: start;
     position: sticky;
     top: 90px;
   }
-  .roles-header { font-size: var(--fs-body-sm); font-weight: 600; margin: 0 0 24px; }
+  .roles-header { font-size: var(--fs-body-sm); font-weight: 600; margin: 0 0 48px; }
   .count {
     background: var(--color-bg-secondary);
     color: var(--color-text-muted);
@@ -88,7 +88,7 @@ import { CAREERS_HERO, LOOK_FOR, OFFER, OPEN_ROLES } from '../data/careers';
   .telescope { font-size: var(--fs-h2); margin: 0 0 16px; }
   .roles-title { font-size: var(--fs-title-2); font-weight: 600; margin: 0 0 12px; }
   .roles-body { font-size: var(--fs-body-sm); color: var(--color-text-muted); line-height: 1.65; margin: 0 0 16px; }
-  .roles-email { font-size: var(--fs-subhead); color: var(--color-text-muted); margin: 0 0 24px; }
+  .roles-email { font-size: var(--fs-subhead); color: var(--color-text-muted); margin: 0 0 48px; }
   .btn {
     display: block;
     background: var(--color-signal);
@@ -105,6 +105,6 @@ import { CAREERS_HERO, LOOK_FOR, OFFER, OPEN_ROLES } from '../data/careers';
     .columns { grid-template-columns: 1fr; gap: 40px; }
     .roles-card { position: static; order: -1; }
     h1 { font-size: var(--fs-h3); }
-    .page { padding: 44px 20px 64px; }
+    .page { padding: 88px 20px 128px; }
   }
 </style>

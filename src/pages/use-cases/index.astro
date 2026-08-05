@@ -73,8 +73,8 @@ const SUBPAGE_MAP: Record<string, string> = {
 </Base>
 
 <style>
-  .page { max-width: 1120px; margin: 0 auto; padding: 56px 24px 80px; }
-  .hero { text-align: center; margin-bottom: 48px; }
+  .page { max-width: 1120px; margin: 0 auto; padding: 112px 24px 160px; }
+  .hero { text-align: center; margin-bottom: 96px; }
   .eyebrow {
     font-family: var(--font-mono);
     font-size: var(--fs-footnote);
@@ -88,12 +88,12 @@ const SUBPAGE_MAP: Record<string, string> = {
   .lede { font-size: var(--fs-body-lg); color: var(--color-text-muted); max-width: 640px; margin: 0 auto 12px; line-height: 1.6; }
   .note { font-size: var(--fs-subhead); color: #a8a39a; max-width: 520px; margin: 0 auto; line-height: 1.6; }
 
-  .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+  .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 48px 24px; }
   .card {
     background: var(--color-bg-surface);
     border: 1px solid var(--color-border);
     border-radius: 8px;
-    padding: 32px;
+    padding: 64px 32px;
     transition: border-color 200ms var(--ease-standard);
   }
   .card:hover { border-color: rgba(27, 79, 224, 0.4); }
@@ -151,8 +151,8 @@ const SUBPAGE_MAP: Record<string, string> = {
   .card-learn:hover { color: var(--color-signal); }
 
   .bottom-cta {
-    margin-top: 72px;
-    padding-top: 64px;
+    margin-top: 144px;
+    padding-top: 128px;
     border-top: 1px solid var(--color-border);
     text-align: center;
   }
@@ -173,6 +173,6 @@ const SUBPAGE_MAP: Record<string, string> = {
   @media (max-width: 860px) {
     .grid { grid-template-columns: 1fr; }
     h1 { font-size: var(--fs-h2); }
-    .page { padding: 36px 20px 60px; }
+    .page { padding: 72px 20px 120px; }
   }
 </style>
