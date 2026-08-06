@@ -5,6 +5,8 @@
  * eligibility requirement for FAQPage markup).
  */
 
+import { GRANT_FRAMES_LABEL } from './pricingCopy';
+
 export interface FaqItem {
   q: string;
   a: string;
@@ -17,11 +19,11 @@ export const PRICING_FAQ: FaqItem[] = [
   },
   {
     q: 'Do I need an account or credit card to test it?',
-    a: 'No. POST https://api.primateintelligence.ai/v1/sandbox returns a free test API key with no email, no card, and no signup — test keys return deterministic fixture results, ideal for CI. Creating an account adds a 6,000-second free grant ($60 face value) for real GPU processing, still with no card required.',
+    a: `No. POST https://api.primateintelligence.ai/v1/sandbox returns a free test API key with no email, no card, and no signup — test keys return deterministic fixture results, ideal for CI. Creating an account adds a free grant of ${GRANT_FRAMES_LABEL} — up to 30 hours of continuous monitoring at 1 fps (1 hour at 30 fps) — for real GPU processing, still with no card required.`,
   },
   {
     q: 'Do credits expire?',
-    a: 'Paid credits never expire. The free 6,000-second signup grant expires after 30 days.',
+    a: `Paid credits never expire. The free ${GRANT_FRAMES_LABEL} signup grant expires after 30 days.`,
   },
   {
     q: 'How is Primate Vision different from Twelve Labs or Google Video Intelligence?',
@@ -44,7 +46,7 @@ export const DOCS_FAQ: FaqItem[] = [
   },
   {
     q: 'How do I go from a test key to real GPU inference?',
-    a: 'Sign up for an account (a billing gate, not an integration gate — your code does not change) to get a pv_live_ key and a 6,000-second free credit grant, no card required. Live analyses run real GPU inference at $0.01 per video second.',
+    a: `Sign up for an account (a billing gate, not an integration gate — your code does not change) to get a pv_live_ key and a free credit grant of ${GRANT_FRAMES_LABEL} (up to 30 hours of monitoring at 1 fps), no card required. Live analyses run real GPU inference at $0.01 per video second.`,
   },
   {
     q: 'Can AI agents use this API directly?',

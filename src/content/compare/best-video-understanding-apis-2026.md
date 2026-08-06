@@ -38,7 +38,7 @@ And the six products: **Google Video Intelligence**, **Twelve Labs**, **AWS Reko
 | **AWS Rekognition** | Fixed detectors (labels, faces, text) | ✅ Low — but objects and labels only | ⚠️ Closed to new customers Apr 2026; people/pets/packages only | ⚠️ Legacy 60 min/mo; new accounts get $200 credits | ⚠️ SigV4 signing; no Rekognition MCP found | $0.10/min per API, stacking |
 | **Gemini** | Frontier VLM sampling frames at 1fps | ❌ Stochastic LLM; sampling params deprecated on 3.x | ⚠️ Live input capped at ≤1fps JPEG stills; 2-min A/V sessions | ✅ Generous free tier (trains on your data) | ✅ Instant key, .md docs, best hyperscaler onboarding | ~$0.005–$0.023/min at 1fps (tokens, input-only, estimate) |
 | **Mixpeek** | Embedding retrieval over pre-extracted segments — no QA endpoint | — Doesn't answer questions; search results, not claims | ❌ None — batch pipeline over object storage | ⚠️ No free tier ($25/mo floor); free no-signup sample sandbox | ✅ Best-in-class: 4 hosted MCP servers + llms.txt | $0.05/min processed + $25/mo floor + storage rent |
-| **Primate Vision** | JEPA perception model → closed-vocabulary verdict + calibrated 0–1 confidence | ✅ Designed out — yes/no/indeterminate, never free-form generation | ✅ Managed WebRTC, 45ms p50 per frame | ✅ 6,000s signup grant, no card; instant sandbox key for agents | ✅ MCP, llms.txt, `POST /v1/sandbox` | $0.01/sec metered; enterprise plans for 24/7 |
+| **Primate Vision** | JEPA perception model → closed-vocabulary verdict + calibrated 0–1 confidence | ✅ Designed out — yes/no/indeterminate, never free-form generation | ✅ Managed WebRTC, 45ms p50 per frame | ✅ 108,000-frame signup grant (up to 30 h @ 1 fps), no card; instant sandbox key for agents | ✅ MCP, llms.txt, `POST /v1/sandbox` | $0.01/sec metered; enterprise plans for 24/7 |
 
 Six products, but really four different *kinds* of product wearing the same category label. Two are classifier services from the pre-LLM era (Google VI, Rekognition). One is an archive search engine (Twelve Labs). One is a general-purpose LLM with a video mouth (Gemini). One is retrieval infrastructure (Mixpeek). And one is a perception API that answers questions with verdicts (ours). The rest of this post takes them one at a time.
 
@@ -140,7 +140,7 @@ They know this about themselves, and I respect it: their own ["Best Video Intell
 
 **Pricing — two lanes, stated plainly.** Metered: **$0.01 per second of source video** ($0.60/min), flat and fps-independent; queued time free, failed jobs free. That's the on-demand lane — clips, incidents, agent-invoked checks, bursty workloads. A 30-second clip in, a verdict with evidence out: $0.30. For 24/7 continuous monitoring and camera fleets we deliberately do *not* sell the metered path — a nonstop 30-day stream would be $25,920/month at self-serve rates and nobody should pay that. Continuous and fleet workloads run on [highly discounted enterprise plans](https://primateintelligence.ai/pricing#enterprise) — dedicated capacity or low-cost on-site deployment, at a small fraction of the metered rate.
 
-**Free tier.** 6,000 seconds of real processing on signup — $60 face value, no card required, API keys available immediately. And for agents, no signup at all: `POST /v1/sandbox` returns a working sandbox key in one call. **Your AI agent can do it for you — right from Claude**: MCP server, llms.txt, markdown docs twins, and that sandbox endpoint mean an agent can discover the API, get a key, run an analysis, and read back the verdict without a human touching a dashboard.
+**Free tier.** A 108,000-frame budget on signup — up to 30 hours of continuous monitoring at 1 fps (1 hour at 30 fps), no card required, API keys available immediately. And for agents, no signup at all: `POST /v1/sandbox` returns a working sandbox key in one call. **Your AI agent can do it for you — right from Claude**: MCP server, llms.txt, markdown docs twins, and that sandbox endpoint mean an agent can discover the API, get a key, run an analysis, and read back the verdict without a human touching a dashboard.
 
 **Choose us when** you need a managed API that watches video — live or uploaded — and returns a deterministic, auditable answer with evidence. **Choose someone else when** you need search, spatial JSON, transcripts, or the lowest possible per-minute price on offline archives — see above, by name.
 
@@ -177,7 +177,7 @@ Score the six honestly and the category splits clean. Archive search: Twelve Lab
 
 The bet behind this post is that being straight about all of it — including the dimensions we lose and the price point competitors screenshot — is worth more than any adjective we could have stacked instead. Roundups get cited when they're honest. We'll find out.
 
-**[Try it free](https://primateintelligence.ai/signup)** — 6,000 seconds of real processing, no card. Or don't even sign up: tell your agent to `POST /v1/sandbox` and ask its first question.
+**[Try it free](https://primateintelligence.ai/signup)** — a 108,000-frame budget (up to 30 hours of monitoring at 1 fps), no card. Or don't even sign up: tell your agent to `POST /v1/sandbox` and ask its first question.
 
 ---
 

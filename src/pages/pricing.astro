@@ -3,11 +3,13 @@
  * Pricing — copy migrated verbatim from primate-intelligence-website-dev
  * src/pages/Pricing.tsx (PRI-437 metered-credits page). The SPA fetches live
  * config from GET /v1/credit-pricing; this static page renders the same launch
- * defaults the SPA falls back to (rate 1¢/s, 6000s grants, $10/$25/$50/$100
- * presets, 600s auto-refill threshold).
+ * defaults the SPA falls back to (rate 1¢/s, $10/$25/$50/$100 presets, 600s
+ * auto-refill threshold). Free-tier copy is frame-denominated (PRI-552) and
+ * rendered from src/lib/pricingCopy.ts — never hand-type grant numbers here.
  */
 import Base from '../layouts/Base.astro';
 import { PRICING_FAQ, faqPageLd } from '../lib/faq';
+import { GRANT_EQUIVALENCE_ROWS, FREE_TIER_HEADLINE, GRANT_FRAMES_LABEL } from '../lib/pricingCopy';
 
 const presets = [1000, 2500, 5000, 10000];
 const presetLabel = presets.map((c) => `$${c / 100}`).join(' · ');
@@ -25,7 +27,7 @@ const pricingLd = {
       name: 'Free Start',
       price: '0',
       priceCurrency: 'USD',
-      description: '6,000 seconds signup grant, no card required.',
+      description: `${GRANT_FRAMES_LABEL} signup grant (${FREE_TIER_HEADLINE.toLowerCase()}), no card required.`,
     },
     {
       '@type': 'Offer',
@@ -69,17 +71,18 @@ const pricingLd = {
     <section class="cards">
       <div class="card">
         <p class="eyebrow">Free start</p>
-        <h2>Try real processing without a card.</h2>
-        <p class="big-num">6,000s</p>
+        <h2>{FREE_TIER_HEADLINE}.</h2>
+        <p class="big-num">{GRANT_FRAMES_LABEL}</p>
         <p class="muted small">
-          $60 face value. Signup grant expires after 30 days. API keys are
-          available immediately after account creation.
+          Your free signup grant is a fixed frame budget — the slower your
+          capture rate, the longer it lasts. Expires after 30 days. API keys
+          are available immediately after account creation, no card required.
         </p>
         <table class="mini-table">
           <tbody>
-            <tr><td>Card grant</td><td>+6,000s / +$60</td></tr>
-            <tr><td>Card requirement</td><td>$0 setup</td></tr>
-            <tr><td>Total face value</td><td>$120</td></tr>
+            {GRANT_EQUIVALENCE_ROWS.map((r) => (
+              <tr><td>{r.label}</td><td>{r.duration}</td></tr>
+            ))}
           </tbody>
         </table>
         <a class="btn outline" href="https://primateintelligence.ai/signup">Create account</a>

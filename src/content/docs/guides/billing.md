@@ -11,7 +11,7 @@ Primate Vision bills by **video-seconds processed**, prepaid as credits. 1 credi
 
 ## How credits flow
 
-- **Signup grant** — new accounts get free credit-seconds to evaluate with (currently 6,000s ≈ 100 minutes; expiring)
+- **Signup grant** — new accounts get a free frame budget to evaluate with (currently 108,000 frames — up to 30 hours of monitoring at 1 fps, 1 hour at 30 fps; expiring)
 - **Card grant** — adding a card grants another tranche
 - **Purchases** — buy credit blocks in the [dashboard](https://primateintelligence.ai/dashboard/billing); custom amounts supported
 - **Auto-refill** — opt in to top up automatically when the balance crosses the threshold (currently 600s)

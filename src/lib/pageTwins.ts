@@ -6,6 +6,7 @@
  * HTML pages — never hand-maintained (PRI-502: drift is worse than absence).
  */
 import { SLIDES } from '../data/carousel';
+import { GRANT_EQUIVALENCE_ROWS, GRANT_FRAMES_LABEL } from './pricingCopy';
 import { USE_CASES_HERO, VERTICALS, USE_CASES_CTA } from '../data/useCases';
 import { TEAM, TEAM_HERO } from '../data/team';
 import { VALUES, VALUES_HERO, VALUES_TEAM } from '../data/values';
@@ -76,12 +77,12 @@ time, independent of frame rate.
 **Launch rate: $0.01 / video second** ($0.60/min · $36/hr). Reviewed after
 benchmark and demand data; Enterprise is custom above $20k/month.
 
-## Free start — try real processing without a card
+## Free start — up to 30 hours of continuous monitoring free
 
-- Signup grant: 6,000s ($60 face value, expires after 30 days)
-- Card grant: +6,000s / +$60 ($0 setup)
-- Total face value: $120
-- API keys available immediately after account creation
+- Signup grant: ${GRANT_FRAMES_LABEL} — a fixed frame budget (expires after 30 days)
+- The slower your capture rate, the longer it lasts:
+${GRANT_EQUIVALENCE_ROWS.map((r) => `  - ${r.label} → ${r.duration}`).join('\n')}
+- API keys available immediately after account creation, no card required
 
 ## Self-serve — metered credits for production work
 

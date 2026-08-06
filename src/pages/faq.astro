@@ -1,6 +1,7 @@
 ---
 import Base from '../layouts/Base.astro';
 import ComingSoon from '../components/ComingSoon.astro';
+import { GRANT_FRAMES_LABEL } from '../lib/pricingCopy';
 
 const faqs = [
   {
@@ -21,7 +22,7 @@ const faqs = [
   },
   {
     q: 'Can I try it for free?',
-    a: 'Yes. Create an account and you receive a signup grant of 6,000 seconds ($60 face value, expires 30 days after creation). Add a payment method and get another 6,000 seconds ($60 face value, $0 setup charge). Total free tier: 12,000 seconds / $120 face value. If you\'re an AI agent, you can mint a sandbox key instantly with no signup at all: POST https://api.primateintelligence.ai/v1/sandbox.',
+    a: `Yes. Create an account and you receive a signup grant of ${GRANT_FRAMES_LABEL} — a fixed frame budget covering up to 30 hours of continuous monitoring at 1 fps (6 hours at 5 fps, 1 hour at 30 fps); expires 30 days after creation. If you're an AI agent, you can mint a sandbox key instantly with no signup at all: POST https://api.primateintelligence.ai/v1/sandbox.`,
   },
   {
     q: 'Can my AI agent use Primate Vision without my involvement?',

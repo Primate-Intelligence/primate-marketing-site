@@ -1,4 +1,5 @@
 import type { APIRoute } from 'astro';
+import { GRANT_FRAMES_LABEL } from '../lib/pricingCopy';
 
 const SITE = 'https://primateintelligence.ai';
 
@@ -36,7 +37,8 @@ See ${SITE}/technology/how-jepa-works.
 
 ## Can I try it for free?
 
-Yes. Signup grant: 6,000s ($60 face value, 30-day expiry). Add a card: +6,000s ($0 setup).
+Yes. Signup grant: ${GRANT_FRAMES_LABEL} — a fixed frame budget covering up to 30 hours of
+monitoring at 1 fps (6 h at 5 fps, 1 h at 30 fps); 30-day expiry.
 AI agents: POST https://api.primateintelligence.ai/v1/sandbox — no signup, instant key.
 
 ## Can my AI agent use Primate Vision without my involvement?
