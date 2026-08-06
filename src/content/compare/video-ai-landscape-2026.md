@@ -41,7 +41,7 @@ Primate Vision answers questions about video. That's the whole product. You poin
 - **Timestamped evidence segments** showing exactly when
 - An **annotated overlay evidence video** you can watch and share
 
-Pricing is flat and legible: **$0.01 per second of source video** ($0.60/min), independent of frame rate — 10 seconds at 60fps bills as 10 seconds. Queued time is free. Failed jobs are free.
+Pricing is flat and legible: **$0.0000015 per frame processed** (0.00015¢/frame — replacing our per-second model). You pay for the frames actually analyzed, so your capture rate sets your cost: an hour of 30 fps video ≈ 16¢; the same hour at 1 fps ≈ 0.5¢. Queued time is free. Failed jobs are free.
 
 **And what it isn't.** A comparison post you can't audit is worthless, so here's ours: Primate Vision does **not** return bounding-box JSON (evidence is the overlay video, not coordinates), does **not** offer embeddings or semantic search over archives, does **not** do transcription, OCR, or audio understanding (it's visual-only), and does **not** batch-process multiple videos in one request (batch means up to 10 questions against one video, at 50% off each question after the first). If those are your primary needs, some of the products below are genuinely better choices — we say which ones.
 
@@ -104,7 +104,7 @@ Read the bounding-box, embeddings, and transcription bullets honestly: those are
 
 Primate Vision has **two pricing lanes**, and every comparison in this library states both:
 
-1. **Metered — $0.01/second of source video.** For on-demand analysis: clips, incidents, agent-invoked checks, dev/test, bursty workloads. Flat and fps-independent. Queued time free; failed jobs free. A 30-second clip answered with a verdict, confidence, timestamps, and an evidence video costs $0.30.
+1. **Metered — $0.0000015 per frame processed.** For on-demand analysis: clips, incidents, agent-invoked checks, dev/test, bursty workloads. Flat per-frame; your capture rate sets your cost. Queued time free; failed jobs free. A 30-second clip at 30 fps answered with a verdict, confidence, timestamps, and an evidence video costs a fraction of a cent.
 2. **[Enterprise — contact us](https://primateintelligence.ai/pricing#enterprise).** For 24/7 continuous monitoring and camera fleets: dedicated capacity or on-site deployment, priced at a small fraction of the metered rate under highly discounted enterprise plans. The metered price is deliberately not the continuous-monitoring price.
 
 Here's the normalized table, cheapest to most expensive — including the number our competitors would quote against us, because hiding it would be dishonest:
@@ -121,15 +121,15 @@ Here's the normalized table, cheapest to most expensive — including the number
 | Azure Video Indexer | per input-minute, meters stack | $2.70–$11.40 | Audio + video meters stack; re-index re-bills |
 | Roboflow | subscription + credits | $3.00–$8.00 managed | Credits burn even on self-hosted inference |
 | Google Video Intelligence | per-feature × per-minute | $6.00–$7.20 per feature | Partial minutes round UP: 1,000 five-second clips bill as 1,000 minutes ([pricing](https://cloud.google.com/products/video-intelligence/pricing)) |
-| **Primate Vision — metered** | per-second, flat | **$36.00** † | See footnote — this is the on-demand lane, not the fleet price |
+| **Primate Vision — metered** | per-frame, flat | **$0.16** (30 fps) † | See footnote — ≈0.5¢/hr at 1 fps; fleets use the enterprise lane |
 | **Primate Vision — enterprise** | contact us | *a small fraction of the metered rate* | 24/7 / fleet lane; dedicated capacity or on-site deployment |
 
-† *Metered rate normalized for comparison. Primate does not sell 24/7 continuous monitoring at the metered rate — continuous and fleet workloads use enterprise plans; [contact us](https://primateintelligence.ai/pricing#enterprise). Our own pricing page states the arithmetic plainly: a nonstop 30-day stream would be $25,920/month at self-serve rates, which is exactly why that workload belongs on an enterprise agreement.*
+† *Metered rate normalized at 30 fps for comparison (108,000 frames/hour × $0.0000015). Camera fleets and 24/7 estates still belong on enterprise plans — dedicated capacity, volume terms, and SLAs; [contact us](https://primateintelligence.ai/pricing#enterprise).*
 
 Three things to hold in mind when reading any $/camera-hour table in this category:
 
-- **Per-verdict is the metered lane's real unit.** You don't buy camera-hours on the metered lane; you buy answered questions. A 30-second incident clip → verdict + confidence + timestamped evidence = $0.30. Compare that to what a false alarm costs your ops team.
-- **Like-for-like fidelity changes the math.** The cheap rows sample ~1fps. At 12fps parity, Gemini's input tokens alone reach $0.28–$0.37/min — 46–62% of Primate's all-in $0.60/min — with no verdict layer, no calibration, and no evidence artifacts on top.
+- **Per-verdict is the metered lane's real unit.** You don't buy camera-hours on the metered lane; you buy answered questions. A 30-second incident clip → verdict + confidence + timestamped evidence for a fraction of a cent. Compare that to what a false alarm costs your ops team.
+- **Like-for-like fidelity changes the math.** The cheap rows sample ~1fps. At 12fps parity, Gemini's input tokens alone reach $0.28–$0.37/min — hundreds of times Primate's all-in ≈0.1¢/min at 12 fps — with no verdict layer, no calibration, and no evidence artifacts on top.
 - **Raw price ≠ delivered capability.** Every row cheaper than us is a raw-annotation or raw-token price. What the buyer still has to build on top — structured output contracts, a streaming layer, evidence generation, confidence calibration — is the actual cost of ownership.
 
 ---

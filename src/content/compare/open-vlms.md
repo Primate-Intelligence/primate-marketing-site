@@ -47,7 +47,7 @@ Primate Vision answers the question those teams are ultimately trying to answer:
 
 This is the category's cleanest structural gap: **not one open VLM ships live-stream ingestion.** There's no RTSP listener, no WebRTC endpoint, no session manager in any repo — Qwen3-VL, InternVL3.5, LLaVA-OneVision-2, Moondream, none of them. "Video input" means frames or files you've already captured. To watch a camera you build the capture pipeline, the frame sampler, the batching logic, the reconnect handling, and the latency proof — and then you maintain it as the model landscape shifts under you every quarter.
 
-On Primate Vision that layer is the product: managed WebRTC sessions at native frame rates, mid-stream prompt changes over one WebSocket message (`update_prompt` — no reconnect, no re-upload), session caps and warnings surfaced in the API, and per-second metering that stops when the session ends.
+On Primate Vision that layer is the product: managed WebRTC sessions at native frame rates, mid-stream prompt changes over one WebSocket message (`update_prompt` — no reconnect, no re-upload), session caps and warnings surfaced in the API, and per-frame metering that stops when the session ends.
 
 ## Verdicts: a contract vs. constrained decoding
 
@@ -65,10 +65,10 @@ But that headline **silently assumes 100% GPU utilization and free engineers.** 
 
 **Primate Vision has two lanes**, stated plainly:
 
-1. **Metered — $0.01 per second of source video** ($0.60/min), flat and fps-independent. Queued time free; failed jobs free. A 30-second clip → verdict + confidence + timestamps + evidence video = $0.30. Run up to 10 questions against one video in a single batch call, each after the first at 50% off. `validate_only` estimates cost before touching GPU or credits.
+1. **Metered — $0.0000015 per frame processed** (0.00015¢/frame — replacing our per-second model). You pay for the frames actually analyzed, so your capture rate sets your cost: an hour of 30 fps video ≈ 16¢; the same hour at 1 fps ≈ 0.5¢. Queued time free; failed jobs free. A 30-second clip at 30 fps → verdict + confidence + timestamps + evidence video ≈ 0.14¢. Run up to 10 questions against one video in a single batch call, each after the first at 50% off. `validate_only` estimates cost before touching GPU or credits.
 2. **[Enterprise — contact us](https://primateintelligence.ai/pricing#enterprise)** for 24/7 continuous monitoring and camera fleets: dedicated capacity or on-site deployment at a small fraction of the metered rate, under highly discounted enterprise plans.
 
-The honest normalization: the metered lane works out to $36/camera-hour† against a self-hosted ~$0.03–$0.15 — raw compute is cheaper by two to three orders of magnitude, and if you're running a large fleet with an ML team, that gap is real and you should weigh it (then talk to our enterprise team, because the metered rate is deliberately not our fleet price). But the two numbers buy different things. The GPU rate buys *tokens out of a model* — no ingestion, no verdict contract, no calibration, no evidence clips, no webhooks, no SLA, no one to page. The Primate meter buys *answered questions with proof*, live or on demand, on infrastructure someone else keeps running. You don't buy camera-hours on our metered lane. You buy verdicts.
+The honest normalization: the metered lane works out to ≈16¢/camera-hour at 30 fps† (≈0.5¢ at 1 fps) against a self-hosted ~$0.03–$0.15 — the raw-compute gap that used to favor self-hosting by orders of magnitude is now roughly a wash, and at low capture rates the meter is cheaper than the GPU you'd rent. The two numbers still buy different things. The GPU rate buys *tokens out of a model* — no ingestion, no verdict contract, no calibration, no evidence clips, no webhooks, no SLA, no one to page. The Primate meter buys *answered questions with proof*, live or on demand, on infrastructure someone else keeps running.
 
 † *Metered rate normalized for comparison. Primate does not sell 24/7 continuous monitoring at the metered rate — continuous and fleet workloads use enterprise plans; [contact us](https://primateintelligence.ai/pricing#enterprise).*
 
@@ -91,7 +91,7 @@ This alternative is legitimately right for whole categories of buyers:
 - **The output feeds a decision.** A closed-vocabulary verdict with calibrated confidence and a watchable evidence video beats an uncalibrated generative "yes" when an alert, a workflow, or a compliance record hangs on it — and nobody publishes hallucination rates for open VLMs on this class of footage.
 - **Latency is a requirement, not a hope.** We publish 45ms p50 / 316ms p95 / 11.8 fps sustained / 6.6s session setup on a public page. No open-VLM stack publishes anything comparable — you'd have to achieve *and prove* it yourself.
 - **Your true TCO includes engineers.** Below fleet scale, the managed meter is almost always cheaper than 0.5–1 FTE of MLOps plus GPU utilization risk — and it's zero ops from day one.
-- **The camera count is one, or bursty, or agent-driven.** Clips, incidents, on-demand checks: $0.30 answers a question about a 30-second clip, with proof, no GPU rented.
+- **The camera count is one, or bursty, or agent-driven.** Clips, incidents, on-demand checks: a fraction of a cent answers a question about a 30-second clip, with proof, no GPU rented.
 
 ## Try it
 

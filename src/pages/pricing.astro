@@ -9,11 +9,21 @@
  */
 import Base from '../layouts/Base.astro';
 import { PRICING_FAQ, faqPageLd } from '../lib/faq';
-import { GRANT_EQUIVALENCE_ROWS, FREE_TIER_HEADLINE, GRANT_FRAMES_LABEL } from '../lib/pricingCopy';
+import {
+  GRANT_EQUIVALENCE_ROWS,
+  FREE_TIER_HEADLINE,
+  GRANT_FRAMES_LABEL,
+  PRICE_PER_FRAME_USD_LABEL,
+  PER_FRAME_30FPS_PER_HOUR_LABEL,
+  PAID_RATE_EQUIVALENCE_ROWS,
+} from '../lib/pricingCopy';
 
 const presets = [1000, 2500, 5000, 10000];
 const presetLabel = presets.map((c) => `$${c / 100}`).join(' · ');
-const refillMath = presets.map((c) => `$${c / 100}=${(c / 1).toLocaleString()}s`).join(' · ');
+// Frame-native refill math (PRI-552): frames = cents / price_per_frame_cents (0.00015¢).
+const framesPerCent = 1 / 0.00015;
+const fmtFrames = (c: number) => `${((c * framesPerCent) / 1_000_000).toLocaleString('en-US', { maximumFractionDigits: 1 })}M`;
+const refillMath = presets.map((c) => `$${c / 100}≈${fmtFrames(c)} frames`).join(' · ');
 
 const pricingLd = {
   '@context': 'https://schema.org',
@@ -32,9 +42,9 @@ const pricingLd = {
     {
       '@type': 'Offer',
       name: 'Self-Serve',
-      price: '0.01',
+      price: '0.0000015',
       priceCurrency: 'USD',
-      description: '$0.01 per video second, metered credits with auto-refill.',
+      description: `${PRICE_PER_FRAME_USD_LABEL} per processed frame, metered credits with auto-refill.`,
     },
   ],
 };
@@ -42,7 +52,7 @@ const pricingLd = {
 
 <Base
   title="Pricing"
-  description="One balance for every video workflow. $0.01 per video second — buy credits once, use them through the web app, API, agents, file uploads, or live streams."
+  description={`One balance for every video workflow. ${PRICE_PER_FRAME_USD_LABEL} per processed frame — buy credits once, use them through the web app, API, agents, file uploads, or live streams.`}
   canonicalPath="/pricing"
   jsonLd={[pricingLd, faqPageLd(PRICING_FAQ)]}
 >
@@ -53,16 +63,17 @@ const pricingLd = {
         <h1>One balance for every video workflow.</h1>
         <p class="lede">
           Buy video processing credits once. Use them through the web app, API, agents,
-          file uploads, or live streams. A second is one second of source video clock
-          time, independent of frame rate.
+          file uploads, or live streams. You pay per frame actually processed — the
+          slower your capture rate, the less you pay for the same coverage.
         </p>
       </div>
       <div class="rate-card">
         <p class="eyebrow">Launch rate</p>
-        <p class="rate"><span class="rate-num">$0.01</span> <span class="rate-unit">/ video second</span></p>
+        <p class="rate"><span class="rate-num">{PRICE_PER_FRAME_USD_LABEL}</span> <span class="rate-unit">/ frame processed</span></p>
         <p class="muted small">
-          $0.60/min · $36/hr. Reviewed after benchmark and demand data; Enterprise is
-          custom above $20k/month.
+          ≈{PER_FRAME_30FPS_PER_HOUR_LABEL} per hour of 30 fps video. Live rate always at
+          <code>GET /v1/credit-pricing</code>. Reviewed after benchmark and demand data;
+          Enterprise is custom.
         </p>
       </div>
     </section>
@@ -91,15 +102,17 @@ const pricingLd = {
       <div class="card accent-signal">
         <p class="eyebrow">Self-serve</p>
         <h2>Metered credits for production work.</h2>
-        <p class="big-num">$0.01<span class="rate-unit"> / second</span></p>
+        <p class="big-num">{PRICE_PER_FRAME_USD_LABEL}<span class="rate-unit"> / frame</span></p>
         <p class="muted small">
-          $0.60/min · $36/hr. Buy credits manually or auto-refill before your balance
-          drops below 600s ($6).
+          Billed per frame processed — replacing our per-second model. Buy credits
+          manually or auto-refill when your balance runs low.
         </p>
         <table class="mini-table">
           <tbody>
+            {PAID_RATE_EQUIVALENCE_ROWS.map((r) => (
+              <tr><td>{r.label}</td><td>{r.cost}</td></tr>
+            ))}
             <tr><td>Refill presets</td><td>{presetLabel}</td></tr>
-            <tr><td>Custom amount</td><td>Yes</td></tr>
             <tr><td>Paid credits</td><td>No expiry</td></tr>
           </tbody>
         </table>
@@ -112,10 +125,8 @@ const pricingLd = {
         <p class="big-num">Talk to us</p>
         <p class="muted small">
           The metered rate is built for on-demand analysis — clips, incidents,
-          agent-invoked checks. A nonstop 30-day stream is $25,920/mo self-serve,
-          and nobody should pay that: 24/7 monitoring and camera fleets run on
-          highly discounted enterprise plans, priced at a small fraction of the
-          metered rate.
+          agent-invoked checks. 24/7 monitoring and camera fleets run on enterprise
+          plans: dedicated capacity, volume terms, and SLAs at committed-use rates.
         </p>
         <table class="mini-table">
           <tbody>
@@ -136,26 +147,26 @@ const pricingLd = {
           <div class="step">
             <div class="step-rule"></div>
             <p class="step-title">1. Upload or stream</p>
-            <p class="muted small">We inspect source video duration, not processed frame count.</p>
+            <p class="muted small">We count the frames actually processed — your capture rate sets your cost.</p>
           </div>
           <div class="step">
             <div class="step-rule"></div>
-            <p class="step-title">2. Reserve seconds</p>
-            <p class="muted small">Uploads reserve upfront. Streams debit elapsed time while live.</p>
+            <p class="step-title">2. Reserve credits</p>
+            <p class="muted small">Uploads reserve upfront. Streams reserve while live and reconcile at end.</p>
           </div>
           <div class="step">
             <div class="step-rule"></div>
             <p class="step-title">3. Settle ledger</p>
-            <p class="muted small">Every event records job, source, seconds, credit type, and balance.</p>
+            <p class="muted small">Every event records job, source, frames, credit type, and balance — the API reports which rule billed it (<code>metering_rule</code>).</p>
           </div>
         </div>
       </div>
       <div class="panel">
-        <h3>Same video, same charge</h3>
+        <h3>Fewer frames, smaller bill</h3>
         <div class="pills">
-          <span class="pill signal">10s at 1fps = 10s</span>
-          <span class="pill signal">10s at 60fps = 10s</span>
-          <span class="pill green">8m stream = 480s</span>
+          <span class="pill signal">1 hour @ 30 fps ≈ 16¢</span>
+          <span class="pill signal">1 hour @ 1 fps ≈ 0.5¢</span>
+          <span class="pill green">You choose the capture rate</span>
           <span class="pill muted-pill">No queued-time charge</span>
           <span class="pill muted-pill">Failed jobs not charged</span>
         </div>

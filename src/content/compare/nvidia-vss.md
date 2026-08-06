@@ -60,10 +60,10 @@ The honest normalization (estimate — every number depends on GPU choice, utili
 
 **Primate Vision has two lanes:**
 
-1. **Metered — $0.01 per second of source video** ($0.60/min), flat, fps-independent. Queued time free; failed jobs free. A 30-second clip → verdict + evidence = $0.30, with zero fixed cost, zero GPUs, zero NVAIE contracts.
+1. **Metered — $0.0000015 per frame processed** (0.00015¢/frame — replacing our per-second model). You pay for the frames actually analyzed, so your capture rate sets your cost: an hour of 30 fps video ≈ 16¢; the same hour at 1 fps ≈ 0.5¢. Queued time free; failed jobs free. A 30-second clip at 30 fps → verdict + evidence ≈ 0.14¢, with zero fixed cost, zero GPUs, zero NVAIE contracts.
 2. **[Enterprise — contact us](https://primateintelligence.ai/pricing#enterprise)** for 24/7 continuous monitoring and camera fleets: dedicated capacity or on-site deployment at a small fraction of the metered rate, under highly discounted enterprise plans — which is the correct comparison against a VSS fleet deployment, not the metered rate.
 
-Normalized at the metered rate we're $36/camera-hour† — far above VSS at fleet utilization. We print that number ourselves because hiding it would be dishonest. The two cost curves cross exactly where you'd expect: occasional questions and bursty workloads favor a meter; owned 24/7 fleets favor owned GPUs — or our enterprise lane, which exists for precisely that workload and can include on-site deployment.
+Normalized at the metered rate we're ≈16¢/camera-hour at 30 fps† (≈0.5¢ at 1 fps) — with zero fixed cost, versus VSS's owned-GPU economics that only pay off at sustained fleet utilization. Occasional questions and bursty workloads clearly favor the meter; large owned 24/7 fleets can still favor owned GPUs — or our enterprise lane, which exists for precisely that workload and can include on-site deployment.
 
 † *Metered rate normalized for comparison. Primate does not sell 24/7 continuous monitoring at the metered rate — continuous and fleet workloads use enterprise plans; [contact us](https://primateintelligence.ai/pricing#enterprise).*
 
@@ -84,7 +84,7 @@ For some buyers these are decisive, and they should be:
 - **You don't have (or want) GPUs and an infra team.** No $4,500/GPU/year licensing, no capex, no ops burden, no upgrade treadmill.
 - **The verdict has to be trustworthy and auditable.** Deterministic closed-vocabulary answers with calibrated confidence and watchable evidence — versus stochastic VLM verdicts with documented spurious-incident bugs.
 - **You need managed security and a clean contract**: auth, TLS, and rate limiting are our problem, and every answer arrives in one JSON shape with webhooks or `Prefer: wait`.
-- **Your workload is bursty or on-demand.** Pay $0.30 for a 30-second question; pay nothing when idle.
+- **Your workload is bursty or on-demand.** Pay a fraction of a cent for a 30-second question; pay nothing when idle.
 
 ## Try it
 

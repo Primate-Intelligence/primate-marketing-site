@@ -70,7 +70,7 @@ ${docLines}
 ## Product pages
 
 - [Home](${SITE}/): Product overview — markdown twin at /index.md
-- [Pricing](${SITE}/pricing): $0.01/video-second metered credits — markdown twin at /pricing.md
+- [Pricing](${SITE}/pricing): $0.0000015/frame-processed metered credits — markdown twin at /pricing.md
 - [Performance & latency](${SITE}/performance): Measured production p50/p95 latency, throughput, and accuracy benchmarks — markdown twin at /performance.md
 - [Use Cases](${SITE}/use-cases): Eight markets, one model — markdown twin at /use-cases.md
 - [For AI agents](${SITE}/agents): Zero-touch integration for AI agents — markdown twin at /agents-page.md

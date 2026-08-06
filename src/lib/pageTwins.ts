@@ -6,7 +6,13 @@
  * HTML pages — never hand-maintained (PRI-502: drift is worse than absence).
  */
 import { SLIDES } from '../data/carousel';
-import { GRANT_EQUIVALENCE_ROWS, GRANT_FRAMES_LABEL } from './pricingCopy';
+import {
+  GRANT_EQUIVALENCE_ROWS,
+  GRANT_FRAMES_LABEL,
+  PRICE_PER_FRAME_USD_LABEL,
+  PER_FRAME_30FPS_PER_HOUR_LABEL,
+  PAID_RATE_EQUIVALENCE_ROWS,
+} from './pricingCopy';
 import { USE_CASES_HERO, VERTICALS, USE_CASES_CTA } from '../data/useCases';
 import { TEAM, TEAM_HERO } from '../data/team';
 import { VALUES, VALUES_HERO, VALUES_TEAM } from '../data/values';
@@ -71,11 +77,12 @@ export function pricingMd(): string {
 # One balance for every video workflow.
 
 Buy video processing credits once. Use them through the web app, API, agents,
-file uploads, or live streams. A second is one second of source video clock
-time, independent of frame rate.
+file uploads, or live streams. You pay per frame actually processed — the
+slower your capture rate, the less you pay for the same coverage.
 
-**Launch rate: $0.01 / video second** ($0.60/min · $36/hr). Reviewed after
-benchmark and demand data; Enterprise is custom above $20k/month.
+**Launch rate: ${PRICE_PER_FRAME_USD_LABEL} / frame processed** (≈${PER_FRAME_30FPS_PER_HOUR_LABEL} per
+hour of 30 fps video). Live rate always at GET /v1/credit-pricing. Reviewed
+after benchmark and demand data; Enterprise is custom.
 
 ## Free start — up to 30 hours of continuous monitoring free
 
@@ -86,28 +93,29 @@ ${GRANT_EQUIVALENCE_ROWS.map((r) => `  - ${r.label} → ${r.duration}`).join('\n
 
 ## Self-serve — metered credits for production work
 
-- $0.01 / second ($0.60/min · $36/hr)
+- ${PRICE_PER_FRAME_USD_LABEL} / frame processed — replacing our per-second model
+${PAID_RATE_EQUIVALENCE_ROWS.map((r) => `- ${r.label} → ${r.cost}`).join('\n')}
 - Refill presets: $10 · $25 · $50 · $100 (custom amounts supported)
-- Auto-refill before your balance drops below 600s ($6)
+- Auto-refill when your balance runs low
 - Paid credits never expire
 
 ## Enterprise — custom pricing for committed volume
 
-For customers forecasting or committing to more than $20k/month. A nonstop
-30-day stream is $25,920/mo self-serve. Rate card: custom. Terms: volume
-commit. Support: SLA + dedicated. Contact: sales@primateintelligence.ai
+For 24/7 monitoring and camera fleets: dedicated capacity, volume terms, and
+SLAs at committed-use rates. Rate card: custom. Terms: volume commit.
+Support: SLA + dedicated. Contact: sales@primateintelligence.ai
 
 ## How metering works
 
-1. **Upload or stream** — We inspect source video duration, not processed frame count.
-2. **Reserve seconds** — Uploads reserve upfront. Streams debit elapsed time while live.
-3. **Settle ledger** — Every event records job, source, seconds, credit type, and balance.
+1. **Upload or stream** — We count the frames actually processed; your capture rate sets your cost.
+2. **Reserve credits** — Uploads reserve upfront. Streams reserve while live and reconcile at end.
+3. **Settle ledger** — Every event records job, source, frames, credit type, and balance — the API reports which rule billed it (metering_rule).
 
-## Same video, same charge
+## Fewer frames, smaller bill
 
-- 10s at 1fps = 10s
-- 10s at 60fps = 10s
-- 8m stream = 480s
+- 1 hour @ 30 fps ≈ 16¢
+- 1 hour @ 1 fps ≈ 0.5¢
+- You choose the capture rate
 - No queued-time charge
 - Failed jobs not charged
 

@@ -73,10 +73,10 @@ Primate Vision's output is a *decision*: a verdict from a closed vocabulary with
 
 **Primate Vision has two lanes**, stated plainly:
 
-1. **Metered — $0.01 per second of source video** ($0.60/min), flat and fps-independent. Queued time free; failed jobs free; `validate_only` dry-runs estimate cost without touching GPU or credits. A 30-second clip → verdict + confidence + timestamps + evidence video = $0.30.
+1. **Metered — $0.0000015 per frame processed** (0.00015¢/frame — replacing our per-second model). You pay for the frames actually analyzed, so your capture rate sets your cost: an hour of 30 fps video ≈ 16¢; the same hour at 1 fps ≈ 0.5¢. Queued time free; failed jobs free. `validate_only` dry-runs estimate cost without touching GPU or credits. A 30-second clip at 30 fps → verdict + confidence + timestamps + evidence video ≈ 0.14¢.
 2. **[Enterprise — contact us](https://primateintelligence.ai/pricing#enterprise)** for 24/7 continuous monitoring and camera fleets: dedicated capacity or on-site deployment at a small fraction of the metered rate, under highly discounted enterprise plans.
 
-The honest normalization: single-feature label detection on GVI works out to **$6.00/camera-hour stored, $7.20 streaming** (post-free-tier), versus $36/camera-hour† at Primate's metered rate — roughly 5–6× cheaper per raw hour. If a fixed label taxonomy actually answers your question, take that gap. But the meters buy different things: GVI's dollar buys an annotation document you still have to reason over (and stacking the features you'd need narrows the gap fast — labels + object tracking is already $17.40/streaming-hour); ours buys the answered question, with evidence, live or on demand. You don't buy camera-hours on our metered lane. You buy verdicts.
+The honest normalization: single-feature label detection on GVI works out to **$6.00/camera-hour stored, $7.20 streaming** (post-free-tier), versus ≈16¢/camera-hour at 30 fps† on Primate's metered rate — GVI is now ~40× more expensive per raw hour before you stack features (labels + object tracking is already $17.40/streaming-hour). And the meters buy different things: GVI's dollar buys an annotation document you still have to reason over; ours buys the answered question, with evidence, live or on demand.
 
 † *Metered rate normalized for comparison. Primate does not sell 24/7 continuous monitoring at the metered rate — continuous and fleet workloads use enterprise plans; [contact us](https://primateintelligence.ai/pricing#enterprise).*
 

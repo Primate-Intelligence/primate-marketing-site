@@ -52,7 +52,7 @@ Both. WebRTC live-stream ingestion and file uploads up to 2 GiB. See ${SITE}/tec
 
 ## What about 24/7 continuous monitoring pricing?
 
-Not the $0.01/s rate — that's for metered use. Continuous deployments run on enterprise plans.
+The metered rate is $0.0000015/frame (≈16¢/hr at 30 fps). Fleets and 24/7 estates run on enterprise plans.
 Contact sales@primateintelligence.ai.
 
 ## What happens to my video data?

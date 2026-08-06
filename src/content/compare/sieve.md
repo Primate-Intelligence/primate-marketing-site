@@ -66,10 +66,10 @@ That last capability — licensing and consent management for training data at p
 
 **Primate Vision has two lanes**, stated plainly:
 
-1. **Metered — $0.01 per second of source video** ($0.60/min), flat and fps-independent. Queued time free; failed jobs free. A 30-second clip → verdict + confidence + timestamped clips + annotated evidence video = $0.30. A `validate_only` dry-run estimates cost before you spend a credit.
+1. **Metered — $0.0000015 per frame processed** (0.00015¢/frame — replacing our per-second model). You pay for the frames actually analyzed, so your capture rate sets your cost: an hour of 30 fps video ≈ 16¢; the same hour at 1 fps ≈ 0.5¢. Queued time free; failed jobs free. A 30-second clip at 30 fps → verdict + confidence + timestamped clips + annotated evidence video ≈ 0.14¢. A `validate_only` dry-run estimates cost before you spend a credit.
 2. **[Enterprise — contact us](https://primateintelligence.ai/pricing#enterprise)** for 24/7 continuous monitoring and camera fleets: dedicated capacity or on-site deployment at a small fraction of the metered rate, under highly discounted enterprise plans.
 
-For cross-library consistency: the metered lane normalizes to $36/camera-hour†. With Sieve there's nothing to compare it against — but if you're weighing Primate against vendors still in the category, the full normalized table lives in the [hub post](/compare/video-ai-landscape-2026).
+For cross-library consistency: the metered lane normalizes to ≈16¢/camera-hour at 30 fps†. With Sieve there's nothing to compare it against — but if you're weighing Primate against vendors still in the category, the full normalized table lives in the [hub post](/compare/video-ai-landscape-2026).
 
 † *Metered rate normalized for comparison. Primate does not sell 24/7 continuous monitoring at the metered rate — continuous and fleet workloads use enterprise plans; [contact us](https://primateintelligence.ai/pricing#enterprise).*
 

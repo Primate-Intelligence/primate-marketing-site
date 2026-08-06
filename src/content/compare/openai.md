@@ -74,10 +74,10 @@ It's not that GPT-5.6 is a weak model — it's that a language model sampling to
 
 **Primate Vision has two lanes**, stated plainly:
 
-1. **Metered — $0.01 per second of source video** ($0.60/min), flat and fps-independent. Queued time free; failed jobs free. A 30-second clip → verdict + confidence + timestamps + evidence video = $0.30. A `validate_only` dry-run estimates cost before you spend a credit.
+1. **Metered — $0.0000015 per frame processed** (0.00015¢/frame — replacing our per-second model). You pay for the frames actually analyzed, so your capture rate sets your cost: an hour of 30 fps video ≈ 16¢; the same hour at 1 fps ≈ 0.5¢. Queued time free; failed jobs free. A 30-second clip at 30 fps → verdict + confidence + timestamps + evidence video ≈ 0.14¢. A `validate_only` dry-run estimates cost before you spend a credit.
 2. **[Enterprise — contact us](https://primateintelligence.ai/pricing#enterprise)** for 24/7 continuous monitoring and camera fleets: dedicated capacity or on-site deployment at a small fraction of the metered rate, under highly discounted enterprise plans.
 
-Normalized honestly: at 1fps stills, OpenAI's DIY route works out ~5–20× cheaper per raw hour (estimate) than $36/camera-hour† at Primate's metered rate — *if* your use case tolerates 1fps sampling, no temporal continuity, stochastic answers, and building the entire frame pipeline yourself. The meters buy different things: their tokens buy raw model reads of stills; our seconds buy answered questions about video, with evidence, at native frame rate, live or on demand. You don't buy camera-hours on our metered lane. You buy verdicts.
+Normalized honestly: at 1fps stills, OpenAI's DIY route lands in the same order of magnitude as ≈16¢/camera-hour at 30 fps† on Primate's metered rate — and at matched 1 fps we're ≈0.5¢/hour, cheaper than the token bill — *before* you count building the entire frame pipeline yourself, 1fps sampling, no temporal continuity, and stochastic answers. The meters buy different things: their tokens buy raw model reads of stills; our frames buy answered questions about video, with evidence, at native frame rate, live or on demand.
 
 † *Metered rate normalized for comparison. Primate does not sell 24/7 continuous monitoring at the metered rate — continuous and fleet workloads use enterprise plans; [contact us](https://primateintelligence.ai/pricing#enterprise).*
 

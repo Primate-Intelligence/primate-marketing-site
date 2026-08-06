@@ -1,13 +1,13 @@
 ---
 title: Billing & credits
-description: Credit-seconds, grants, auto-refill, and handling insufficient_credits in code.
+description: Frame-based settlement, credit grants, auto-refill, and handling insufficient_credits in code.
 order: 19
 section: Guides
 ---
 
 # Billing & credits
 
-Primate Vision bills by **video-seconds processed**, prepaid as credits. 1 credit-second = 1 second of video analyzed. Current pricing is always at `GET /v1/credit-pricing` (public, no auth) and on the [pricing page](/pricing).
+Primate Vision bills by **frames processed**, prepaid as credits. Each processed frame costs `price_per_frame_cents`, and the total settles to your credit ledger as equivalent credit-seconds. Current pricing is always at `GET /v1/credit-pricing` (public, no auth — see `price_per_frame_cents`) and on the [pricing page](/pricing).
 
 ## How credits flow
 
@@ -36,8 +36,33 @@ curl -s https://api.primateintelligence.ai/v1/usage \
 
 ## What you're charged for
 
-- **Analyses** — the duration of video actually analyzed, debited when the analysis completes. Failed platform-side work (`inference_error`, `stuck_timeout`) is **not billed**; resubmit freely.
-- **Streams** — live sessions reserve credits up front and reconcile to actual connected seconds at end (`GET /v1/streams/{id}` shows the final usage). Mid-stream you get `warning` messages as the reservation runs low, then the session ends with `end_reason: "insufficient_credits"`.
+- **Analyses** — the frames actually processed, debited when the analysis completes. Failed platform-side work (`inference_error`, `stuck_timeout`) is **not billed**; resubmit freely.
+- **Streams** — live sessions reserve credits up front and reconcile to the processed-frame count at end (`GET /v1/streams/{id}` shows the final usage). Mid-stream you get `warning` messages as the reservation runs low, then the session ends with `end_reason: "insufficient_credits"`.
+
+## Settlement method (`metering_rule`)
+
+Every stream and analysis is pinned to a settlement rule **at creation time**, immutable for its lifetime, and reported back on the terminal object:
+
+- `per_frame` — the current default. Cost = frames processed × `price_per_frame_cents`, settled to the ledger as equivalent credit-seconds: `round(frames × price_per_frame_cents ÷ price_per_second_cents)`. The slower your capture rate, the less you pay for the same wall-clock coverage.
+- `per_second` — the legacy rule: source clock seconds, fps-independent. Reported for resources created before the frame-metering cutover; in-flight sessions always finish under the rule they started with.
+
+Read it from the terminal response — both the top-level field and the `usage` block carry it:
+
+```json
+{
+  "metering_rule": "per_frame",
+  "usage": {
+    "billed_seconds": 16,
+    "credit_balance_after": 5978,
+    "metering_rule": "per_frame",
+    "frames": 108000
+  }
+}
+```
+
+Worked example at current pricing (`price_per_frame_cents: 0.00015`, `price_per_second_cents: 1`): 108,000 frames × 0.00015¢ = 16.2¢ → `round(16.2 ÷ 1)` = **16 credit-seconds** settled.
+
+`usage.frames` is the processed-frame count and is reported for **both** rules (frame counting predates the billing cutover) — for `per_second` rows it's informational, not the billing basis. `usage` is terminal-only: null until the analysis completes or the stream ends.
 
 ## Handling `insufficient_credits` in code
 

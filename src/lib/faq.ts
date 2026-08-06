@@ -15,7 +15,7 @@ export interface FaqItem {
 export const PRICING_FAQ: FaqItem[] = [
   {
     q: 'How much does video analysis cost?',
-    a: 'The launch rate is $0.01 per video second — $0.60 per minute, $36 per hour. You are billed on source video clock time, independent of frame rate: 10 seconds at 60fps costs the same as 10 seconds at 1fps. Queued time is never charged and failed jobs are not charged.',
+    a: 'The rate is $0.0000015 per frame processed (0.00015¢/frame) — replacing our previous per-second model. An hour of 30 fps video is about 16¢; the same hour at 1 fps is about half a cent, so your capture rate sets your cost. Queued time is never charged and failed jobs are not charged. The live rate is always at GET /v1/credit-pricing.',
   },
   {
     q: 'Do I need an account or credit card to test it?',
@@ -27,7 +27,7 @@ export const PRICING_FAQ: FaqItem[] = [
   },
   {
     q: 'How is Primate Vision different from Twelve Labs or Google Video Intelligence?',
-    a: 'Primate Vision answers plain-English questions about video with a deterministic result: yes, no, or indeterminate, plus a confidence score and timestamped evidence clips — rather than returning label taxonomies or embeddings for you to interpret. Pricing is a single metered rate ($0.01 per video second) with no subscription tiers, and the API is built agent-first: a free key in one POST, an OpenAPI 3.1 spec, and an MCP server for Claude, Cursor, and other AI agents.',
+    a: 'Primate Vision answers plain-English questions about video with a deterministic result: yes, no, or indeterminate, plus a confidence score and timestamped evidence clips — rather than returning label taxonomies or embeddings for you to interpret. Pricing is a single metered rate ($0.0000015 per frame processed) with no subscription tiers, and the API is built agent-first: a free key in one POST, an OpenAPI 3.1 spec, and an MCP server for Claude, Cursor, and other AI agents.',
   },
   {
     q: 'What happens when my balance runs out?',
@@ -46,7 +46,7 @@ export const DOCS_FAQ: FaqItem[] = [
   },
   {
     q: 'How do I go from a test key to real GPU inference?',
-    a: `Sign up for an account (a billing gate, not an integration gate — your code does not change) to get a pv_live_ key and a free credit grant of ${GRANT_FRAMES_LABEL} (up to 30 hours of monitoring at 1 fps), no card required. Live analyses run real GPU inference at $0.01 per video second.`,
+    a: `Sign up for an account (a billing gate, not an integration gate — your code does not change) to get a pv_live_ key and a free credit grant of ${GRANT_FRAMES_LABEL} (up to 30 hours of monitoring at 1 fps), no card required. Live analyses run real GPU inference at $0.0000015 per frame processed.`,
   },
   {
     q: 'Can AI agents use this API directly?',

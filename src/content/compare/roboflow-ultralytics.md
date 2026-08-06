@@ -56,10 +56,10 @@ Normalized (estimates): managed Serverless Video Streams run **$3.00–$8.00/cam
 
 **Primate Vision has two lanes:**
 
-1. **Metered — $0.01 per second of source video** ($0.60/min), flat, fps-independent, no subscriptions, no credit arithmetic, no license negotiations. Queued time free; failed jobs free. A 30-second clip → verdict + confidence + timestamps + evidence video = $0.30.
+1. **Metered — $0.0000015 per frame processed** (0.00015¢/frame — replacing our per-second model). You pay for the frames actually analyzed, so your capture rate sets your cost: an hour of 30 fps video ≈ 16¢; the same hour at 1 fps ≈ 0.5¢. Queued time free; failed jobs free. No subscriptions, no credit arithmetic, no license negotiations. A 30-second clip at 30 fps → verdict + confidence + timestamps + evidence video ≈ 0.14¢.
 2. **[Enterprise — contact us](https://primateintelligence.ai/pricing#enterprise)** for 24/7 continuous monitoring and camera fleets: dedicated capacity or on-site deployment at a small fraction of the metered rate, under highly discounted enterprise plans — the correct comparison against a dedicated-GPU fleet deployment.
 
-At the metered rate we normalize to $36/camera-hour† — 4.5–12× their managed streams and orders of magnitude above their amortized fleet numbers. But the rows price different goods. Theirs is raw per-frame detection, with the judgment layer coming out of your engineering budget. Ours is the answered question with evidence. Buy verdicts on the metered lane; buy fleets on the enterprise lane.
+At the metered rate we normalize to ≈16¢/camera-hour at 30 fps† (≈0.5¢ at 1 fps) — now below their managed-stream rates, though large amortized owned fleets can still pencil out cheaper on raw compute. And the rows price different goods. Theirs is raw per-frame detection, with the judgment layer coming out of your engineering budget. Ours is the answered question with evidence. Buy verdicts on the metered lane; buy fleets on the enterprise lane.
 
 † *Metered rate normalized for comparison. Primate does not sell 24/7 continuous monitoring at the metered rate — continuous and fleet workloads use enterprise plans; [contact us](https://primateintelligence.ai/pricing#enterprise).*
 
@@ -78,7 +78,7 @@ Often, honestly:
 - **Your question is about events, not objects.** "Did anyone climb the fence" is not a class label; it's a temporal judgment with an evidence requirement.
 - **You don't have a dataset, labelers, or a training pipeline** — and don't want to acquire them to answer one question. Plain English, first verdict in minutes via a sandbox key in one POST.
 - **The output feeds an alert or audit trail**: deterministic verdict + calibrated confidence + watchable evidence, in one JSON contract with webhooks or `Prefer: wait` — versus detection streams plus aggregation code you own forever.
-- **You want one legible meter.** $0.01/second, flat — no credit tiers, no Flex overage, no metering on your own hardware, no AGPL license negotiation.
+- **You want one legible meter.** $0.0000015/frame, flat — no credit tiers, no Flex overage, no metering on your own hardware, no AGPL license negotiation.
 - **The taxonomy changes weekly.** New question = new prompt (changeable mid-stream over one WebSocket message), not a new training run.
 
 ## Try it

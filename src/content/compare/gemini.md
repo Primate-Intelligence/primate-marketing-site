@@ -12,7 +12,7 @@ excerpt: "Gemini is the strongest general-purpose video model you can rent — a
 
 Let me start with the concession, because it's a big one: Gemini is the strongest general-purpose video-understanding model you can rent, and at its default 1fps sampling it's dramatically cheaper than us. If you want conversational answers about stored video — summaries, Q&A, world-knowledge reasoning — it's excellent.
 
-But for *real-time video analysis*, the spec sheet decides, not the marketing. Gemini Live's video input is hard-capped at **1fps JPEG stills**. Audio+video sessions last **2 minutes** without context compression. And the meter **re-bills the entire session context on every turn**. Primate Vision watches live video at native frame rates over managed WebRTC (45ms p50 per-frame inference) and returns a **deterministic verdict** — yes / no / indeterminate — with calibrated confidence, timestamps, and an annotated evidence video, on a flat per-second meter.
+But for *real-time video analysis*, the spec sheet decides, not the marketing. Gemini Live's video input is hard-capped at **1fps JPEG stills**. Audio+video sessions last **2 minutes** without context compression. And the meter **re-bills the entire session context on every turn**. Primate Vision watches live video at native frame rates over managed WebRTC (45ms p50 per-frame inference) and returns a **deterministic verdict** — yes / no / indeterminate — with calibrated confidence, timestamps, and an annotated evidence video, on a flat per-frame meter.
 
 *A note on keeping Google straight: this post is about **Gemini** — Google's modern multimodal surface. Google Video Intelligence, the 2017-era annotation API, is a different product with different criticisms; we cover it in the [full landscape comparison](/compare/video-ai-landscape-2026). Don't conflate them — we don't.*
 
@@ -55,15 +55,15 @@ On the file path you can request a higher custom fps. Then the token meter answe
 
 But two curves bend the other way:
 
-1. **Fidelity parity.** At 12fps — what Primate Vision actually sustains — Gemini's *input tokens alone* reach **$0.28–$0.37/min** on frontier models (3.6 Flash / 3.1 Pro): 46–62% of Primate's **all-in $0.60/min**, before output tokens, before thinking tokens, and with no verdict layer, no calibration, and no evidence artifacts on top.
+1. **Fidelity parity.** At 12fps — what Primate Vision actually sustains — Gemini's *input tokens alone* reach **$0.28–$0.37/min** on frontier models (3.6 Flash / 3.1 Pro): hundreds of times Primate's **all-in ≈0.1¢/min at 12 fps**, before output tokens, before thinking tokens, and with no verdict layer, no calibration, and no evidence artifacts on top.
 2. **The Live re-billing trap.** Google's own best-practices page: "Past tokens are re-processed and accounted for in each new turn… As a session lengthens, the cost per turn increases because the conversational history is re-processed" ([best practices](https://ai.google.dev/gemini-api/docs/live-api/best-practices)). Interactive live-video sessions get superlinearly expensive and CFO-unpredictable.
 
 **Primate Vision has two lanes**, stated plainly:
 
-1. **Metered — $0.01 per second of source video** ($0.60/min), flat, fps-independent — 10 seconds at 60fps bills as 10 seconds. Queued time free; failed jobs free. A 30-second clip → verdict + confidence + timestamps + evidence video = $0.30.
+1. **Metered — $0.0000015 per frame processed** (0.00015¢/frame — replacing our per-second model). You pay for the frames actually analyzed, so your capture rate sets your cost: an hour of 30 fps video ≈ 16¢; the same hour at 1 fps ≈ 0.5¢. Queued time free; failed jobs free. A 30-second clip at 30 fps → verdict + confidence + timestamps + evidence video ≈ 0.14¢.
 2. **[Enterprise — contact us](https://primateintelligence.ai/pricing#enterprise)** for 24/7 continuous monitoring and camera fleets: dedicated capacity or on-site deployment at a small fraction of the metered rate, under highly discounted enterprise plans.
 
-Normalized honestly: at 1fps Gemini is ~$0.28–$1.39/camera-hour (estimate, input-only) versus $36/camera-hour† at our metered rate. The metered lane isn't priced for passive camera-hours — it's priced per answered question with evidence. When the workload *is* camera-hours, that's the enterprise lane.
+Normalized honestly: at 1fps Gemini is ~$0.28–$1.39/camera-hour (estimate, input-only) versus ≈0.5¢/camera-hour at 1 fps on our metered rate† — and at 30 fps we're still ≈16¢/hour, below Gemini's 1fps floor. When the workload is a fleet of camera-hours, that's the enterprise lane.
 
 † *Metered rate normalized for comparison. Primate does not sell 24/7 continuous monitoring at the metered rate — continuous and fleet workloads use enterprise plans; [contact us](https://primateintelligence.ai/pricing#enterprise).*
 
@@ -74,7 +74,7 @@ One more production consideration: model churn. Gemini 2.0 was shut down June 20
 These are its lanes, not ours:
 
 - **Conversational "what am I looking at?" experiences.** Voice assistant over a screen share or camera where prose/audio *is* the product — Shopify's Sidekick is built on Gemini Live via Vertex. We don't do conversation.
-- **Low-fps, low-stakes monitoring at massive scale**, where ~$0.30–$1.40/camera-hour beats everything and an occasional miss is tolerable.
+- **You're already all-in on the Gemini ecosystem** and a conversational answer over sampled stills is genuinely what you need.
 - **Rich Q&A and summarization over stored footage** where world knowledge matters more than temporal precision — lectures, meetings, content libraries. And it can hear: transcription and audio understanding we simply don't have.
 - **Semantic search over video** via multimodal embeddings (GA) — we offer no embeddings.
 - **One-vendor GCP shops** that want LLM + vision + audio + embeddings under Vertex SLAs.
@@ -84,7 +84,7 @@ These are its lanes, not ours:
 - **The event is faster than one second.** Native frame rate vs. 1fps stills isn't a tuning difference; it's whether the event is visible at all.
 - **The output feeds an alert, a workflow, or a compliance record.** A deterministic verdict with calibrated confidence and a watchable evidence video — versus a nondeterministic prose sample you can no longer even pin to temperature=0.
 - **You need sessions longer than 2 minutes** on live audio+video, without context-compression gymnastics and resumption tokens.
-- **You need a predictable bill.** Seconds × $0.01, flat — versus a token meter that compounds per turn.
+- **You need a predictable bill.** Frames × $0.0000015, flat — versus a token meter that compounds per turn.
 - **Latency is a requirement.** We publish 45ms p50 / 316ms p95 / 11.8 fps / 6.6s setup on a public /performance page. Google publishes no latency numbers for video on either surface.
 
 ## Try it
