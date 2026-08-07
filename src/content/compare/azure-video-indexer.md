@@ -64,10 +64,10 @@ Primate Vision's verdict is a different kind of object: a **deterministic answer
 
 **Primate Vision has two lanes**, stated plainly:
 
-1. **Metered — $0.01 per second of source video** ($0.60/min), flat and fps-independent. Queued time free; failed jobs free. A 30-second clip → verdict + confidence + timestamps + evidence video = $0.30.
+1. **Metered — $0.0000015 per frame processed** (0.00015¢/frame — replacing our per-second model). You pay for the frames actually analyzed, so your capture rate sets your cost: an hour of 30 fps video ≈ 16¢; the same hour at 1 fps ≈ 0.5¢. Queued time free; failed jobs free. A 30-second clip at 30 fps → verdict + confidence + timestamps + evidence video ≈ 0.14¢.
 2. **[Enterprise — contact us](https://primateintelligence.ai/pricing#enterprise)** for 24/7 continuous monitoring and camera fleets: dedicated capacity or on-site deployment at a small fraction of the metered rate, under highly discounted enterprise plans.
 
-The honest normalization: VI works out to $2.70–$11.40 per camera-hour versus $36/camera-hour† at Primate's metered rate — **3–13× cheaper per raw hour**, and if bulk archive enrichment is your workload, that gap is real and you should weigh it. But the meters buy different things. VI's dollar buys an insight catalog that still needs customer-built decision logic — and it answers no live question at any price, because there's no live path to buy. Primate's dollar buys an answered question with evidence. You don't buy camera-hours on our metered lane. You buy verdicts.
+The honest normalization: VI works out to $2.70–$11.40 per camera-hour versus ≈16¢/camera-hour at 30 fps† on Primate's metered rate — they're now ~17–70× more expensive per raw hour. And the meters buy different things. VI's dollar buys an insight catalog that still needs customer-built decision logic — and it answers no live question at any price, because there's no live path to buy. Primate's dollar buys an answered question with evidence. You don't buy camera-hours on our metered lane. You buy verdicts.
 
 † *Metered rate normalized for comparison. Primate does not sell 24/7 continuous monitoring at the metered rate — continuous and fleet workloads use enterprise plans; [contact us](https://primateintelligence.ai/pricing#enterprise).*
 
