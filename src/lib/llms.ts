@@ -12,6 +12,7 @@ import { getDocsPages, docMarkdownTwin, API } from './docsCorpus';
 import { referenceMarkdown } from './openapiRef';
 import { getPublishedPosts, toMarkdownTwin } from './blog';
 import { getCompareEntries, toMarkdownTwin as compareMarkdownTwin } from './compare';
+import { PREVIEW_PRICING_LLMS_LINE } from './pricingCopy';
 
 /** Host where the docs canonically live after the P4 flip. */
 export const DOCS_HOST = 'https://www.primateintelligence.ai';
@@ -48,7 +49,7 @@ Start here (agents): [Quickstart for AI agents](${DOCS_HOST}/docs/agents.md)
 - [OpenAPI 3.1 spec](${API}/v1/openapi.json): the full API contract — source of truth
 - [Error registry](${API}/v1/errors): every error code with retryable/idem flags
 - [Test fixture](${API}/v1/test-fixture): stable video + prompt + expected answer for CI self-verification
-- [Credit pricing](${API}/v1/credit-pricing): current pricing, public
+- [Credit pricing](${API}/v1/credit-pricing): current pricing, public — ${PREVIEW_PRICING_LLMS_LINE}
 
 ## Integration contract
 
@@ -70,7 +71,7 @@ ${docLines}
 ## Product pages
 
 - [Home](${SITE}/): Product overview — markdown twin at /index.md
-- [Pricing](${SITE}/pricing): $0.0000015/frame-processed metered credits — markdown twin at /pricing.md
+- [Pricing](${SITE}/pricing): $0.0000015/frame-processed metered credits — ${PREVIEW_PRICING_LLMS_LINE} Markdown twin at /pricing.md
 - [Performance & latency](${SITE}/performance): Measured production p50/p95 latency, throughput, and accuracy benchmarks — markdown twin at /performance.md
 - [Use Cases](${SITE}/use-cases): Eight markets, one model — markdown twin at /use-cases.md
 - [For AI agents](${SITE}/agents): Zero-touch integration for AI agents — markdown twin at /agents-page.md

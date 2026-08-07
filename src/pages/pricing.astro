@@ -16,6 +16,8 @@ import {
   PRICE_PER_FRAME_USD_LABEL,
   PER_FRAME_30FPS_PER_HOUR_LABEL,
   PAID_RATE_EQUIVALENCE_ROWS,
+  PREVIEW_PRICING_EYEBROW,
+  PREVIEW_PRICING_FOOTNOTE,
 } from '../lib/pricingCopy';
 
 const presets = [1000, 2500, 5000, 10000];
@@ -71,12 +73,11 @@ const pricingLd = {
         </p>
       </div>
       <div class="rate-card">
-        <p class="eyebrow">Launch rate</p>
+        <p class="eyebrow">{PREVIEW_PRICING_EYEBROW} <span class="preview-pill">PREVIEW</span></p>
         <p class="rate"><span class="rate-num">{PRICE_PER_FRAME_USD_LABEL}</span> <span class="rate-unit">/ frame processed</span></p>
         <p class="muted small">
-          ≈{PER_FRAME_30FPS_PER_HOUR_LABEL} per hour of 30 fps video. Live rate always at
-          <code>GET /v1/credit-pricing</code>. Reviewed after benchmark and demand data;
-          Enterprise is custom.
+          ≈{PER_FRAME_30FPS_PER_HOUR_LABEL} per hour of 30 fps video. {PREVIEW_PRICING_FOOTNOTE}{' '}
+          Live rate always at <code>GET /v1/credit-pricing</code>. Enterprise is custom.
         </p>
       </div>
     </section>
@@ -218,6 +219,19 @@ const pricingLd = {
     margin: 0 0 12px;
   }
   .rate-card { background: var(--color-bg-secondary); border-radius: 10px; padding: 56px 28px; }
+  /* PRI-554: preview-pricing pill — same treatment PRI-534 used for model status */
+  .preview-pill {
+    display: inline-block;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    color: var(--color-signal);
+    background: var(--color-signal-subtle);
+    border-radius: var(--radius-full);
+    padding: 2px 10px;
+    margin-left: 8px;
+    vertical-align: middle;
+  }
   .rate { margin: 0; }
   .rate-num { font-size: var(--fs-h3); font-weight: 800; letter-spacing: -0.02em; }
   .rate-unit { font-size: var(--fs-body-lg); font-weight: 400; color: var(--color-text-muted); }

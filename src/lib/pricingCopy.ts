@@ -45,6 +45,32 @@ export const PRICE_PER_FRAME_USD_LABEL = '$0.0000015';
 /** ≈ one hour of continuous 30 fps video: 108,000 frames × 0.00015¢ = 16.2¢. */
 export const PER_FRAME_30FPS_PER_HOUR_LABEL = '16¢';
 
+// ── PRI-554: preview pricing (approved copy, Matt 2026-08-07) ──────────────
+// Mirrors the API repo's PRICING_PREVIEW_CAVEAT single-source pattern.
+// Policy: the rate is early-access and may change — up or down — as the
+// model matures, customer demand develops, and processing costs change.
+// Confirmed credit-value policy: purchased credits keep their value; rate
+// changes apply to new processing only, changelog-announced first.
+
+/** Rate-card eyebrow (replaces "Launch rate"). */
+export const PREVIEW_PRICING_EYEBROW = 'Preview pricing';
+
+/** Rate-card footnote sentence explaining what can move the rate and why. */
+export const PREVIEW_PRICING_FOOTNOTE =
+  'Preview pricing — set for early access and reviewed as the model matures, demand develops, and ' +
+  'processing costs change; the rate may move up or down when the model leaves preview.';
+
+/** One-line agent-facing form (llms.txt). */
+export const PREVIEW_PRICING_LLMS_LINE =
+  'PREVIEW PRICING: early-access rate, may change up or down with model maturity, demand, and ' +
+  'processing costs; read the live rate from GET /v1/credit-pricing (pricing_tier: "preview"); ' +
+  'never hardcode the rate.';
+
+/** FAQ-length sentence appended to cost answers. */
+export const PREVIEW_PRICING_FAQ_SENTENCE =
+  'This is preview pricing — the rate may move up or down as the model matures, demand develops, ' +
+  'and processing costs change.';
+
 /** Per-fps cost equivalence rows for the paid-tier card (1 hour of video).
  *  30 fps: 108,000 × 0.00015¢ = 16.2¢ · 5 fps: 18,000 × 0.00015¢ = 2.7¢ ·
  *  1 fps: 3,600 × 0.00015¢ = 0.54¢. */

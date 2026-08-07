@@ -12,6 +12,8 @@ import {
   PRICE_PER_FRAME_USD_LABEL,
   PER_FRAME_30FPS_PER_HOUR_LABEL,
   PAID_RATE_EQUIVALENCE_ROWS,
+  PREVIEW_PRICING_EYEBROW,
+  PREVIEW_PRICING_FOOTNOTE,
 } from './pricingCopy';
 import { USE_CASES_HERO, VERTICALS, USE_CASES_CTA } from '../data/useCases';
 import { TEAM, TEAM_HERO } from '../data/team';
@@ -80,9 +82,9 @@ Buy video processing credits once. Use them through the web app, API, agents,
 file uploads, or live streams. You pay per frame actually processed — the
 slower your capture rate, the less you pay for the same coverage.
 
-**Launch rate: ${PRICE_PER_FRAME_USD_LABEL} / frame processed** (≈${PER_FRAME_30FPS_PER_HOUR_LABEL} per
-hour of 30 fps video). Live rate always at GET /v1/credit-pricing. Reviewed
-after benchmark and demand data; Enterprise is custom.
+**${PREVIEW_PRICING_EYEBROW}: ${PRICE_PER_FRAME_USD_LABEL} / frame processed** (≈${PER_FRAME_30FPS_PER_HOUR_LABEL} per
+hour of 30 fps video). ${PREVIEW_PRICING_FOOTNOTE}
+Live rate always at GET /v1/credit-pricing. Enterprise is custom.
 
 ## Free start — up to 30 hours of continuous monitoring free
 

@@ -5,7 +5,7 @@
  * eligibility requirement for FAQPage markup).
  */
 
-import { GRANT_FRAMES_LABEL } from './pricingCopy';
+import { GRANT_FRAMES_LABEL, PREVIEW_PRICING_FAQ_SENTENCE } from './pricingCopy';
 
 export interface FaqItem {
   q: string;
@@ -15,7 +15,13 @@ export interface FaqItem {
 export const PRICING_FAQ: FaqItem[] = [
   {
     q: 'How much does video analysis cost?',
-    a: 'The rate is $0.0000015 per frame processed (0.00015¢/frame) — replacing our previous per-second model. An hour of 30 fps video is about 16¢; the same hour at 1 fps is about half a cent, so your capture rate sets your cost. Queued time is never charged and failed jobs are not charged. The live rate is always at GET /v1/credit-pricing.',
+    a: `The rate is $0.0000015 per frame processed (0.00015¢/frame) — replacing our previous per-second model. An hour of 30 fps video is about 16¢; the same hour at 1 fps is about half a cent, so your capture rate sets your cost. Queued time is never charged and failed jobs are not charged. ${PREVIEW_PRICING_FAQ_SENTENCE} The live rate is always at GET /v1/credit-pricing.`,
+  },
+  {
+    // PRI-554: preview-pricing rationale (approved copy, Matt 2026-08-07 —
+    // incl. confirmed credit-value policy).
+    q: 'Why is a preview product paid, and why is pricing labeled "preview"?',
+    a: 'You\u2019re paying for what delivers value today: a metered per-frame price well below LLM-based video analysis, native streaming ingestion, and low-latency answers. "Preview" on the price means the rate itself is early-access: we set it before having full demand data, and it may change — up or down — as the model matures, demand develops, and processing costs change. Credits you\u2019ve already bought keep their value; rate changes apply to new processing only, and are announced in the changelog before they take effect. The live rate is always at GET /v1/credit-pricing.',
   },
   {
     q: 'Do I need an account or credit card to test it?',
