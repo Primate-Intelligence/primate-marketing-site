@@ -30,6 +30,9 @@ const pricingLd = {
   '@type': 'Product',
   name: 'Primate Vision',
   description: 'Metered video-intelligence credits. One balance for every video workflow.',
+  // Google Merchant Center flagged "Missing field image" (first detected 8/2/26) —
+  // schema.org Product requires an image. Canonical logo per the logo rule.
+  image: 'https://primateintelligence.ai/Darwin_v3_vinyl_transparent.png',
   brand: { '@type': 'Brand', name: 'Primate Intelligence' },
   offers: [
     {
