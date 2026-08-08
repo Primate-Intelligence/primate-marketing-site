@@ -75,16 +75,22 @@ curl -s -X POST https://api.primateintelligence.ai/v1/analyses \\
           <span class="muted"> — cloud benchmarks real-time on edge hardware: Jetson, MacOS, iOS, SnapDragon — CPU or GPU</span>
         </p>
       </div>
-      <div class="hero-video">
-        <video
-          src="/demos/chatgpt-plugin-demo.mp4"
-          autoplay
-          loop
-          muted
-          playsinline
-          preload="metadata"
-          aria-label="Primate Vision analyzing video in real time"
-        ></video>
+      <div class="hero-visual">
+        <div class="visual-card">
+          <div class="frame-label">
+            <span class="l">Live query</span>
+            <span class="live"><span class="live-dot"></span> streaming</span>
+          </div>
+          <div class="darwin-frame">
+            <img src="/Darwin_v3_vinyl_transparent.png" alt="Darwin, the Primate Intelligence mascot, being detected by the JEPA video model" />
+            <div class="cv-box" style="top:22%; left:30%; width:42%; height:58%;">
+              <span class="cv-label">primate &middot; watching &middot; 0.99</span>
+              <span class="corner tl"></span><span class="corner tr"></span>
+              <span class="corner bl"></span><span class="corner br"></span>
+            </div>
+          </div>
+          <div class="caption"><b>Query:</b> "is anything watching the camera"<br/><b>Answer:</b> object: primate (0.99) &middot; action: watching (0.97)</div>
+        </div>
       </div>
     </div>
   </section>
@@ -239,13 +245,97 @@ curl -s -X POST https://api.primateintelligence.ai/v1/analyses \\
   .sdk-waitlist a { color: var(--color-signal); font-weight: 600; text-decoration: none; }
   .sdk-waitlist a:hover { text-decoration: underline; }
   .sdk-waitlist .muted { color: var(--color-text-muted); font-weight: 500; }
-  .hero-video video {
-    width: 100%;
-    border-radius: 12px;
-    border: 1px solid var(--color-border);
-    display: block;
-    background: #000;
+  .hero-visual {
+    position: relative;
+    padding-top: 6px;
   }
+  .visual-card {
+    position: relative;
+    background: var(--color-bg-primary);
+    border: 1px solid var(--color-border);
+    border-radius: 4px;
+    padding: 18px;
+    max-width: 340px;
+  }
+  .visual-card .frame-label {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 12px;
+  }
+  .visual-card .frame-label .l {
+    font-family: var(--font-mono);
+    font-size: 10.5px;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--color-text-muted);
+  }
+  .visual-card .frame-label .live {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    font-family: var(--font-mono);
+    font-size: 10.5px;
+    font-weight: 600;
+    color: var(--color-success, #166534);
+  }
+  .live-dot {
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background: var(--color-success, #166534);
+  }
+  .darwin-frame {
+    position: relative;
+    border-radius: 3px;
+    overflow: hidden;
+    background: var(--color-bg-secondary);
+    aspect-ratio: 4/5;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .darwin-frame img {
+    width: 78%;
+    height: auto;
+    object-fit: contain;
+  }
+  .cv-box {
+    position: absolute;
+    border: 1.5px solid var(--color-signal);
+    border-radius: 2px;
+  }
+  .cv-box .corner {
+    position: absolute;
+    width: 9px;
+    height: 9px;
+    border: 2px solid var(--color-signal);
+  }
+  .cv-box .corner.tl { top: -2px; left: -2px; border-right: none; border-bottom: none; }
+  .cv-box .corner.tr { top: -2px; right: -2px; border-left: none; border-bottom: none; }
+  .cv-box .corner.bl { bottom: -2px; left: -2px; border-right: none; border-top: none; }
+  .cv-box .corner.br { bottom: -2px; right: -2px; border-left: none; border-top: none; }
+  .cv-label {
+    position: absolute;
+    top: -24px;
+    left: -1.5px;
+    background: var(--color-signal);
+    color: #fff;
+    font-family: var(--font-mono);
+    font-size: 10px;
+    font-weight: 600;
+    padding: 3px 7px;
+    border-radius: 2px 2px 0 0;
+    white-space: nowrap;
+  }
+  .visual-card .caption {
+    margin-top: 12px;
+    font-size: 12.5px;
+    color: var(--color-text-muted);
+    line-height: 1.5;
+  }
+  .visual-card .caption b { color: var(--color-text); }
 
   .section-inner { max-width: 1120px; margin: 0 auto; }
   .section-inner.center { text-align: center; }

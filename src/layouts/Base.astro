@@ -287,6 +287,7 @@ const footerColumns = [
             <a href={item.href} class={item.active ? 'active' : ''}>{item.label}</a>
           ))}
           <a class="nav-cta" href={APP_HREF}>Try the WebUI</a>
+          <a class="nav-cta nav-cta-agent" href={APP_HREF}><span class="agent-ico">&gt;_</span> Use your agent</a>
         </nav>
 
         <!-- Hover-intent for desktop dropdowns: grace period on mouseleave so
@@ -509,6 +510,11 @@ const footerColumns = [
     margin-left: 8px;
   }
   .nav-cta:hover { background: var(--color-signal-hover); }
+  .nav-cta-agent {
+    background: var(--color-ink, #1A1916) !important;
+  }
+  .nav-cta-agent:hover { background: #000 !important; }
+  .nav-cta-agent .agent-ico { font-family: 'JetBrains Mono', monospace; margin-right: 4px; }
 
   /* ── Mobile hamburger ──────────────────────────────────── */
   .mobile-menu { display: none; }
