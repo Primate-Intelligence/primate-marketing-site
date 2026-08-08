@@ -45,10 +45,10 @@ export function homeMd(): string {
     return `- ${eyebrow}${s.heading} ${s.body}${cta}`;
   }).join('\n');
   return `${header('Real-time video intelligence', '/')}
-# Darwin is our JEPA video model, that recognizes Actions & Objects in real-time video
+# Darwin is our JEPA video model. He recognizes Actions & Objects in real-time video.
 
-JEPA models learn actions directly from video sequences, not like LLM based models which
-understand video by guessing actions via the text labels of single frames. JEPA can't
+JEPA models learn actions directly from video sequences. Unlike LLM based models which
+understand video by guessing actions from the text labels of single frames. JEPA can't
 hallucinate & results are deterministic. Primate's JEPA is orders of magnitude more
 efficient than LLMs. $0.0000015/frame — about 16¢ per camera hour at 30fps.
 
