@@ -18,6 +18,10 @@ export default defineConfig({
   site: 'https://primateintelligence.ai',
   integrations: [
     sitemap({
+      // /docs/quickstart exists only for legacy deep links and canonicalizes
+      // to /docs — a URL whose canonical points elsewhere must not be in the
+      // sitemap (GSC: "Alternate page with proper canonical tag").
+      filter: (page) => !new URL(page).pathname.startsWith('/docs/quickstart'),
       serialize(item) {
         const path = new URL(item.url).pathname;
         const date = lastmod[path];

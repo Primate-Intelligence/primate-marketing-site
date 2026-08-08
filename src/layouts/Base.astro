@@ -32,7 +32,19 @@ const site = Astro.site ?? new URL('https://primateintelligence.ai');
 // never be indexed — canonical URLs still point at prod, and noindex keeps the
 // mirror out of search results.
 const isDevEnv = import.meta.env.PUBLIC_SITE_ENV === 'dev';
-const canonical = new URL(canonicalPath ?? Astro.url.pathname, site).href;
+// Canonical URLs must match the sitemap exactly (trailing-slash directory
+// URLs, e.g. /about/). Vercel serves both /about and /about/ as 200, and the
+// sitemap (@astrojs/sitemap, build.format 'directory') emits the slash form —
+// a non-slash canonical made Google treat every sitemap URL as a mere
+// "alternate" of its canonical (GSC: Alternate page with proper canonical /
+// Duplicate without user-selected canonical). Normalize: directory paths get
+// a trailing slash; file-like paths (.md twins, .xml, .txt) are left alone.
+const rawPath = canonicalPath ?? Astro.url.pathname;
+const normalizedPath =
+  rawPath === '/' || /\.[a-z0-9]+$/i.test(rawPath) || rawPath.endsWith('/')
+    ? rawPath
+    : `${rawPath}/`;
+const canonical = new URL(normalizedPath, site).href;
 const ogImageAbs = new URL(ogImage, site).href;
 const fullTitle = `${title} · Primate Intelligence`;
 
