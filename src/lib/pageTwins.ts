@@ -45,12 +45,14 @@ export function homeMd(): string {
     return `- ${eyebrow}${s.heading} ${s.body}${cta}`;
   }).join('\n');
   return `${header('Real-time video intelligence', '/')}
-# Watch it understand video. Live.
+# Darwin is our JEPA video model, that recognizes Actions & Objects in real-time video
 
-Point Primate Vision at any camera and ask questions in plain language.
-Live answers, structured data, and alerts — no training, no labeling.
+JEPA models learn actions directly from video sequences, not like LLM based models which
+understand video by guessing actions via the text labels of single frames. JEPA can't
+hallucinate & results are deterministic. Primate's JEPA is orders of magnitude more
+efficient than LLMs. $0.0000015/frame — about 16¢ per camera hour at 30fps.
 
-[Try Primate Vision](${SITE}/) · [Use cases](${SITE}/use-cases) · [Pricing](${SITE}/pricing)
+[Try the WebUI](${SITE}/) · [Use your agent](${SITE}/) · [Benchmarks](${SITE}/technology/benchmarks) · [Why JEPA](${SITE}/technology/how-jepa-works) · [Pricing](${SITE}/pricing)
 
 ## For developers — first answer in one minute, no signup
 

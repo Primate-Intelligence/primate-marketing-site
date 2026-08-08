@@ -44,18 +44,35 @@ curl -s -X POST https://api.primateintelligence.ai/v1/analyses \\
   canonicalPath="/"
   jsonLd={[websiteLd, productLd]}
 >
-  <!-- ── Hero: watch it understand video live ── -->
+  <!-- ── Hero: JEPA video model — Darwin ── -->
   <section class="hero">
     <div class="hero-inner">
       <div class="hero-copy">
-        <h1>Watch it understand<br />video. Live.</h1>
+        <p class="jepa-callout">
+          <span class="pulse" aria-hidden="true"></span>
+          <span class="txt">Preview the first <b>commercially available JEPA video model</b> today</span>
+          <a href="/technology/how-jepa-works" class="jepa-link"> - Why JEPA</a>
+        </p>
+        <h1>Darwin is our JEPA video model, that recognizes Actions &amp; Objects in real-time video</h1>
         <p class="lede">
-          Point Primate Vision at any camera and ask questions in plain language.
-          Live answers, structured data, and alerts — no training, no labeling.
+          JEPA models learn actions directly from video sequences, not like LLM based models
+          which understand video by guessing actions via the text labels of single frames.
+          JEPA can't hallucinate &amp; results are <b>deterministic</b>. Primate's JEPA is orders
+          of magnitude more efficient than LLMs. <span class="price">$0.0000015/frame</span> —
+          about 16&cent; per camera hour at 30fps.
+        </p>
+        <p class="chips">
+          <span class="chip"><span class="ic" aria-hidden="true">&#9654;</span> Live Stream or Batch File upload</span>
+          <span class="chip"><span class="ic" aria-hidden="true">&#9670;</span> Update your prompt mid-stream, responding to live results</span>
+          <a class="chip chip-link" href="/technology/benchmarks"><span class="ic" aria-hidden="true">&#9632;</span> Benchmarks &rarr;</a>
         </p>
         <p class="cta-row">
-          <a class="cta" href={APP_HREF}>Try it live</a>
-          <a class="cta secondary" href="/use-cases">See use cases</a>
+          <a class="cta" href={APP_HREF}>Try the WebUI</a>
+          <a class="cta agent" href={APP_HREF}><span class="agent-ico">&gt;_</span> Use your agent</a>
+        </p>
+        <p class="sdk-waitlist">
+          <a href="mailto:matt@primateintelligence.ai?subject=SDK%20waitlist">Join the SDK waitlist</a>
+          <span class="muted"> — cloud benchmarks real-time on edge hardware: Jetson, MacOS, iOS, SnapDragon — CPU or GPU</span>
         </p>
       </div>
       <div class="hero-video">
@@ -131,10 +148,57 @@ curl -s -X POST https://api.primateintelligence.ai/v1/analyses \\
     font-size: var(--fs-body-lg);
     line-height: 1.7;
     color: var(--color-text-muted);
-    max-width: 520px;
-    margin: 0;
+    max-width: 620px;
+    margin: 0 0 24px;
   }
-  .cta-row { display: flex; gap: 14px; margin-top: 32px; align-items: center; flex-wrap: wrap; }
+  .lede b { color: var(--color-text); font-weight: 700; }
+  .lede .price {
+    font-family: var(--font-mono);
+    font-weight: 600;
+    color: var(--color-text);
+    background: var(--color-bg-secondary);
+    padding: 1px 6px;
+    border-radius: 3px;
+  }
+  .jepa-callout {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 9px 14px 9px 10px;
+    border: 1px solid var(--color-border);
+    border-radius: 6px;
+    background: var(--color-bg-primary);
+    font-size: var(--fs-caption-1, 13.5px);
+    font-weight: 500;
+    margin-bottom: 24px;
+  }
+  .jepa-callout .pulse {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: var(--color-signal);
+    box-shadow: 0 0 0 3px rgba(27, 79, 224, 0.16);
+    flex-shrink: 0;
+  }
+  .jepa-callout .jepa-link { color: var(--color-signal); text-decoration: underline; font-weight: 600; white-space: nowrap; }
+  .chips { display: flex; flex-wrap: wrap; gap: 10px; margin: 0 0 28px; list-style: none; }
+  .chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    background: var(--color-bg-primary);
+    border: 1px solid var(--color-border);
+    border-radius: 6px;
+    padding: 9px 13px;
+    font-size: var(--fs-caption-1, 13.5px);
+    font-weight: 500;
+    color: var(--color-text);
+    text-decoration: none;
+  }
+  .chip .ic { color: var(--color-signal); font-size: 13px; }
+  .chip-link { color: var(--color-signal); }
+  .chip-link:hover { border-color: var(--color-signal); }
+  .cta-row { display: flex; gap: 14px; margin-top: 0; margin-bottom: 16px; align-items: center; flex-wrap: wrap; }
   .cta-row.center { justify-content: center; }
   .cta {
     display: inline-block;
@@ -153,7 +217,28 @@ curl -s -X POST https://api.primateintelligence.ai/v1/analyses \\
     border: 1px solid var(--color-border);
   }
   .cta.secondary:hover { border-color: var(--color-signal); }
+  .cta.agent {
+    background: var(--ink, #1A1916);
+    color: #fff;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .cta.agent:hover { background: #0f0e0c; color: #fff; }
+  .agent-ico { font-family: var(--font-mono); font-size: 13px; opacity: 0.75; }
   .cta-link { color: var(--color-signal); font-weight: 500; font-size: var(--fs-body); }
+  .sdk-waitlist {
+    font-size: var(--fs-caption-1, 13px);
+    background: var(--color-bg-primary);
+    border: 1px solid var(--color-border);
+    border-radius: 6px;
+    padding: 8px 13px;
+    display: inline-block;
+    margin: 0;
+  }
+  .sdk-waitlist a { color: var(--color-signal); font-weight: 600; text-decoration: none; }
+  .sdk-waitlist a:hover { text-decoration: underline; }
+  .sdk-waitlist .muted { color: var(--color-text-muted); font-weight: 500; }
   .hero-video video {
     width: 100%;
     border-radius: 12px;
