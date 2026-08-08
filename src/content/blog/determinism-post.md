@@ -10,69 +10,65 @@ status: "draft"
 excerpt: "Production CV systems don't just need models that are accurate. They need models that are predictable. Here's why that's a harder problem."
 ---
 
-CV research is obsessed with accuracy. COCO mAP. Top-1 on ImageNet. Action recognition accuracy on Kinetics. These numbers are published, compared, cited. Papers are rejected if the numbers aren't better than the prior state of the art.
+CV research is obsessed with accuracy. COCO mAP. Top-1 on ImageNet. Action recognition on Kinetics. These numbers get published, compared, cited. A paper gets rejected if the number isn't better than the prior state of the art.
 
-Production CV systems don't care about these numbers in the way you might expect. Engineers deploying real systems have told us, consistently, that accuracy is necessary but not sufficient — and that there's a second property they care about just as much, which almost no CV research paper measures: determinism.
+Production systems don't care about that number the way you'd expect. Engineers who deploy real systems have told us, consistently, that accuracy is necessary but not sufficient. There's a second property they care about just as much, and almost no CV paper measures it: determinism.
 
-## What Accuracy Means in a Benchmark vs Production
+## Benchmark accuracy and production accuracy are different numbers
 
-A benchmark accuracy number measures performance on a held-out test set that was drawn from the same distribution as the training data. This is a reasonable thing to measure during research. It's a poor proxy for production performance for three reasons.
+A benchmark accuracy score measures performance on a held-out test set drawn from the same distribution as the training data. That's a reasonable thing to measure during research. It's a poor proxy for production, for three reasons.
 
-The distribution shift problem: your production data will drift from the training distribution. Camera types change. Lighting conditions change. The physical environment changes. A model that achieves 94% mAP on a benchmark can silently drop to 71% on your specific deployment without any error messages. Accuracy benchmarks measure performance on a distribution. Production requires performance on your distribution.
+**Distribution shift.** Your production data drifts from the training distribution — camera types change, lighting changes, the physical environment changes. A model that scores 94% mAP on a benchmark can silently drop to 71% on your specific deployment, with no error message telling you it happened. Benchmarks measure performance on *a* distribution. Production needs performance on *your* distribution.
 
-The silent failure problem: most CV models fail silently. When the model is wrong, it doesn't raise an exception. It returns a confident-looking output. There's no signal in the output that distinguishes "I correctly classified this" from "I hallucinated a plausible-sounding classification." The only way to catch silent failures is comprehensive evaluation against ground truth — which requires labelled ground truth that most production teams don't have for their specific deployment.
+**Silent failure.** Most CV models fail silently. When the model is wrong, it doesn't raise an exception — it returns a confident-looking output anyway. Nothing in that output distinguishes "I classified this correctly" from "I produced a plausible-sounding guess." The only way to catch that is comprehensive evaluation against ground truth, which most teams don't have for their specific deployment.
 
-The "it worked in the lab" problem: benchmark conditions are controlled. Someone carefully selected the test footage, made sure the annotations were correct, ensured the evaluation protocol was standardised. Production cameras are pointed by whoever installed them, at whatever the customer wanted to monitor, in whatever lighting conditions exist at that site. The benchmark tested for a specific kind of performance. Production tests for a different kind.
+**The lab-to-field gap.** Benchmark conditions are controlled: someone hand-selected the test footage, checked the annotations, standardized the protocol. Production cameras are pointed by whoever installed them, at whatever the customer wanted monitored, in whatever light exists on-site. The benchmark tested one kind of performance. Production tests a different one.
 
-## What Determinism Actually Means
+## What determinism actually means
 
 Determinism has a precise definition: the same input always produces the same output.
 
-This sounds obvious. It's not trivially achievable.
+That sounds obvious. It's not trivially achievable.
 
-For generative and VLM-based vision models, non-determinism comes from temperature sampling during inference. Autoregressive models generate output token by token, sampling from a probability distribution at each step. Even with temperature set to 0, numerical precision issues across different hardware configurations and driver versions can produce subtly different results. With any temperature above 0, variance is guaranteed.
+Generative and VLM-based vision models are non-deterministic by construction. Autoregressive models sample from a probability distribution at each generation step. Set temperature to zero and you reduce the variance — you don't eliminate it, because numerical precision differences across hardware and driver versions still produce subtly different results. Above temperature zero, variance is guaranteed, not possible.
 
-For CV models that use stochastic inference techniques — MC Dropout, certain data augmentation approaches applied at inference time — the outputs are inherently probabilistic. Running the same input through twice produces different results.
+Why does this matter? Because you need to test your system, and tests need to reproduce. If your camera pipeline passes its test suite Monday and fails Tuesday on the same inputs, you're not debugging a bug. You're debugging noise.
 
-Why does this matter in practice? Because you need to test your system, and tests need to be reproducible. If your security camera system passes its test suite on Monday and fails on Tuesday on the same test inputs, debugging is very hard.
+## Why non-determinism is fatal for alerting
 
-![Table: 3 columns. Model | Run 1 output | Run 2 output (same input). Row 1: GPT-4V — different scene descriptions. Row 2: Gemini Vision — different scene descriptions. Row 3: Primate Vision — identical JSON output.](stub)
+Security systems generate alerts. Alerts page humans. False positives cause alert fatigue, which causes operators to start ignoring alerts, which defeats the point of having a system.
 
-## Why Non-Determinism Is Fatal for Alerting Systems
+Now run that with a non-deterministic model underneath. You tune your alert threshold Monday. Tuesday, the same footage produces a different output distribution — not because the scene changed, but because the model's sampling did. Your false-positive rate shifts under you. So does your operators' trust in the system.
 
-Security camera systems generate alerts. Alerts page human operators. False positives cause alert fatigue, which causes operators to ignore alerts, which defeats the purpose of having a system.
+A security integrator we spoke with during customer discovery described the exact failure mode: their VLM classified the same person on the same footage as "loitering" in one run and "standing" in the next. When they asked which classification was correct, there was no answer. Neither was more correct than the other — the model had no ground truth preference, just a different sample.
 
-Now consider what happens when your underlying model is non-deterministic. You tune your alert threshold on Monday. On Tuesday, the model produces a different distribution of outputs for the same camera footage — not because anything in the environment changed, but because the model's stochastic inference produced different results. Your false positive rate shifts. Your alert fatigue profile changes. Your operators' trust in the system degrades.
+That's not an edge case. It's the design consequence of putting stochastic inference in an alerting pipeline. The fix isn't better tuning. It's a different architecture.
 
-The specific failure mode that breaks production systems is this: the same 60 seconds of footage, run through your alerting system twice, produces different alert outcomes. A security integration customer we spoke to during development described exactly this problem — their VLM-based system "loitering" and "standing" for the same person on the same footage, depending on which run they were in. When the customer asked which classification was correct, there was no answer.
+## How JEPA gets you determinism for free
 
-This is not an edge case. It's a design consequence of using non-deterministic inference in an alerting pipeline. The fix isn't better tuning. It's deterministic inference.
+JEPA-based models predict in latent representation space, not pixel space. The predictor maps an observed representation to a predicted representation — a deterministic function. Same input vector, same output vector, every run.
 
-## How JEPA Achieves Determinism
+There's no sampling and no temperature parameter to set to zero and hope. The model's uncertainty about a scene lives in the confidence score attached to the output, not in variance across runs. Two passes over the same clip return the same JSON with the same confidence values, because the predictor is a feed-forward network on fixed vectors, not a distribution you draw from.
 
-JEPA-based models make predictions in latent representation space, not in pixel space. The predictor maps from observed latent representations to predicted latent representations. This is a deterministic function: the same input vector produces the same output vector, every time.
+This is a structural property, not a post-processing patch.
 
-There's no sampling. There's no temperature. The model's uncertainty about a scene is expressed in the confidence score associated with the output, not by producing different outputs on different runs. Two runs of the same clip produce the same JSON with the same confidence values.
+## What we guarantee, precisely
 
-This is a design property of the architecture, not something achieved through post-processing. The JEPA predictor is a feed-forward network operating on fixed vector representations. Determinism is a consequence of the model's structure.
+We want to be exact about the boundary of this claim, because "deterministic" gets abused in marketing.
 
-The technical deep-dive on how JEPA works, and why the latent-space objective enables this, is in the architecture explainer post linked below.
+**We guarantee**: identical output for identical input video, on the same model version, on the live Darwin production API. Verified against `api.primateintelligence.ai` — every streaming response carries a timing block (`inference_ms`, `session_fps`) so you can watch this in production, not take our word for it.
 
-## The Reliability Floor
+**We don't guarantee** identical output across model version upgrades. When we ship a new Darwin version, outputs may change; we version the API and give notice ahead of breaking changes.
 
-We want to be precise about what we guarantee and what we don't.
+**We don't guarantee** bit-identical floating point across every GPU architecture. There are least-significant-bit differences between hardware generations that in practice sit below the threshold of operational significance — they don't flip a verdict.
 
-We guarantee: identical JSON output for identical input video, across runs on the same hardware configuration and model version. This means your regression tests will pass consistently.
+Edge cases — degraded video, unusual scenes, camera configurations far outside the training distribution — produce lower confidence scores. Build your alert logic on the confidence threshold, not on the label alone. That's what the confidence field is for.
 
-We don't guarantee identical output across model version upgrades. When we update the model, outputs may change — we version the API and give advance notice of breaking changes.
+## The receipts
 
-We don't guarantee identical output across hardware configurations. There are floating-point differences between GPU architectures that can affect the least significant bits of confidence scores, though in practice these differences are below the threshold of operational significance.
+Full measured latency and accuracy numbers — not estimates — are on [/performance](/performance): 45ms p50 per-frame inference, 11.8 fps sustained analysis, measured against the live production API on 2026-07-30. Darwin's published benchmark scores (Something-Something V2, Kinetics-700, ImageNet-1K) are in the [benchmarks post](/blog/darwin-video-jepa-benchmarks).
 
-Edge cases — highly unusual scenes, degraded video quality, camera configurations far outside the training distribution — will produce lower confidence scores. We recommend building alert logic that filters on confidence threshold, not just on action label.
-
-## Try It
-
-The benchmark post covers the determinism test results in detail — 10 runs of the same clip, side by side. If you want to run the test yourself on your own footage, request API access at the link below.
+Get a sandbox key with one `POST` — no signup — and run this test on your own footage: `curl -s -X POST https://api.primateintelligence.ai/v1/sandbox`.
 
 ---
 
