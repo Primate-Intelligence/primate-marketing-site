@@ -71,8 +71,8 @@ curl -s -X POST https://api.primateintelligence.ai/v1/analyses \\
           <a class="cta agent" href={APP_HREF}><span class="agent-ico">&gt;_</span> Use your agent</a>
         </p>
         <p class="sdk-waitlist">
-          <a href="mailto:matt@primateintelligence.ai?subject=SDK%20waitlist">Join the SDK waitlist</a>
-          <span class="muted"> — cloud benchmarks real-time on edge hardware: Jetson, MacOS, iOS, SnapDragon — CPU or GPU</span>
+          <span class="headline">Cloud level accuracy benchmarks, real-time on edge hardware: Jetson, MacOS, iOS, SnapDragon — CPU or GPU</span>
+          <a class="sdk-cta" href="mailto:matt@primateintelligence.ai?subject=SDK%20waitlist">Join the SDK waitlist &rarr;</a>
         </p>
       </div>
       <div class="hero-visual">
@@ -235,17 +235,36 @@ curl -s -X POST https://api.primateintelligence.ai/v1/analyses \\
   .agent-ico { font-family: var(--font-mono); font-size: 13px; opacity: 0.75; }
   .cta-link { color: var(--color-signal); font-weight: 500; font-size: var(--fs-body); }
   .sdk-waitlist {
-    font-size: var(--fs-caption-1, 13px);
-    background: var(--color-bg-primary);
-    border: 1px solid var(--color-border);
-    border-radius: 6px;
-    padding: 8px 13px;
-    display: inline-block;
+    background: #0f0e0c;
+    border: 1px solid #0f0e0c;
+    border-radius: 10px;
+    padding: 20px 24px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 14px;
     margin: 0;
+    max-width: 560px;
   }
-  .sdk-waitlist a { color: var(--color-signal); font-weight: 600; text-decoration: none; }
-  .sdk-waitlist a:hover { text-decoration: underline; }
-  .sdk-waitlist .muted { color: var(--color-text-muted); font-weight: 500; }
+  .sdk-waitlist .headline {
+    color: #fff;
+    font-weight: 700;
+    font-size: 17px;
+    line-height: 1.35;
+  }
+  .sdk-waitlist .sdk-cta {
+    color: #0f0e0c;
+    background: #fff;
+    font-weight: 700;
+    font-size: 15px;
+    text-decoration: none;
+    padding: 10px 18px;
+    border-radius: 6px;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .sdk-waitlist .sdk-cta:hover { background: var(--color-signal); color: #fff; }
   .hero-visual {
     position: relative;
     padding-top: 6px;
