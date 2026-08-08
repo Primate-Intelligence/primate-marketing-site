@@ -235,36 +235,37 @@ curl -s -X POST https://api.primateintelligence.ai/v1/analyses \\
   .agent-ico { font-family: var(--font-mono); font-size: 13px; opacity: 0.75; }
   .cta-link { color: var(--color-signal); font-weight: 500; font-size: var(--fs-body); }
   .sdk-waitlist {
-    background: #0f0e0c;
-    border: 1px solid #0f0e0c;
+    background: var(--color-bg-secondary);
+    border: 1px solid var(--color-border);
+    border-left: 4px solid var(--color-signal);
     border-radius: 10px;
-    padding: 20px 24px;
+    padding: 24px 28px;
     display: flex;
     flex-direction: column;
     align-items: flex-start;
-    gap: 14px;
+    gap: 16px;
     margin: 0;
-    max-width: 560px;
+    max-width: 600px;
   }
   .sdk-waitlist .headline {
-    color: #fff;
+    color: var(--color-text-primary);
     font-weight: 700;
-    font-size: 17px;
+    font-size: 18px;
     line-height: 1.35;
   }
   .sdk-waitlist .sdk-cta {
-    color: #0f0e0c;
-    background: #fff;
+    color: #fff;
+    background: var(--color-signal);
     font-weight: 700;
     font-size: 15px;
     text-decoration: none;
-    padding: 10px 18px;
+    padding: 11px 20px;
     border-radius: 6px;
     display: inline-flex;
     align-items: center;
     gap: 6px;
   }
-  .sdk-waitlist .sdk-cta:hover { background: var(--color-signal); color: #fff; }
+  .sdk-waitlist .sdk-cta:hover { background: var(--color-signal-hover); color: #fff; }
   .hero-visual {
     position: relative;
     padding-top: 6px;
