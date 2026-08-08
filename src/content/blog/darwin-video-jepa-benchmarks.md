@@ -26,7 +26,7 @@ Because we believe world models need to become dramatically more accessible.
 
 Today, training state-of-the-art video models often requires enormous datasets, massive GPU clusters, and budgets that place them beyond the reach of nearly every startup and research lab, let alone customer deployments on the edge hardware that needs to run them. That reality slows progress by limiting meaningful experimentation to only a handful of organizations.
 
-We're a small team, who have previously built the world’s best edge computer vision models, at [6D.ai](http://6D.ai) (acquired by Niantic Spatial, now mapping the world from within Pokemon Go). Rather than assuming world models require virtually unlimited compute, we asked a different question:
+We're a small team, who have previously built the world’s best edge computer vision models, at 6D.ai (acquired by Niantic Spatial, now mapping the world from within Pokemon Go). Rather than assuming world models require virtually unlimited compute, we asked a different question:
 
 **How far can careful engineering, better training methodology, and better data take us?**
 

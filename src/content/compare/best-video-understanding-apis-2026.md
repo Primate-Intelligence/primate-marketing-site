@@ -62,7 +62,7 @@ Six products, but really four different *kinds* of product wearing the same cate
 
 ## Twelve Labs
 
-**What it is.** The best-funded pure-play in video understanding — a [$100M Series B closed July 1, 2026](https://www.globenewswire.com/news-release/2026/07/01/3320545/0/en/) (NEA and NAVER Ventures co-led, Amazon participating), built around two models: Marengo 3.0 for multimodal embeddings and Pegasus 1.5 for video-to-text. The architecture is index-then-search: upload videos, index them, then query the corpus in natural language.
+**What it is.** The best-funded pure-play in video understanding — a [$100M Series B closed July 1, 2026](https://www.globenewswire.com/news-release/2026/07/01/3320545/0/en/twelvelabs-raises-100-million-in-series-b-funding-to-build-video-superintelligence.html) (NEA and NAVER Ventures co-led, Amazon participating), built around two models: Marengo 3.0 for multimodal embeddings and Pegasus 1.5 for video-to-text. The architecture is index-then-search: upload videos, index them, then query the corpus in natural language.
 
 **What it's built for.** Finding moments in large stored archives. Media libraries, sports footage, ad inventory. At that job it's the category leader, and I mean that without a wink: cross-modal search over visual, speech, and on-screen text, in 36 languages, with the kind of vector-DB partner ecosystem (Pinecone, Weaviate, Milvus, Databricks…) that signals a real platform.
 

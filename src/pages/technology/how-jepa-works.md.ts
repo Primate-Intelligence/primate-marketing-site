@@ -17,8 +17,6 @@ the representation of a future or masked state — not by reconstructing raw pix
 Darwin builds an internal representation of a video scene and predicts forward in
 representation space, giving semantic understanding without a language model anywhere
 in the perception loop. Language only enters at the query layer.
-
-Further reading: [JEPA deep dive](${SITE}/blog/jepa-deep-dive)
 `;
   return new Response(body, { headers: { 'Content-Type': 'text/markdown; charset=utf-8' } });
 };

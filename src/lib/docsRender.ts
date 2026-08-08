@@ -32,6 +32,13 @@ marked.use({
 export function prepareMarkdown(raw: string): string {
   let md = raw.replace(/^---\n[\s\S]*?\n---\n/, '');
   md = md.replace(/^```(\w+)[^\n]*$/gm, '```$1');
+  // API snapshots use links relative to the API origin (/docs/changelog.md →
+  // ./agents.md). Our pages render at trailing-slash URLs (/docs/changelog/),
+  // where ./agents.md would resolve to the 404 /docs/changelog/agents.md —
+  // rewrite to the working absolute targets at display time (snapshots stay
+  // byte-identical for the drift gate).
+  md = md.replace(/\]\(\.\/agents\.md\)/g, '](/docs/agents.md)');
+  md = md.replace(/\]\(\.\/openapi\.json\)/g, '](https://api.primateintelligence.ai/v1/openapi.json)');
   return md;
 }
 

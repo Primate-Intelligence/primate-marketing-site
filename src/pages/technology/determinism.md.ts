@@ -17,8 +17,6 @@ For production video systems — safety, compliance, robotics — a 92%-accurate
 model is unshippable, while a deterministic model with known failure modes is an engineering
 component. Darwin's perception runs in embedding space with calibrated confidence scores;
 language enters only at the query layer, never the perception layer — so outputs are repeatable.
-
-Related: [The case for deterministic video AI](${SITE}/blog/determinism-post)
 `;
   return new Response(body, { headers: { 'Content-Type': 'text/markdown; charset=utf-8' } });
 };

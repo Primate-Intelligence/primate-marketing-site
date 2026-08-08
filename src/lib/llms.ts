@@ -97,7 +97,7 @@ ${compareLines}
 ## Learn
 
 - [Blog](${SITE}/blog): Research notes and perspectives — RSS at /rss.xml
-- Every blog post has a markdown twin: append .md to the post URL (e.g. /blog/jepa-deep-dive.md)
+- Every blog post has a markdown twin: append .md to the post URL (e.g. /blog/darwin-video-jepa-benchmarks.md)
 ${postLines}
 - [Technology](${SITE}/technology): Model releases and capability updates
 - [Darwin-preview-1.3B](${SITE}/technology/darwin-preview): The Darwin-preview-1.3B model — full supported-actions vocabulary (532 classes) — markdown twin at /technology/darwin-preview.md
