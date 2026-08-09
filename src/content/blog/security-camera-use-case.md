@@ -10,17 +10,15 @@ status: "draft"
 excerpt: "A concrete walkthrough of what changes — and what stays the same — when you add Primate Vision to a security camera CV pipeline."
 ---
 
-The typical security camera CV pipeline is a patchwork. It works, mostly, but it's held together by custom glue code that every team has written themselves — slightly differently, incompatibly, and with undocumented assumptions baked in.
+The typical security camera CV pipeline is a patchwork. It works, mostly, but it's held together by custom glue code every team writes themselves — slightly differently, incompatibly, with undocumented assumptions baked in.
 
-If you've built one of these, you know the stack: RTSP ingest, frame extraction, a YOLO v8 inference call, some bounding box filtering to remove low-confidence detections, custom logic to classify what detected persons are doing, an alert threshold system that someone tuned empirically months ago and now nobody wants to touch. Then an operator dashboard that displays alerts that may or may not be actionable.
+If you've built one, you know the stack: RTSP ingest, frame extraction, a YOLO v8 inference call, bounding box filtering to drop low-confidence detections, custom logic to classify what detected persons are doing, an alert threshold someone tuned empirically months ago that nobody wants to touch. Then an operator dashboard showing alerts that may or may not be actionable.
 
-The problem isn't any individual component. YOLO is solid. RTSP ingestion is solved. The operator dashboard is whatever it is. The problem is everything in the middle — the custom action classification logic, the temporal state tracking, the alert deduplication — which is where most engineering hours get spent, for highly variable results.
+The problem isn't any individual component. YOLO is solid. RTSP ingestion is solved. The problem is everything in the middle — the custom action classification, the temporal state tracking, the alert deduplication — which is where most engineering hours get spent, for highly variable results.
 
-![Diagram: typical security camera CV pipeline today. Boxes: RTSP stream → frame extraction → YOLO v8 → bounding box filter → alert logic → operator dashboard. Annotate the 'custom glue code' sections in red.](stub)
+## What adding Primate Vision looks like
 
-## What Adding Primate Vision Looks Like
-
-The integration surface is deliberately minimal. Here's what the change looks like in practice:
+The integration surface is deliberately minimal:
 
 ```python
 # Before: YOLO v8 + custom action classification
@@ -42,13 +40,9 @@ result = client.analyze(clip_path="clip.mp4")
 alerts = [e for e in result.entities if e.action in ALERT_ACTIONS]
 ```
 
-The action classification logic, the temporal state tracking, the loitering timer — all of that moves into the API. What you write is the alert routing layer: given that Primate Vision has told you "person loitering at entrance for 90 seconds," what do you do with that information?
+The action classification, the temporal state tracking, the loitering timer — all of it moves into the API. What you write is the alert routing layer: given that Primate Vision told you "person loitering at entrance for 90 seconds," what do you do with that?
 
-![Code screenshot: before (YOLO v8 call + custom action classification post-processing, ~40 lines) vs after (Primate Vision API call, ~5 lines).](stub)
-
-## The Output Difference
-
-The JSON output comparison makes the structural difference explicit.
+## The output difference
 
 YOLO v8 output for a single detection:
 
@@ -81,33 +75,31 @@ Primate Vision output for the same scene:
 }
 ```
 
-The `deterministic: true` flag is not decoration. It means that if you run the same clip through the API again, you will get the same JSON, identical to the byte. This is what makes regression testing possible.
+The `deterministic: true` flag isn't decoration. It means running the same clip through the API again gets you the same JSON, byte-identical. That's what makes regression testing possible — and it's not a claim, it's [measured against the live production API](/performance).
 
-## Specific Use Cases
+## Specific use cases
 
-**Loitering detection.** Before Primate Vision: you track person bounding boxes across frames using DeepSORT or ByteTrack, maintain a per-entity timer, and define "loitering" as "entity in zone X for more than N seconds with displacement less than M pixels." You write this. You tune N and M. You handle the edge cases where the tracker loses the entity and reassigns an ID. After Primate Vision: the `action: "loitering"` field in the output JSON. The temporal context is in the response. You write the alert routing.
+**Loitering detection.** Before: you track person bounding boxes across frames with DeepSORT or ByteTrack, maintain a per-entity timer, define "loitering" as "entity in zone X for more than N seconds with displacement less than M pixels." You write it, tune N and M, handle the edge cases where the tracker loses the entity and reassigns an ID. After: the `action: "loitering"` field, temporal context included. You write the alert routing.
 
-**Tailgating.** Before: you detect multiple persons, define spatial proximity thresholds, track whether a second person followed the first through a controlled access point within a time window. This requires multi-entity tracking with relationship logic. After: `action: "tailgating"` in the output, with entity references to both individuals involved.
+**Tailgating.** Before: detect multiple persons, define spatial proximity thresholds, track whether a second person followed the first through a controlled access point within a time window — multi-entity tracking with relationship logic. After: `action: "tailgating"`, with entity references to both individuals.
 
-**Abandoned objects.** Before: you track objects that are stationary after a person leaves frame, cross-reference the object's appearance time with nearby person departure events, maintain state for how long objects have been unattended. This is a genuinely hard multi-entity temporal tracking problem. After: `action: "abandoned_object"` with references to the object entity, its location, and the duration since it was placed.
+**Abandoned objects.** Before: track objects stationary after a person leaves frame, cross-reference the object's appearance time with nearby person departure events, maintain state for how long objects have been unattended — a genuinely hard multi-entity temporal problem. After: `action: "abandoned_object"`, with the object's location and duration since placed.
 
-**Fall detection.** Before: you train a pose estimation model, define fall as a specific pose transition pattern, handle the false positives from people sitting down, bending over, or moving quickly. After: `action: "fall"` with confidence score.
+**Fall detection.** Before: train a pose estimation model, define a fall as a specific pose transition, handle the false positives from sitting or bending. After: `action: "fall"` with a confidence score.
 
-![Side-by-side video frames for loitering detection: Frame at T=0 shows person entering. Frame at T=60s shows Primate Vision JSON output flagging loitering with temporal context. YOLO output shows only 'person detected' at each frame independently.](stub)
+## Real numbers, not lab numbers
 
-## Edge Deployment
+This isn't a roadmap pitch. Primate Vision is live in production today. Per-frame inference: 45ms p50, 316ms p95. Sustained analysis rate: 11.8 fps p50 across a real session. Session setup: 6.6s one-time. All of it [measured against `api.primateintelligence.ai`](/performance) on real traffic, not a synthetic benchmark — and every result payload carries its own timing block, so you can watch it self-report in your own integration.
 
-The Primate Vision API runs in two configurations: cloud endpoint and on-device. For cloud, you POST video clips or stream frames to the API endpoint. For edge, you run the same inference container on NVIDIA Jetson Orin hardware.
+## Edge deployment
 
-The API contract is identical in both cases. Same JSON schema, same confidence calibration, same action taxonomy. The only difference is the endpoint URL in your client configuration. Your application code doesn't change. Your alert logic doesn't change. Your operator dashboard doesn't change.
+Right now, Primate Vision runs as a cloud endpoint: you `POST` video clips or stream frames to the API. On-device inference — the same Darwin model running locally on Jetson, macOS, iOS, and Snapdragon, CPU or GPU — is coming through our SDK. If your fleet needs to eliminate network latency and data egress cost entirely, that's the deployment to wait for, and it's one of the reasons we built Darwin light enough to run on a commodity CPU in the first place. [Join the SDK waitlist](mailto:matt@primateintelligence.ai?subject=SDK%20waitlist) if that's your constraint.
 
-On Jetson Orin AGX (64GB), Primate Vision processes 1080p footage at approximately 12 fps with full scene understanding. For most fixed-camera security applications, this is well within operational requirements. Latency on the cloud endpoint is 180-220ms for a 10-second clip, including network round-trip from US regions.
+For most fixed-camera security applications today, the cloud endpoint's 180-220ms latency for a 10-second clip (including network round-trip from US regions) is well within operational requirements.
 
-The edge deployment eliminates both the network latency and the data egress costs associated with uploading video to cloud endpoints. For deployments with many cameras, the economics of on-device inference become compelling quickly.
+## Try it
 
-## Try It
-
-The API is in developer preview now. We're doing hands-on onboarding with the first cohort of teams. If you want to see what your existing VIRAT or live-camera footage looks like through Primate Vision, request access at the link below and we'll walk through the integration together.
+The API is live now. If you want to see what your existing VIRAT or live-camera footage looks like through Primate Vision, get a sandbox key with one call, no signup: `curl -s -X POST https://api.primateintelligence.ai/v1/sandbox`.
 
 ---
 

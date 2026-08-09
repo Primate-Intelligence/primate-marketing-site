@@ -2,9 +2,18 @@ import { getCollection, type CollectionEntry } from 'astro:content';
 
 export type Post = CollectionEntry<'blog'>;
 
-/** Published posts, newest first. Drafts stay in the repo but never render. */
+/**
+ * Published posts, newest first. Drafts stay in the repo but never render —
+ * except on dev builds (PUBLIC_SITE_ENV=dev), where drafts render too so
+ * Matt can review them at dev-www.primateintelligence.ai before flipping
+ * status to "published". Prod always filters to published only.
+ */
 export async function getPublishedPosts(): Promise<Post[]> {
-  const posts = await getCollection('blog', ({ data }) => data.status === 'published');
+  const isDevEnv = import.meta.env.PUBLIC_SITE_ENV === 'dev';
+  const posts = await getCollection(
+    'blog',
+    isDevEnv ? undefined : ({ data }) => data.status === 'published'
+  );
   return posts.sort((a, b) => new Date(b.data.date).getTime() - new Date(a.data.date).getTime());
 }
 
