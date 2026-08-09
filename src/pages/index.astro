@@ -72,7 +72,7 @@ curl -s -X POST https://api.primateintelligence.ai/v1/analyses \\
         </p>
         <p class="sdk-waitlist">
           <span class="headline">Cloud level accuracy benchmarks, real-time on edge hardware: Jetson, MacOS, iOS, SnapDragon — CPU or GPU</span>
-          <a class="sdk-cta" href="mailto:matt@primateintelligence.ai?subject=SDK%20waitlist">Join the SDK waitlist &rarr;</a>
+          <button class="sdk-cta" type="button" id="sdk-waitlist-open" aria-haspopup="dialog" aria-controls="sdk-waitlist-modal">Join the SDK waitlist &rarr;</button>
         </p>
       </div>
       <div class="hero-visual">
@@ -94,6 +94,49 @@ curl -s -X POST https://api.primateintelligence.ai/v1/analyses \\
       </div>
     </div>
   </section>
+
+  <!-- ── SDK waitlist modal ── -->
+  <div class="sdk-modal-overlay" id="sdk-waitlist-modal" hidden>
+    <div class="sdk-modal" role="dialog" aria-modal="true" aria-labelledby="sdk-modal-title">
+      <button class="sdk-modal-close" type="button" aria-label="Close">&times;</button>
+      <div class="sdk-modal-form-view">
+        <h3 id="sdk-modal-title">Join the SDK waitlist</h3>
+        <p class="sdk-modal-sub">Darwin on your edge hardware — Jetson, macOS, iOS, Snapdragon. CPU or GPU.</p>
+        <form id="sdk-waitlist-form" novalidate>
+          <label>
+            <span>Name</span>
+            <input type="text" name="full_name" required autocomplete="name" placeholder="Jane Goodall" />
+          </label>
+          <label>
+            <span>Email</span>
+            <input type="email" name="email" required autocomplete="email" placeholder="jane@company.com" />
+          </label>
+          <label>
+            <span>Device target</span>
+            <select name="device_target" required>
+              <option value="" disabled selected>Where do you want to run Darwin?</option>
+              <option value="jetson">Jetson</option>
+              <option value="macos">macOS</option>
+              <option value="ios">iOS</option>
+              <option value="snapdragon">Snapdragon</option>
+              <option value="other">Other</option>
+            </select>
+          </label>
+          <label>
+            <span>Company <em>(optional)</em></span>
+            <input type="text" name="company" autocomplete="organization" placeholder="Acme Robotics" />
+          </label>
+          <p class="sdk-modal-error" role="alert" hidden></p>
+          <button class="sdk-modal-submit" type="submit">Join waitlist</button>
+        </form>
+      </div>
+      <div class="sdk-modal-success-view" hidden>
+        <h3>You're on the list 🦍</h3>
+        <p>We'll email you as soon as the SDK is ready for your device. Check your inbox for a confirmation.</p>
+        <button class="sdk-modal-submit sdk-modal-done" type="button">Done</button>
+      </div>
+    </div>
+  </div>
 
   <!-- ── Code snippet immediately below hero ── -->
   <section class="code-section">
@@ -267,6 +310,83 @@ curl -s -X POST https://api.primateintelligence.ai/v1/analyses \\
     gap: 6px;
   }
   .sdk-waitlist .sdk-cta:hover { background: var(--color-signal-hover); color: #fff; }
+  .sdk-waitlist button.sdk-cta { border: none; cursor: pointer; font-family: inherit; }
+
+  /* ── SDK waitlist modal ── */
+  .sdk-modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(26, 25, 22, 0.55);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    z-index: 1000;
+  }
+  .sdk-modal-overlay[hidden] { display: none; }
+  .sdk-modal {
+    position: relative;
+    background: var(--color-bg-primary, #fff);
+    border: 1px solid var(--color-border);
+    border-radius: 12px;
+    padding: 32px;
+    width: 100%;
+    max-width: 440px;
+    max-height: 90vh;
+    overflow-y: auto;
+    box-shadow: 0 24px 64px rgba(0, 0, 0, 0.25);
+  }
+  .sdk-modal h3 { margin: 0 0 8px; font-size: 22px; letter-spacing: -0.01em; }
+  .sdk-modal-sub { margin: 0 0 20px; color: var(--color-text-muted); font-size: 14.5px; line-height: 1.5; }
+  .sdk-modal-close {
+    position: absolute;
+    top: 14px;
+    right: 14px;
+    background: none;
+    border: none;
+    font-size: 26px;
+    line-height: 1;
+    color: var(--color-text-muted);
+    cursor: pointer;
+    padding: 4px 8px;
+  }
+  .sdk-modal-close:hover { color: var(--color-text-primary); }
+  .sdk-modal form { display: flex; flex-direction: column; gap: 14px; }
+  .sdk-modal label { display: flex; flex-direction: column; gap: 5px; font-size: 13.5px; font-weight: 600; }
+  .sdk-modal label em { font-weight: 400; color: var(--color-text-muted); font-style: normal; }
+  .sdk-modal input,
+  .sdk-modal select {
+    font: inherit;
+    font-weight: 400;
+    padding: 10px 12px;
+    border: 1px solid var(--color-border);
+    border-radius: 6px;
+    background: var(--color-bg-primary, #fff);
+    color: var(--color-text-primary);
+  }
+  .sdk-modal input:focus,
+  .sdk-modal select:focus { outline: 2px solid var(--color-signal); outline-offset: 1px; border-color: var(--color-signal); }
+  .sdk-modal-error {
+    margin: 0;
+    color: #b91c1c;
+    font-size: 13.5px;
+    line-height: 1.45;
+  }
+  .sdk-modal-submit {
+    margin-top: 4px;
+    background: var(--color-signal);
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    font: inherit;
+    font-weight: 700;
+    font-size: 15px;
+    padding: 12px 20px;
+    cursor: pointer;
+  }
+  .sdk-modal-submit:hover { background: var(--color-signal-hover); }
+  .sdk-modal-submit[disabled] { opacity: 0.6; cursor: wait; }
+  .sdk-modal-success-view p { color: var(--color-text-muted); font-size: 14.5px; line-height: 1.55; margin: 0 0 20px; }
   .hero-visual {
     position: relative;
     padding-top: 6px;
@@ -412,3 +532,94 @@ curl -s -X POST https://api.primateintelligence.ai/v1/analyses \\
     .hero { padding: 80px 20px 80px; }
   }
 </style>
+
+<script>
+  // SDK waitlist modal — posts to the existing /v1/waitlist endpoint with
+  // source:'sdk' + device_target (same waitlist table, source discriminator).
+  const API_BASE = import.meta.env.PUBLIC_API_URL || 'https://api.primateintelligence.ai';
+
+  const overlay = document.getElementById('sdk-waitlist-modal') as HTMLElement | null;
+  const openBtn = document.getElementById('sdk-waitlist-open');
+  const form = document.getElementById('sdk-waitlist-form') as HTMLFormElement | null;
+
+  if (overlay && openBtn && form) {
+    const closeBtn = overlay.querySelector('.sdk-modal-close') as HTMLButtonElement;
+    const doneBtn = overlay.querySelector('.sdk-modal-done') as HTMLButtonElement;
+    const formView = overlay.querySelector('.sdk-modal-form-view') as HTMLElement;
+    const successView = overlay.querySelector('.sdk-modal-success-view') as HTMLElement;
+    const errorEl = overlay.querySelector('.sdk-modal-error') as HTMLElement;
+    const submitBtn = form.querySelector('.sdk-modal-submit') as HTMLButtonElement;
+
+    let lastFocused: Element | null = null;
+
+    function openModal() {
+      lastFocused = document.activeElement;
+      overlay!.hidden = false;
+      document.body.style.overflow = 'hidden';
+      (form!.querySelector('input[name="full_name"]') as HTMLInputElement)?.focus();
+    }
+
+    function closeModal() {
+      overlay!.hidden = true;
+      document.body.style.overflow = '';
+      (lastFocused as HTMLElement | null)?.focus?.();
+    }
+
+    openBtn.addEventListener('click', openModal);
+    closeBtn.addEventListener('click', closeModal);
+    doneBtn.addEventListener('click', closeModal);
+    overlay.addEventListener('click', (e) => { if (e.target === overlay) closeModal(); });
+    document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && !overlay.hidden) closeModal(); });
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      errorEl.hidden = true;
+
+      if (!form.reportValidity()) return;
+
+      const data = new FormData(form);
+      const payload: Record<string, string> = {
+        email: String(data.get('email') || '').trim(),
+        full_name: String(data.get('full_name') || '').trim(),
+        source: 'sdk',
+        device_target: String(data.get('device_target') || ''),
+      };
+      const company = String(data.get('company') || '').trim();
+      if (company) payload.company = company;
+
+      submitBtn.disabled = true;
+      submitBtn.textContent = 'Joining…';
+
+      try {
+        const res = await fetch(`${API_BASE}/v1/waitlist`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload),
+        });
+
+        if (res.status === 201) {
+          formView.hidden = true;
+          successView.hidden = false;
+          return;
+        }
+
+        if (res.status === 409) {
+          errorEl.textContent = "You're already on the waitlist — we'll be in touch soon.";
+        } else if (res.status === 400) {
+          errorEl.textContent = 'Please check your details — something looks invalid.';
+        } else if (res.status === 429) {
+          errorEl.textContent = 'Too many attempts from this network. Please try again in a little while.';
+        } else {
+          errorEl.textContent = 'Something went wrong on our end. Please try again, or email matt@primateintelligence.ai.';
+        }
+        errorEl.hidden = false;
+      } catch {
+        errorEl.textContent = 'Network error — please check your connection and try again.';
+        errorEl.hidden = false;
+      } finally {
+        submitBtn.disabled = false;
+        submitBtn.textContent = 'Join waitlist';
+      }
+    });
+  }
+</script>
