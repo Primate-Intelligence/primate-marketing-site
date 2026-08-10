@@ -22,6 +22,14 @@ interface Reading {
   note: string;
 }
 
+interface Video {
+  title: string;
+  source: string;
+  href: string;
+  year: string;
+  note: string;
+}
+
 const PAPERS: Paper[] = [
   {
     title: 'A Path Towards Autonomous Machine Intelligence',
@@ -144,6 +152,30 @@ const READING: Reading[] = [
     note: 'The competing (and complementary) thesis for why the next frontier of AI is spatial/world understanding, not just language — from the founder of World Labs.',
   },
 ];
+
+const VIDEOS: Video[] = [
+  {
+    title: 'Yann LeCun: Meta AI, Open Source, Limits of LLMs, AGI & the Future of AI',
+    source: 'Lex Fridman Podcast #416',
+    href: 'https://www.youtube.com/watch?v=5t1vTLU7s40',
+    year: '2024',
+    note: "2.5-hour deep technical conversation. Timestamped sections on the limits of autoregressive LLMs, video prediction, JEPA, JEPA vs. LLMs, and hierarchical planning — the most complete public explainer of LeCun's reasoning on video.",
+  },
+  {
+    title: 'Yann LeCun on What Comes After LLMs',
+    source: 'Redpoint Ventures (with Jacob Effron)',
+    href: 'https://www.youtube.com/watch?v=ngBraLDqzdI',
+    year: '2026',
+    note: "LeCun's clearest post-Meta statement: LLMs are \"a dead-end on the path to human-level intelligence\" despite being useful products, because they don't build a world model. Covers why he left Meta and what AMI Labs is betting on instead.",
+  },
+  {
+    title: 'The Next Phase of Artificial Intelligence',
+    source: 'Bloomberg (Yann LeCun & JP Vert)',
+    href: 'https://www.youtube.com/watch?v=zJ0V9gvK5FU',
+    year: '2026',
+    note: 'LeCun and JP Vert discuss how LLMs translate — or fail to translate — into physical-world understanding, and the infrastructure world models will need.',
+  },
+];
 ---
 
 <Base
@@ -205,6 +237,23 @@ const READING: Reading[] = [
             </div>
             <p class="card-authors">{r.source}</p>
             <p class="card-note">{r.note}</p>
+          </a>
+        ))}
+      </div>
+    </section>
+
+    <section class="group">
+      <h2>Videos &amp; Talks</h2>
+      <p class="group-sub">Yann LeCun and others making the case for world models over LLMs, on camera.</p>
+      <div class="card-list">
+        {VIDEOS.map((v) => (
+          <a class="card" href={v.href} target="_blank" rel="noopener">
+            <div class="card-top">
+              <span class="card-title">{v.title}</span>
+              <span class="card-year">{v.year}</span>
+            </div>
+            <p class="card-authors">{v.source}</p>
+            <p class="card-note">{v.note}</p>
           </a>
         ))}
       </div>
