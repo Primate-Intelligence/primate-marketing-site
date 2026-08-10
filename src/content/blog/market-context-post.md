@@ -3,10 +3,10 @@ title: "The $6 Billion Bet on World Models — What It Means for CV Developers"
 slug: "world-models-market-context"
 author: "Matt Miesnieks"
 authorInitials: "MM"
-date: "2026-06-01"
+date: "2026-08-14"
 readTime: "5 min read"
 tags: ["Perspective", "JEPA"]
-status: "draft"
+status: "published"
 excerpt: "AMI, World Labs, General Intuition — over $6B has flowed into world model companies. Here's what CV developers should actually take away from it."
 ---
 

@@ -3,10 +3,10 @@ title: "Primate Vision vs YOLO v8: A Head-to-Head on Real Security Camera Footag
 slug: "primate-vision-vs-yolo-benchmark"
 author: "Mehdi Nikkhah"
 authorInitials: "MN"
-date: "2026-05-02"
+date: "2026-08-21"
 readTime: "8 min read"
 tags: ["Research", "Engineering"]
-status: "draft"
+status: "published"
 excerpt: "We ran both models on the same real-world VIRAT dataset clips. Here's what the results actually look like."
 ---
 

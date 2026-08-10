@@ -3,14 +3,28 @@ title: "How JEPA Learns to Predict Scenes Without Reconstructing Pixels"
 slug: "jepa-architecture-explainer"
 author: "Mehdi Nikkhah"
 authorInitials: "MN"
-date: "2026-05-10"
-readTime: "10 min read"
+date: "2026-08-13"
+readTime: "11 min read"
 tags: ["Research", "JEPA"]
-status: "draft"
-excerpt: "A technical explainer of Joint-Embedding Predictive Architectures and why they're fundamentally different from generative video models."
+status: "published"
+excerpt: "A technical explainer of Joint-Embedding Predictive Architectures and why they're fundamentally different from generative video models — and why the difference isn't just architectural."
 ---
 
-Ask any vision-language model to describe the same video clip twice and you'll hit the hallucination problem firsthand. It's not a bug in the implementation. It's a consequence of the training objective. To see why — and why JEPA is architecturally different — you need to understand what generative video models are actually optimized to do.
+## Do you need words to think?
+
+Heidegger said no.
+
+He used the concept of *Dasein* — "being-there" — to describe how humans first exist in the world: through direct, pre-verbal engagement. You understand a hammer by using it, not by reading its dictionary definition. Understanding comes from being embedded in a situation, not from language about that situation.
+
+That maps onto two AI approaches more cleanly than it should.
+
+Large language models learn entirely through words — predicting the next token in a sequence. They're powerful. But they understand the world only through its linguistic shadow, the way you'd understand a hammer from reading about one.
+
+JEPA — Joint Embedding Predictive Architecture, developed by Yann LeCun's team — takes the Heidegger-like path. It learns by observing raw sensory data, images, video, building internal representations of the world without language at all. It predicts what comes next in experience, not in sentences.
+
+So JEPA is closer to *Dasein*: a mind that grasps the world through direct encounter. Language models are closer to what Heidegger called a derivative, secondary mode of understanding — one that knows the world only through talk about it, never through immersion in it.
+
+Not a metaphor. An architectural choice with philosophical precedent — and one that shows up directly in how these models fail. Ask any vision-language model to describe the same video clip twice and you'll hit the hallucination problem firsthand. It's not a bug in the implementation. It's a consequence of the training objective. To see why — and why JEPA is architecturally different — you need to understand what generative video models are actually optimized to do.
 
 ## Why pixel-space prediction leads to hallucination
 

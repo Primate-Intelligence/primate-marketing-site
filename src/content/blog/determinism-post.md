@@ -3,10 +3,10 @@ title: "Why 'Deterministic' Matters More Than Accuracy in Production CV"
 slug: "deterministic-cv-matters"
 author: "Mehdi Nikkhah"
 authorInitials: "MN"
-date: "2026-05-24"
+date: "2026-08-17"
 readTime: "6 min read"
 tags: ["Engineering", "Infrastructure"]
-status: "draft"
+status: "published"
 excerpt: "Production CV systems don't just need models that are accurate. They need models that are predictable. Here's why that's a harder problem."
 ---
 

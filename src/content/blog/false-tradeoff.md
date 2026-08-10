@@ -3,10 +3,10 @@ title: "The False Tradeoff in Computer Vision"
 slug: "false-tradeoff-computer-vision"
 author: "Matt Miesnieks"
 authorInitials: "MM"
-date: "2026-05-08"
+date: "2026-08-19"
 readTime: "5 min read"
 tags: ["Perspective", "JEPA"]
-status: "draft"
+status: "published"
 excerpt: "For five years, CV teams have been forced to choose between reliable (but rigid) detection and flexible (but unreliable) VLMs. That tradeoff is an artefact of architecture, not an inherent property of the problem."
 ---
 
