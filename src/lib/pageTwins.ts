@@ -52,7 +52,7 @@ understand video by guessing actions from the text labels of single frames. JEPA
 hallucinate & results are deterministic. Primate's JEPA is orders of magnitude more
 efficient than LLMs. $0.0000015/frame — about 16¢ per camera hour at 30fps.
 
-[Try the WebUI](${SITE}/) · [Use your agent](${SITE}/) · [Benchmarks](${SITE}/technology/benchmarks) · [Why JEPA](${SITE}/technology/how-jepa-works) · [Pricing](${SITE}/pricing)
+[Try Primate Vision](${SITE}/) · [Use your Agent](${SITE}/agents) · [Benchmarks](${SITE}/technology/benchmarks) · [Why JEPA](${SITE}/technology/how-jepa-works) · [Pricing](${SITE}/pricing)
 
 ## For developers — first answer in one minute, no signup
 
