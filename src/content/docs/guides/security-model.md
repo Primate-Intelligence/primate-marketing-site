@@ -35,7 +35,6 @@ Pattern: a ≤ 20-line "token mint" route on your server, browser does the rest.
 
 ## Data handling
 
-<!-- A12-FROZEN-SENTENCE: keep identical to ToS wording. Legal review pending (Phase-4 gate). -->
 **Prompts and result metadata are retained to operate and improve the service; customer video content is never used to train models.**
 
 The full contract:
