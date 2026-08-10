@@ -3,10 +3,10 @@ title: "What Scene Understanding Looks Like in a Real Security Camera Pipeline"
 slug: "scene-understanding-security-cameras"
 author: "Matt Miesnieks"
 authorInitials: "MM"
-date: "2026-05-17"
+date: "2026-08-24"
 readTime: "7 min read"
 tags: ["Engineering", "Infrastructure"]
-status: "draft"
+status: "published"
 excerpt: "A concrete walkthrough of what changes — and what stays the same — when you add Primate Vision to a security camera CV pipeline."
 ---
 
