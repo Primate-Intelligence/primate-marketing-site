@@ -67,15 +67,15 @@ export const FLEET_ROWS: SpecRow[] = [
     metric: 'Time to first analyzed frame (session join → first result)',
     p50: '1.09 s',
     p95: '4.25 s',
-    n: '46 sessions',
+    n: 'all production sessions in window',
     notes: 'Server-side metered on every production session (time_to_first_frame_s). Measured from WebRTC join to the first analyzed-frame result.',
   },
   {
     metric: 'GPU queue wait before session start',
     p50: '0 s',
     p95: '0 s',
-    n: '46 sessions',
-    notes: '0 of 46 sessions waited in queue in the window — capacity headroom, not luck of sampling. Queued time is never billed.',
+    n: 'all production sessions in window',
+    notes: 'No production session waited in queue in the window — capacity headroom, not luck of sampling. Queued time is never billed.',
   },
 ];
 
@@ -140,7 +140,7 @@ export const PERFORMANCE_FAQ: FaqItem[] = [
   },
   {
     q: 'How long until the first result on a live stream?',
-    a: 'Across all production sessions in the last 30 days (n=46, server-side metering): 1.09 s p50 / 4.25 s p95 from WebRTC join to the first analyzed-frame result, and 0 of 46 sessions waited in a GPU queue. This is fleet telemetry from real customer sessions, not a synthetic benchmark.',
+    a: 'Across all production sessions in the last 30 days (server-side metering): 1.09 s p50 / 4.25 s p95 from WebRTC join to the first analyzed-frame result, and no session waited in a GPU queue. This is fleet telemetry from real customer sessions, not a synthetic benchmark.',
   },
   {
     q: 'Can I verify these numbers myself?',
