@@ -103,10 +103,13 @@ export const VERTICALS: Vertical[] = [
   },
 ];
 
+// CTA labels/hrefs standardized to match the sitewide unified CTA pair
+// (nav, hero, darwin-preview): 'Try Primate Vision' (web app) + 'Use your
+// Agent' (/agents). APP_HREF resolves to the correct app origin per-env
+// (prod vs dev) — never hardcode primateintelligence.ai here (PRI-563).
 export const USE_CASES_CTA = {
   heading: 'Ready to test Primate Vision on your footage?',
   body: 'Upload a short video. Ask a question. See the result in ~10 seconds.',
-  primary: { label: 'Try it now →', href: 'https://primateintelligence.ai/' },
   secondary: {
     label: 'Talk to us about your use case →',
     href: 'https://cal.com/mattmiesnieks/customer-discovery',
