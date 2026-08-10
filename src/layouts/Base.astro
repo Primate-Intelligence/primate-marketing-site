@@ -82,7 +82,7 @@ const navGroups = [
       { label: 'Use cases', href: '/use-cases' },
       { label: 'Performance', href: '/performance' },
       { label: 'For AI agents', href: '/agents' },
-      { label: 'Live demo', href: APP_HREF, external: true },
+      { label: 'Try Primate Vision', href: APP_HREF, external: true },
     ],
   },
   {
@@ -133,7 +133,8 @@ const mobileLinks = [
   { label: 'Use cases', href: '/use-cases' },
   { label: 'Performance', href: '/performance' },
   { label: 'For AI agents', href: '/agents' },
-  { label: 'Live demo', href: APP_HREF },
+  { label: 'Try Primate Vision', href: APP_HREF },
+  { label: 'Search', href: '/search' },
   { label: 'Technology overview', href: '/technology' },
   { label: 'How JEPA works', href: '/technology/how-jepa-works' },
   { label: 'Determinism', href: '/technology/determinism' },
@@ -286,8 +287,11 @@ const footerColumns = [
           {navFlat.map((item) => (
             <a href={item.href} class={item.active ? 'active' : ''}>{item.label}</a>
           ))}
-          <a class="nav-cta" href={APP_HREF}>Try the WebUI</a>
-          <a class="nav-cta nav-cta-agent" href={APP_HREF}><span class="agent-ico">&gt;_</span> Use your agent</a>
+          <a class="nav-search" href="/search" aria-label="Search">
+            <svg viewBox="0 0 20 20" width="18" height="18" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="1.6" d="M9 3a6 6 0 1 0 0 12 6 6 0 0 0 0-12Zm5.2 11.2 3.3 3.3" stroke-linecap="round"/></svg>
+          </a>
+          <a class="nav-cta" href={APP_HREF}>Try Primate Vision</a>
+          <a class="nav-cta nav-cta-agent" href="/agents"><span class="agent-ico">&gt;_</span> Use your Agent</a>
         </nav>
 
         <!-- Hover-intent for desktop dropdowns: grace period on mouseleave so
@@ -342,7 +346,7 @@ const footerColumns = [
             {mobileLinks.map((link) => (
               <a href={link.href} class={pathname === link.href ? 'active' : ''}>{link.label}</a>
             ))}
-            <a class="mobile-cta" href={APP_HREF}>Try the WebUI →</a>
+            <a class="mobile-cta" href={APP_HREF}>Try Primate Vision →</a>
           </div>
         </details>
       </div>

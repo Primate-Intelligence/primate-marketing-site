@@ -7,7 +7,7 @@
   },
   "scripts": {
     "dev": "astro dev",
-    "build": "node scripts/gen-lastmod.mjs && astro build && cp dist/sitemap-0.xml dist/sitemap.xml && node scripts/indexnow-ping.mjs",
+    "build": "node scripts/gen-lastmod.mjs && astro build && cp dist/sitemap-0.xml dist/sitemap.xml && npx pagefind --site dist --output-subdir pagefind && node scripts/indexnow-ping.mjs",
     "preview": "astro preview",
     "astro": "astro"
   },
@@ -15,7 +15,8 @@
     "@astrojs/rss": "^4.0.19",
     "@astrojs/sitemap": "^3.7.3",
     "astro": "^7.1.6",
-    "marked": "^15.0.12"
+    "marked": "^15.0.12",
+    "pagefind": "^1.5.2"
   },
   "allowScripts": {
     "esbuild@0.28.1": true,

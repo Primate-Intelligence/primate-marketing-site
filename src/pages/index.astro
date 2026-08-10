@@ -8,6 +8,14 @@ const websiteLd = {
   '@type': 'WebSite',
   name: 'Primate Intelligence',
   url: 'https://primateintelligence.ai/',
+  potentialAction: {
+    '@type': 'SearchAction',
+    target: {
+      '@type': 'EntryPoint',
+      urlTemplate: 'https://primateintelligence.ai/search?q={search_term_string}',
+    },
+    'query-input': 'required name=search_term_string',
+  },
 };
 
 const productLd = {
@@ -70,8 +78,8 @@ curl -s -X POST https://api.primateintelligence.ai/v1/analyses \\
           <a class="chip chip-link" href="/technology/benchmarks"><span class="ic" aria-hidden="true">&#9632;</span> Benchmarks &rarr;</a>
         </p>
         <p class="cta-row">
-          <a class="cta" href={APP_HREF}>Try the WebUI</a>
-          <a class="cta agent" href="/agents"><span class="agent-ico">&gt;_</span> Use your agent</a>
+          <a class="cta" href={APP_HREF}>Try Primate Vision</a>
+          <a class="cta agent" href="/agents"><span class="agent-ico">&gt;_</span> Use your Agent</a>
         </p>
         <p class="sdk-waitlist">
           <span class="headline">Cloud level accuracy benchmarks, real-time on edge hardware: Jetson, MacOS, iOS, SnapDragon — CPU or GPU</span>
@@ -170,7 +178,7 @@ curl -s -X POST https://api.primateintelligence.ai/v1/analyses \\
       <p>Upload a short video. Ask a question. See the result in ~10 seconds.</p>
       <p class="cta-row center">
         <a class="cta" href={APP_HREF}>Try Primate Vision →</a>
-        <a class="cta agent" href="/agents"><span class="agent-ico">&gt;_</span> Use your agent</a>
+        <a class="cta agent" href="/agents"><span class="agent-ico">&gt;_</span> Use your Agent</a>
         <a class="cta-link" href="https://cal.com/mattmiesnieks/customer-discovery">Talk to us about your use case →</a>
       </p>
     </div>

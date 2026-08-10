@@ -1,0 +1,54 @@
+---
+import Base from '../layouts/Base.astro';
+---
+
+<Base
+  title="Search"
+  description="Search Primate Intelligence — docs, blog, use cases, pricing, and technology pages."
+  canonicalPath="/search"
+>
+  <section class="search-page">
+    <h1>Search</h1>
+    <div id="search"></div>
+  </section>
+</Base>
+
+<link href="/pagefind/pagefind-ui.css" rel="stylesheet" />
+<script src="/pagefind/pagefind-ui.js" is:inline></script>
+<script is:inline>
+  window.addEventListener('DOMContentLoaded', () => {
+    // eslint-disable-next-line no-undef
+    new PagefindUI({
+      element: '#search',
+      showSubResults: true,
+      showImages: false,
+      autofocus: true,
+      resetStyles: false,
+    });
+  });
+</script>
+
+<style>
+  .search-page {
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 48px 24px 96px;
+  }
+  .search-page h1 {
+    font-size: var(--fs-h2);
+    margin-bottom: 24px;
+  }
+
+  /* Pagefind UI restyle to match tokens.css light theme */
+  :global(.pagefind-ui) {
+    --pagefind-ui-scale: 1;
+    --pagefind-ui-primary: var(--color-signal);
+    --pagefind-ui-text: var(--color-text-primary);
+    --pagefind-ui-background: var(--color-bg-surface);
+    --pagefind-ui-border: var(--color-border);
+    --pagefind-ui-tag: var(--color-bg-secondary);
+    --pagefind-ui-border-width: 1px;
+    --pagefind-ui-border-radius: 4px;
+    --pagefind-ui-font: var(--font-sans);
+  }
+</style>

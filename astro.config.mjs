@@ -16,6 +16,14 @@ try {
 // https://astro.build/config
 export default defineConfig({
   site: 'https://primateintelligence.ai',
+  vite: {
+    build: {
+      // Pagefind's own JS assets are dropped into dist/pagefind by the
+      // post-build step (package.json `build` script) — never bundled/hashed
+      // by Astro/Vite, and never present in `src` or `public`.
+      assetsInlineLimit: 0,
+    },
+  },
   integrations: [
     sitemap({
       // /docs/quickstart exists only for legacy deep links and canonicalizes

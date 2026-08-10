@@ -34,7 +34,7 @@ ${actions.map((a) => `- ${a}`).join('\n')}
 
 ${DESIGN_PARTNER.body}
 
-Contact: ${DESIGN_PARTNER.email} (subject: "${DESIGN_PARTNER.emailSubject}") · Try it: ${APP_HREF}
+Contact: ${DESIGN_PARTNER.email} (subject: "${DESIGN_PARTNER.emailSubject}") · Try Primate Vision: ${APP_HREF}
 
 ${FEEDBACK_ASK}
 `;
