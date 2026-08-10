@@ -1,0 +1,276 @@
+---
+import Base from '../../layouts/Base.astro';
+
+interface Paper {
+  title: string;
+  authors: string;
+  href: string;
+  year: string;
+  note: string;
+}
+
+interface Org {
+  name: string;
+  href: string;
+  note: string;
+}
+
+interface Reading {
+  title: string;
+  source: string;
+  href: string;
+  note: string;
+}
+
+const PAPERS: Paper[] = [
+  {
+    title: 'A Path Towards Autonomous Machine Intelligence',
+    authors: 'Yann LeCun',
+    href: 'https://openreview.net/pdf?id=BZ5a1r-kVsf',
+    year: '2022',
+    note: 'The founding position paper. Introduces the Joint Embedding Predictive Architecture (JEPA) as the centerpiece of a broader argument for world-model-based AI over pure autoregressive generation.',
+  },
+  {
+    title: 'Self-Supervised Learning from Images with a Joint-Embedding Predictive Architecture (I-JEPA)',
+    authors: 'Assran, Duval, Misra, Bojanowski, Vincent, Rabbat, LeCun, Ballas',
+    href: 'https://arxiv.org/abs/2301.08243',
+    year: '2023',
+    note: 'The first working JEPA model. Learns image representations by predicting masked-patch embeddings in latent space instead of reconstructing pixels — no hand-crafted augmentations.',
+  },
+  {
+    title: 'MC-JEPA: A Joint-Embedding Predictive Architecture for Self-Supervised Learning of Motion and Content Features',
+    authors: 'Bardes, Ponce, LeCun',
+    href: 'https://arxiv.org/abs/2307.12698',
+    year: '2023',
+    note: 'Unifies optical flow estimation and content-feature learning in a single shared encoder trained with the JEPA objective.',
+  },
+  {
+    title: 'V-JEPA: The Next Step Toward Advanced Machine Intelligence',
+    authors: 'Bardes, Garrido, Ponce, Chen, Rabbat, LeCun, Assran, Ballas',
+    href: 'https://ai.meta.com/blog/v-jepa-yann-lecun-ai-model-video-joint-embedding-predictive-architecture/',
+    year: '2024',
+    note: 'Extends JEPA to video: learns by predicting masked spatio-temporal regions of a clip in representation space, producing strong off-the-shelf video features with no labels or fine-tuning.',
+  },
+  {
+    title: 'A-JEPA: Joint-Embedding Predictive Architecture Can Listen',
+    authors: 'Fei, Fan, Yu, Zhu, Sun, Jiang',
+    href: 'https://arxiv.org/abs/2311.15830',
+    year: '2023',
+    note: 'Carries the JEPA masked-latent-prediction principle from images into the audio spectrogram domain.',
+  },
+  {
+    title: 'Time-Series JEPA for Predictive Remote Control under Capacity-Limited Networks',
+    authors: 'Bariah, Zeydan, et al.',
+    href: 'https://arxiv.org/abs/2406.04853',
+    year: '2024',
+    note: 'Applies JEPA-style latent prediction to sensor time-series, compressing high-dimensional signals into low-dimensional semantic embeddings for bandwidth-constrained remote control.',
+  },
+  {
+    title: 'V-JEPA 2: Self-Supervised Video Models Enable Understanding, Prediction and Planning',
+    authors: 'Assran, Bardes, Fan, Garrido, et al. (Meta FAIR)',
+    href: 'https://arxiv.org/abs/2506.09985',
+    year: '2025',
+    note: 'Scales V-JEPA to 1M+ hours of internet video and adds an action-conditioned variant (V-JEPA 2-AC) that plans robot manipulation zero-shot in new environments from a small amount of unlabeled robot footage.',
+  },
+  {
+    title: 'Joint Embeddings Go Temporal (TS-JEPA)',
+    authors: 'various',
+    href: 'https://arxiv.org/abs/2509.25449',
+    year: '2025',
+    note: 'A JEPA architecture adapted specifically for general time-series representation learning, extending the masked-latent-prediction recipe beyond vision and audio.',
+  },
+  {
+    title: 'Drive-JEPA: Video JEPA Meets Multimodal Trajectory Distillation for End-to-End Driving',
+    authors: 'various',
+    href: 'https://arxiv.org/abs/2601.22032',
+    year: '2026',
+    note: 'Integrates V-JEPA representations with multimodal trajectory distillation to address mode collapse in end-to-end autonomous driving policies.',
+  },
+];
+
+const ORGS: Org[] = [
+  {
+    name: 'Primate Intelligence',
+    href: '/',
+    note: 'Building JEPA-based predictive world models for deterministic, real-time scene understanding in computer vision — the focus of this site.',
+  },
+  {
+    name: 'Meta AI / FAIR',
+    href: 'https://ai.meta.com/blog/v-jepa-yann-lecun-ai-model-video-joint-embedding-predictive-architecture/',
+    year: '',
+    note: 'Origin of the JEPA family — I-JEPA, MC-JEPA, V-JEPA, and V-JEPA 2 were all developed and open-sourced out of FAIR under Yann LeCun.',
+  },
+  {
+    name: 'AMI Labs (Advanced Machine Intelligence)',
+    href: 'https://www.wired.com/story/yann-lecun-raises-dollar1-billion-to-build-ai-that-understands-the-physical-world/',
+    note: "Paris-based startup founded by Yann LeCun and Alexandre LeBrun after LeCun's November 2025 departure from Meta. Raised $1B+ to build world models, explicitly betting against the LLM-first approach.",
+  },
+  {
+    name: 'World Labs',
+    href: 'https://www.worldlabs.ai/',
+    note: "Founded by Fei-Fei Li, Justin Johnson, Christoph Lassner, and Ben Mildenhall. Building 'spatial intelligence' world models (Marble) focused on generating and reasoning about consistent 3D environments — adjacent to JEPA-style world modeling, different emphasis (generative 3D vs. predictive latent representations).",
+  },
+];
+
+const READING: Reading[] = [
+  {
+    title: 'I-JEPA: The First AI Model Based on Yann LeCun\'s Vision for More Human-Like AI',
+    source: 'Meta AI Blog',
+    href: 'https://ai.meta.com/blog/yann-lecun-ai-model-i-jepa/',
+    note: "Meta's own explainer on why I-JEPA matters: representation learning that mimics how humans build abstract models of the world instead of memorizing pixels.",
+  },
+  {
+    title: 'What Is JEPA? LeCun Architecture & World Models',
+    source: 'Turing Post',
+    href: 'https://www.turingpost.com/p/jepa',
+    note: 'A clear, well-sourced technical explainer walking through the full JEPA lineage — I-JEPA, MC-JEPA, V-JEPA, V-JEPA 2 — and how each extends the core idea.',
+  },
+  {
+    title: 'Meta Launches AI "World Model" to Advance Robotics, Self-Driving Cars',
+    source: 'CNBC',
+    href: 'https://www.cnbc.com/2025/06/11/meta-launches-ai-world-model-to-advance-robotics-self-driving-cars.html',
+    note: 'Mainstream coverage of the V-JEPA 2 launch and why the industry is watching world models as the next infrastructure layer for physical AI.',
+  },
+  {
+    title: 'Yann LeCun: Meta AI, Open Source, Limits of LLMs, AGI & the Future of AI (Podcast #416)',
+    source: 'Lex Fridman Podcast',
+    href: 'https://lexfridman.com/yann-lecun-3-transcript/',
+    note: 'Long-form conversation where LeCun makes the case for joint embedding architectures over autoregressive LLMs as the path to systems that actually understand the physical world.',
+  },
+  {
+    title: "From Words to Worlds: Spatial Intelligence is AI's Next Frontier",
+    source: "Fei-Fei Li's Substack",
+    href: 'https://drfeifei.substack.com/p/from-words-to-worlds-spatial-intelligence',
+    note: 'The competing (and complementary) thesis for why the next frontier of AI is spatial/world understanding, not just language — from the founder of World Labs.',
+  },
+];
+---
+
+<Base
+  title="JEPA Hub"
+  description="The industry resource hub for Joint Embedding Predictive Architecture (JEPA): the founding papers, the research lineage, the companies building on it, and the essential reading."
+  canonicalPath="/resources/jepa-hub"
+>
+  <div class="page">
+    <section class="hero">
+      <p class="eyebrow">Resources</p>
+      <h1>JEPA Hub</h1>
+      <p class="lede">
+        Joint Embedding Predictive Architecture is the research lineage Primate Intelligence
+        builds on. This page tracks the papers, the people, and the companies advancing
+        world models that predict in representation space instead of pixel space.
+      </p>
+    </section>
+
+    <section class="group">
+      <h2>Papers</h2>
+      <p class="group-sub">The JEPA family, in order of publication.</p>
+      <div class="card-list">
+        {PAPERS.map((p) => (
+          <a class="card" href={p.href} target="_blank" rel="noopener">
+            <div class="card-top">
+              <span class="card-title">{p.title}</span>
+              <span class="card-year">{p.year}</span>
+            </div>
+            <p class="card-authors">{p.authors}</p>
+            <p class="card-note">{p.note}</p>
+          </a>
+        ))}
+      </div>
+    </section>
+
+    <section class="group">
+      <h2>Companies &amp; Organizations</h2>
+      <p class="group-sub">Who's building on this architecture.</p>
+      <div class="card-list">
+        {ORGS.map((o) => (
+          <a class="card" href={o.href} target={o.href.startsWith('/') ? undefined : '_blank'} rel={o.href.startsWith('/') ? undefined : 'noopener'}>
+            <div class="card-top">
+              <span class="card-title">{o.name}</span>
+            </div>
+            <p class="card-note">{o.note}</p>
+          </a>
+        ))}
+      </div>
+    </section>
+
+    <section class="group">
+      <h2>Blogs &amp; Thought Leadership</h2>
+      <p class="group-sub">Essential reading on JEPA and world models.</p>
+      <div class="card-list">
+        {READING.map((r) => (
+          <a class="card" href={r.href} target="_blank" rel="noopener">
+            <div class="card-top">
+              <span class="card-title">{r.title}</span>
+            </div>
+            <p class="card-authors">{r.source}</p>
+            <p class="card-note">{r.note}</p>
+          </a>
+        ))}
+      </div>
+    </section>
+  </div>
+</Base>
+
+<style>
+  .page { max-width: 860px; margin: 0 auto; padding: 128px 24px 192px; }
+  .hero { text-align: center; margin-bottom: 96px; }
+  .eyebrow {
+    font-size: var(--fs-subhead);
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--color-text-muted);
+    margin: 0 0 14px;
+  }
+  h1 { font-size: var(--fs-h1); font-weight: 700; letter-spacing: -0.02em; margin: 0 0 14px; }
+  .lede { font-size: var(--fs-body-lg); color: var(--color-text-muted); max-width: 620px; margin: 0 auto; line-height: 1.6; }
+
+  .group { margin-bottom: 96px; }
+  .group:last-child { margin-bottom: 0; }
+  h2 { font-size: var(--fs-h3); font-weight: 600; letter-spacing: -0.015em; margin: 0 0 8px; }
+  .group-sub { font-size: var(--fs-body-sm); color: var(--color-text-muted); margin: 0 0 32px; }
+
+  .card-list { display: flex; flex-direction: column; gap: 12px; }
+  .card {
+    display: block;
+    border: 1px solid var(--color-border);
+    border-left: 3px solid var(--color-signal);
+    border-radius: 0 12px 12px 0;
+    background: var(--color-bg-surface);
+    padding: 24px 28px;
+    color: var(--color-text-primary);
+    transition: border-color var(--duration-base) var(--ease-standard), transform var(--duration-base) var(--ease-standard);
+  }
+  .card:hover { border-color: var(--color-signal); transform: translateX(2px); color: var(--color-text-primary); }
+
+  .card-top {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 16px;
+    margin-bottom: 6px;
+  }
+  .card-title { font-size: var(--fs-title-2); font-weight: 600; line-height: 1.4; }
+  .card-year {
+    font-size: var(--fs-caption-1);
+    color: var(--color-text-muted);
+    flex-shrink: 0;
+    white-space: nowrap;
+  }
+  .card-authors {
+    font-size: var(--fs-footnote);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--color-signal);
+    margin: 0 0 10px;
+    font-weight: 500;
+  }
+  .card-note { font-size: var(--fs-body-sm); color: var(--color-text-muted); line-height: 1.65; margin: 0; }
+
+  @media (max-width: 640px) {
+    h1 { font-size: var(--fs-h2); }
+    .page { padding: 88px 20px 128px; }
+    .card { padding: 20px 22px; }
+  }
+</style>
