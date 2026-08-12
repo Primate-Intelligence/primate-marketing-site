@@ -94,6 +94,62 @@ const PAPERS: Paper[] = [
     year: '2026',
     note: 'Integrates V-JEPA representations with multimodal trajectory distillation to address mode collapse in end-to-end autonomous driving policies.',
   },
+  {
+    title: 'ACT-JEPA: Novel Joint-Embedding Predictive Architecture for Efficient Policy Representation Learning',
+    authors: 'Vujinovic, et al.',
+    href: 'https://arxiv.org/abs/2501.14622',
+    year: '2025',
+    note: 'Unifies imitation learning and self-supervised learning by jointly predicting action sequences and latent observation sequences — up to 40% improvement in world-model understanding and 10% higher task success vs. the strongest baseline. Published in IEEE Access.',
+  },
+  {
+    title: 'LLM-JEPA: Large Language Models Meet Joint Embedding Predictive Architectures',
+    authors: 'Huang, Balestriero, et al.',
+    href: 'https://arxiv.org/abs/2509.14252',
+    year: '2025',
+    note: 'Asks whether the JEPA recipe that works so well for vision can improve language model training. LLM-JEPA outperforms standard LLM training objectives across Llama3, OpenELM, Gemma2, and Olmo, while being robust to overfitting — direct evidence embedding-space objectives beat input-space reconstruction outside vision too.',
+  },
+  {
+    title: 'VL-JEPA: Joint Embedding Predictive Architecture for Vision-Language',
+    authors: 'Chen, Shukor, et al. (Meta)',
+    href: 'https://arxiv.org/abs/2512.10942',
+    year: '2025',
+    note: 'Vision-language model that predicts continuous text embeddings instead of autoregressively generating tokens. Beats CLIP, SigLIP2, and Perception Encoder on 16 video classification/retrieval benchmarks with 50% fewer trainable parameters, and matches InstructBLIP/QwenVL on VQA at just 1.6B params — the clearest evidence yet that JEPA-style training generalizes beyond pure vision into multimodal understanding.',
+  },
+  {
+    title: 'Value-Guided Action Planning with JEPA World Models',
+    authors: 'Destrade, et al.',
+    href: 'https://arxiv.org/abs/2601.00844',
+    year: '2026',
+    note: "Shapes a JEPA world model's representation space so the goal-conditioned value function approximates a distance between state embeddings, significantly improving planning performance over standard JEPA on control tasks. Presented at the World Modeling Workshop 2026 (Mila).",
+  },
+  {
+    title: 'What Drives Success in Physical Planning with Joint-Embedding Predictive World Models?',
+    authors: 'Terver, et al. (Meta FAIR)',
+    href: 'https://arxiv.org/abs/2512.24497',
+    year: '2026',
+    note: 'Systematic ablation of architecture, training objective, and planning algorithm for JEPA-based world models (JEPA-WMs) — combines findings into a model beating both DINO-WM and V-JEPA-2-AC baselines on navigation and manipulation. Accepted at TMLR.',
+  },
+  {
+    title: 'Causal-JEPA (C-JEPA): Learning World Models through Object-Level Latent Masking',
+    authors: 'Nam, et al.',
+    href: 'https://arxiv.org/abs/2602.11389',
+    year: '2026',
+    note: 'Extends masked joint-embedding prediction from image patches to object-centric representations, forcing interaction-dependent prediction instead of shortcut solutions. ~20% absolute gain on counterfactual VQA reasoning and 100x fewer latent features needed for comparable planning performance. Accepted at ICML 2026.',
+  },
+  {
+    title: 'LeWorldModel (LeWM): Stable End-to-End Joint-Embedding Predictive Architecture from Pixels',
+    authors: 'Maes, Balestriero, et al.',
+    href: 'https://arxiv.org/abs/2603.19312',
+    year: '2026',
+    note: 'First JEPA that trains stably end-to-end from raw pixels with just two loss terms (down from six), using only ~15M params trainable on a single GPU. Plans up to 48x faster than foundation-model-based world models while staying competitive on 2D/3D control — and its latent space reliably detects physically implausible events.',
+  },
+  {
+    title: 'A Generalization Theory for JEPA-Based World Models',
+    authors: 'Cui, et al.',
+    href: 'https://arxiv.org/abs/2606.27014',
+    year: '2026',
+    note: 'First formal generalization theory for JEPA world models — frames JEPA pretraining as conditional spectral graph learning, connects pretraining error to downstream planning regret, and proves a finite-sample generalization bound. Theoretical grounding for why latent-space prediction beats input-level prediction.',
+  },
 ];
 
 const ORGS: Org[] = [
@@ -262,6 +318,11 @@ const SECTIONS = [
         Joint Embedding Predictive Architecture is the research lineage Primate Intelligence
         builds on. Papers, companies, analysis, and talks on world models that predict in
         representation space instead of pixel space.
+      </p>
+      <p class="lede">
+        Details on Primate's implementation of a JEPA model can be found on our{' '}
+        <a href="/technology">technology</a>, <a href="/">product</a> and{' '}
+        <a href="/blog">blog</a> pages.
       </p>
     </section>
 
