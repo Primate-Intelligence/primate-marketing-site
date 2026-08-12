@@ -106,9 +106,10 @@ const navFlat = [
 
 const navResourcesGroup = {
   label: 'Resources',
-  active: inSection('/blog') || inSection('/faq'),
+  active: inSection('/blog') || inSection('/faq') || inSection('/resources'),
   items: [
     { label: 'Blog', href: '/blog' },
+    { label: 'JEPA Hub', href: '/resources/jepa-hub' },
     { label: 'FAQ', href: '/faq' },
     { label: 'RSS', href: '/rss.xml' },
     { label: 'llms.txt', href: '/llms.txt' },
@@ -144,6 +145,7 @@ const mobileLinks = [
   { label: 'Docs', href: '/docs' },
   { label: 'Pricing', href: '/pricing' },
   { label: 'Blog', href: '/blog' },
+  { label: 'JEPA Hub', href: '/resources/jepa-hub' },
   { label: 'FAQ', href: '/faq' },
   { label: 'About us', href: '/about' },
   { label: 'Team', href: '/team' },
