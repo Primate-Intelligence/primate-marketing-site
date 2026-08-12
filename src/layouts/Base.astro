@@ -77,37 +77,31 @@ const inSection = (prefix: string) =>
 const navGroups = [
   {
     label: 'Product',
-    active: inSection('/use-cases') || inSection('/performance') || inSection('/agents'),
+    active: inSection('/use-cases') || inSection('/performance') || inSection('/agents') || inSection('/compare'),
     items: [
       { label: 'Use cases', href: '/use-cases' },
       { label: 'Performance', href: '/performance' },
       { label: 'For AI agents', href: '/agents' },
+      { label: 'Compare', href: '/compare' },
       { label: 'Try Primate Vision', href: APP_HREF, external: true },
-    ],
-  },
-  {
-    label: 'Technology',
-    active: inSection('/technology'),
-    items: [
-      { label: 'Overview', href: '/technology' },
-      { label: 'How JEPA works', href: '/technology/how-jepa-works' },
-      { label: 'Determinism', href: '/technology/determinism' },
-      { label: 'Benchmarks', href: '/technology/benchmarks' },
-      { label: 'Real-time streaming', href: '/technology/real-time' },
     ],
   },
 ];
 
 const navFlat = [
-  { label: 'Compare', href: '/compare', active: inSection('/compare') },
   { label: 'Docs', href: '/docs', active: inSection('/docs') },
   { label: 'Pricing', href: '/pricing', active: inSection('/pricing') },
 ];
 
 const navResourcesGroup = {
   label: 'Resources',
-  active: inSection('/blog') || inSection('/faq') || inSection('/resources'),
+  active: inSection('/blog') || inSection('/faq') || inSection('/resources') || inSection('/technology'),
   items: [
+    { label: 'Technology', href: '/technology' },
+    { label: 'How JEPA works', href: '/technology/how-jepa-works' },
+    { label: 'Determinism', href: '/technology/determinism' },
+    { label: 'Benchmarks', href: '/technology/benchmarks' },
+    { label: 'Real-time streaming', href: '/technology/real-time' },
     { label: 'Blog', href: '/blog' },
     { label: 'JEPA Hub', href: '/resources/jepa-hub' },
     { label: 'FAQ', href: '/faq' },
@@ -134,16 +128,16 @@ const mobileLinks = [
   { label: 'Use cases', href: '/use-cases' },
   { label: 'Performance', href: '/performance' },
   { label: 'For AI agents', href: '/agents' },
+  { label: 'Compare', href: '/compare' },
   { label: 'Try Primate Vision', href: APP_HREF },
   { label: 'Search', href: '/search' },
+  { label: 'Docs', href: '/docs' },
+  { label: 'Pricing', href: '/pricing' },
   { label: 'Technology overview', href: '/technology' },
   { label: 'How JEPA works', href: '/technology/how-jepa-works' },
   { label: 'Determinism', href: '/technology/determinism' },
   { label: 'Benchmarks', href: '/technology/benchmarks' },
   { label: 'Real-time streaming', href: '/technology/real-time' },
-  { label: 'Compare', href: '/compare' },
-  { label: 'Docs', href: '/docs' },
-  { label: 'Pricing', href: '/pricing' },
   { label: 'Blog', href: '/blog' },
   { label: 'JEPA Hub', href: '/resources/jepa-hub' },
   { label: 'FAQ', href: '/faq' },
