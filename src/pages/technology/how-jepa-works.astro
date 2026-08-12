@@ -1,11 +1,10 @@
 ---
 import Base from '../../layouts/Base.astro';
-import ComingSoon from '../../components/ComingSoon.astro';
 ---
 
 <Base
   title="How JEPA works"
-  description="What a joint-embedding predictive architecture is — Darwin builds an internal representation of a scene and predicts forward in representation space."
+  description="Do you need words to think? JEPA learns from sensory experience, predicting representations instead of pixels or tokens — the architecture behind Darwin and Primate Vision."
   canonicalPath="/technology/how-jepa-works"
   mdTwin="/technology/how-jepa-works.md"
 >
@@ -15,30 +14,298 @@ import ComingSoon from '../../components/ComingSoon.astro';
       <p class="eyebrow">Technology</p>
       <h1>How JEPA works</h1>
       <p class="lede">
-        Prediction in representation space, not pixel space — semantic understanding without
-        a language model in the perception loop.
+        Do you need words to think? JEPA learns from sensory experience, not language —
+        predicting representations of the world instead of pixels or tokens.
       </p>
+      <p class="byline">Mehdi Nikkhah, co-founder &amp; CTO</p>
     </section>
 
     <section class="content">
+      <h2>Do you need words to think?</h2>
+      <p>Heidegger said no.</p>
       <p>
-        A joint-embedding predictive architecture (JEPA) is a model that learns by predicting
-        the representation of a future or masked state — not by reconstructing raw pixels.
-        Where a generative model asks "what does this look like?", a JEPA asks "what
-        representation will this produce?" That distinction changes everything about how
-        the model learns to understand scenes.
+        He used the concept of Dasein, or &ldquo;being-there,&rdquo; to describe how humans
+        first encounter the world: through direct, pre-verbal engagement with it. You
+        understand a hammer by using it, not by reading its definition. Understanding comes
+        from being embedded in a situation, not from language describing that situation.
+      </p>
+      <p>That idea maps surprisingly well onto two very different approaches to AI.</p>
+      <p>
+        Large language models learn from words. They predict the next token in a sequence,
+        and in doing so they build remarkably powerful models of the world. Their only
+        direct experience, however, is language. They learn about a hammer through
+        descriptions of hammers, not through actually interacting with one.
       </p>
       <p>
-        Darwin builds an internal representation of a video scene — a compact embedding
-        that captures the semantic state: what is happening, how objects relate, what is
-        likely to happen next. It then predicts forward in that representation space,
-        giving it semantic understanding without a language model anywhere in the
-        perception loop. Language only enters at the query layer, when a user or agent
-        asks a question in plain English. This is why Darwin's outputs are deterministic:
-        the perception pipeline is pure computation, not sampling.
+        Joint Embedding Predictive Architecture, or JEPA, takes a different approach. It
+        learns from sensory experience. Instead of predicting the next word or
+        reconstructing every pixel, it learns representations of the world and predicts how
+        those representations change over time.
+      </p>
+      <p>
+        A video is not treated as a sequence of descriptions. It is treated as an
+        experience from which the model can learn what is happening and what is likely to
+        happen next.
+      </p>
+      <p>
+        In that sense, JEPA is much closer to the idea of Dasein. The model is trying to
+        understand the world through its structure and dynamics rather than through
+        language about the world.
+      </p>
+      <p>That distinction becomes important when we look at vision-language models.</p>
+
+      <h2>Vision-Language Models: Seeing the world through language</h2>
+      <p>
+        Vision-language models, or VLMs, connect visual inputs to language. Give a VLM a
+        video and it can describe what happened, answer questions about it, or reason about
+        what it sees.
+      </p>
+      <p>
+        The problem is that the model ultimately has to express its understanding through
+        language. Its output is generated token by token, and the training objective
+        rewards producing a plausible linguistic answer.
+      </p>
+      <p>
+        That creates an important distinction between describing the world and modeling the
+        world.
+      </p>
+      <p>
+        A VLM can say that a person is standing near a door without necessarily maintaining
+        a stable representation of the physical situation. It can produce a convincing
+        answer even when its underlying visual representation is incomplete or wrong.
+      </p>
+      <p>
+        This is one reason hallucination is such a persistent problem. The model is
+        optimized to produce a good answer, not necessarily to maintain a faithful internal
+        model of what is happening in the video.
+      </p>
+      <p>
+        If we want models that learn the dynamics of the physical world, we need to look at
+        approaches that learn directly from video.
       </p>
 
-      <ComingSoon note="The diagram-led JEPA 101 explainer is coming during our August launch." />
+      <h2>Generative Video World Models</h2>
+      <p>
+        Generative video models take a different approach. Instead of predicting words
+        about the world, they predict the visual world itself.
+      </p>
+      <p>
+        Given frames 1 through N, the model predicts what comes next. The training signal
+        can be based on how closely the generated video matches the actual future frames.
+      </p>
+      <p>
+        At first, this seems like exactly what we want. If a model can predict the future,
+        shouldn&rsquo;t it have to understand the world?
+      </p>
+      <p>The problem is what it means to predict a video at the pixel level.</p>
+      <p>
+        Real video contains enormous amounts of information that is difficult, or
+        effectively impossible, to predict exactly. The precise position of a shadow, the
+        motion blur on a moving object, small changes in lighting, reflections, and texture
+        can all vary even when the underlying event is the same.
+      </p>
+      <p>
+        When there are multiple plausible futures, a pixel-level objective still forces the
+        model to produce a specific visual outcome.
+      </p>
+      <p>The result can be a visually plausible prediction that is semantically wrong.</p>
+      <p>
+        The model also has to spend capacity modeling visual details that may have little to
+        do with the structure we actually care about. If the goal is to understand that a
+        person is approaching a door, the exact texture of their clothing or the precise
+        shape of a shadow is mostly irrelevant.
+      </p>
+      <p>This raises a fundamental question:</p>
+      <p>
+        <em>Should a world model predict exactly what the world will look like, or what is
+        happening in the world?</em>
+      </p>
+
+      <h2>JEPA: Predicting representations instead of pixels</h2>
+      <p>This is the key idea behind Joint Embedding Predictive Architecture.</p>
+      <p>Instead of predicting pixels, JEPA predicts representations.</p>
+      <p>
+        An encoder turns the observed video into a latent representation. A predictor then
+        uses the visible context to predict the representation of what is missing or what
+        comes next.
+      </p>
+      <p>The important part is what the model is not asked to predict.</p>
+      <p>
+        It does not have to reconstruct the exact pixels of a shadow. It does not have to
+        reproduce every texture or the precise motion blur of a moving arm. The loss is
+        computed in representation space, so the model is rewarded for capturing the
+        structure that matters.
+      </p>
+      <p>Consider a ball rolling toward the edge of a table.</p>
+      <p>
+        A pixel-level model has to predict the exact appearance of the next frames: the
+        ball&rsquo;s precise position, lighting, texture, motion blur, and everything around
+        it. If there are multiple plausible ways the scene could evolve, the model has to
+        resolve that uncertainty at the pixel level.
+      </p>
+      <p>
+        A JEPA model can instead learn a representation that captures something much more
+        useful: the ball is moving toward the edge and is likely to fall.
+      </p>
+      <p>
+        The exact pixels of the future can remain uncertain without making the underlying
+        representation uncertain.
+      </p>
+      <p>
+        That is the important distinction. A world model does not necessarily need to
+        predict every detail of the future. It needs to capture the parts of the future that
+        are predictable and useful for reasoning.
+      </p>
+      <p>
+        The masking strategy reinforces this. Rather than removing individual random pixels,
+        JEPA can mask contiguous regions of space and time. The model has to predict what
+        belongs in the missing region using the surrounding context.
+      </p>
+      <p>
+        A person walking toward a door provides information about where that person should
+        be next. An object being pushed provides information about how it should move. The
+        model is forced to learn relationships between events rather than simply memorize
+        local visual patterns.
+      </p>
+
+      <h2>Why this matters for physical understanding</h2>
+      <p>
+        The advantage of representation prediction is not that it magically gives a model
+        physics. It is that the learning objective focuses the model on structure that
+        remains meaningful across changes in appearance.
+      </p>
+      <p>
+        A useful representation should not change completely because the lighting changed,
+        the camera moved, or an object&rsquo;s texture looks different.
+      </p>
+      <p>
+        If a person has been standing near a door for 90 seconds, that fact should remain
+        represented in roughly the same way whether the room is bright or dark, whether the
+        camera moves, or whether the person&rsquo;s clothing looks slightly different.
+      </p>
+      <p>The representation should capture what remains true across those changes.</p>
+      <p>
+        This is also where data efficiency becomes interesting. If the model spends less of
+        its capacity explaining unpredictable visual detail, more of the learning signal can
+        go toward relationships that transfer across situations.
+      </p>
+
+      <h2>What V-JEPA 2 suggests</h2>
+      <p>
+        V-JEPA 2 provides an interesting demonstration of what this kind of representation
+        learning can enable.
+      </p>
+      <p>
+        Meta showed that V-JEPA 2 could use video learned from large-scale datasets, together
+        with a relatively small amount of robot interaction data, to support zero-shot
+        planning on physical manipulation tasks.
+      </p>
+      <p>The important point is not simply that the model can predict video.</p>
+      <p>
+        The learned representation captures useful structure about how objects and actions
+        relate to one another: how objects move when they are contacted, how spatial
+        relationships change, and what is likely to happen after an action.
+      </p>
+      <p>
+        Those representations can then be used for tasks that were not explicitly present in
+        the training data.
+      </p>
+      <p>
+        That is the promise of a world model: not a system that generates a convincing video
+        of the future, but a system that learns a representation of the world that can be
+        used to reason about what happens next.
+      </p>
+
+      <h2>Darwin: How far can the same idea go with 100&times; less data?</h2>
+      <p>
+        V-JEPA 2 shows what representation learning can achieve at scale. We wanted to ask a
+        different question: how far can the same idea go with much less data and compute?
+      </p>
+      <p>
+        We trained Darwin, our video JEPA model, on 8 H100 GPUs over three weeks, using
+        roughly 100&times; less data than comparable V-JEPA 2 efforts.
+      </p>
+      <p>
+        Despite that smaller training budget, Darwin matches or exceeds V-JEPA-class models
+        on several standard downstream benchmarks. With a frozen backbone and linear
+        probing, Darwin reaches approximately 73% on Something-Something V2, 78% on
+        Kinetics-700, and 88% on ImageNet-1K.
+      </p>
+      <p>The interesting part isn&rsquo;t just the benchmark numbers. It is what the representation can be used for.</p>
+      <p>
+        We aligned Darwin&rsquo;s embedding space with natural language, allowing the model to
+        retrieve visual concepts directly from its learned representations using text
+        prompts. That means a new visual concept does not necessarily require training a
+        separate classification head.
+      </p>
+      <p>
+        Darwin also doesn&rsquo;t need to generate pixels. That makes the representation itself
+        lightweight enough for real-time inference on commodity hardware rather than
+        requiring a large datacenter GPU for every prediction.
+      </p>
+      <p>Darwin is the encoder and predictor. Primate Vision is the system we built on top of it.</p>
+      <p>
+        The API adds the pieces needed to turn those representations into something a
+        computer vision pipeline can actually use: structured action classifications,
+        temporal context for tracking entity identity and behavior duration across a clip,
+        and calibrated confidence scores derived from the model&rsquo;s uncertainty.
+      </p>
+      <p>
+        The result is an API that returns structured predictions directly, without requiring
+        a language model or natural-language parsing layer between the video model and the
+        application.
+      </p>
+      <p>
+        It is running in production today. Measured latency is 45 ms p50 per-frame
+        inference, with 11.8 FPS sustained. These numbers are measured against the
+        production API rather than estimated from a lab benchmark.
+      </p>
+
+      <h2>Limitations and open questions</h2>
+      <p>JEPA is not a solved problem, and there are important limitations.</p>
+      <p>
+        The encoder still needs substantial amounts of unlabeled video to learn useful
+        representations. For highly specialized environments such as underwater cameras,
+        extreme infrared, or satellite imagery, general-purpose pre-training data may not
+        cover the target distribution well. Adapting the representation without degrading
+        what it already knows also requires care.
+      </p>
+      <p>
+        Action recognition is another important distinction. The self-supervised JEPA
+        objective does not produce action labels by itself. Training an action recognition
+        system still requires supervised temporal annotations, and the resulting performance
+        depends on the quality and coverage of that data.
+      </p>
+      <p>
+        The benefits of spatiotemporal learning also do not automatically transfer to every
+        vision problem. For single-image tasks where there is no temporal context, the
+        data-efficiency advantage can be smaller.
+      </p>
+      <p>
+        Long-range temporal reasoning remains an open problem as well. A model can
+        understand what is happening over a short video clip, but tracking behavior that
+        unfolds over minutes or hours requires much longer temporal context and likely
+        architectural changes beyond the base JEPA approach.
+      </p>
+      <p>So the question is no longer whether we can train a model to predict video.</p>
+      <p>
+        The more interesting question is whether we can build a representation of the world
+        that is useful, efficient, and stable enough to support everything we want to do
+        with that video.
+      </p>
+
+      <h2>What&rsquo;s next</h2>
+      <p>
+        The <a href="/technology/benchmarks">benchmarks page</a> has the full head-to-head
+        numbers against V-JEPA 2 on both accuracy and throughput. If you want to test Darwin
+        on your own footage, get a sandbox key with one call, no signup:
+      </p>
+      <pre><code>curl -s -X POST https://api.primateintelligence.ai/v1/sandbox</code></pre>
+
+      <p class="author-note">
+        Mehdi Nikkhah is co-founder and CTO of Primate Intelligence. Previously led all CV
+        research and engineering at Instacart and 6D.ai.
+      </p>
     </section>
   </div>
 </Base>
@@ -47,7 +314,7 @@ import ComingSoon from '../../components/ComingSoon.astro';
   .page { max-width: 760px; margin: 0 auto; padding: 128px 24px 192px; }
   .back { font-size: var(--fs-body-sm); color: var(--color-text-muted); display: block; margin-bottom: 64px; }
   .back:hover { color: var(--color-signal); }
-  .hero { margin-bottom: 80px; }
+  .hero { margin-bottom: 64px; }
   .eyebrow {
     font-family: var(--font-mono);
     font-size: var(--fs-footnote);
@@ -58,9 +325,35 @@ import ComingSoon from '../../components/ComingSoon.astro';
     margin: 0 0 12px;
   }
   h1 { font-size: var(--fs-h1); font-weight: 700; letter-spacing: -0.02em; line-height: 1.2; margin: 0 0 16px; }
-  .lede { font-size: var(--fs-body-lg); color: var(--color-text-muted); line-height: 1.6; margin: 0; }
-  .content p { font-size: var(--fs-body-lg); line-height: 1.75; color: var(--color-text-primary); opacity: 0.85; margin: 0 0 32px; }
+  .lede { font-size: var(--fs-body-lg); color: var(--color-text-muted); line-height: 1.6; margin: 0 0 16px; }
+  .byline { font-size: var(--fs-body-sm); color: var(--color-text-muted); opacity: 0.7; margin: 0; }
+  .content h2 {
+    font-size: var(--fs-h3);
+    font-weight: 700;
+    letter-spacing: -0.01em;
+    margin: 56px 0 20px;
+  }
+  .content h2:first-of-type { margin-top: 0; }
+  .content p { font-size: var(--fs-body-lg); line-height: 1.75; color: var(--color-text-primary); opacity: 0.85; margin: 0 0 24px; }
+  .content p em { font-style: italic; opacity: 1; }
+  .content pre {
+    background: var(--color-surface-2, rgba(255,255,255,0.04));
+    border: 1px solid var(--color-border, rgba(255,255,255,0.1));
+    border-radius: 8px;
+    padding: 16px 20px;
+    overflow-x: auto;
+    margin: 0 0 32px;
+  }
+  .content pre code { font-family: var(--font-mono); font-size: var(--fs-body-sm); color: var(--color-text-primary); }
   .content a { color: var(--color-signal); }
   .content a:hover { text-decoration: underline; }
+  .author-note {
+    font-size: var(--fs-body-sm);
+    color: var(--color-text-muted);
+    opacity: 0.7;
+    border-top: 1px solid var(--color-border, rgba(255,255,255,0.1));
+    padding-top: 24px;
+    margin-top: 48px;
+  }
   @media (max-width: 640px) { h1 { font-size: var(--fs-h2); } .page { padding: 88px 20px 128px; } }
 </style>
