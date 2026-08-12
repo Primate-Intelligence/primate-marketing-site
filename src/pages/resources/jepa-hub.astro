@@ -9,12 +9,6 @@ interface Paper {
   note: string;
 }
 
-interface Org {
-  name: string;
-  href: string;
-  note: string;
-}
-
 interface Reading {
   title: string;
   source: string;
@@ -152,30 +146,6 @@ const PAPERS: Paper[] = [
   },
 ];
 
-const ORGS: Org[] = [
-  {
-    name: 'Primate Intelligence',
-    href: '/',
-    note: 'Building JEPA-based predictive world models for deterministic, real-time scene understanding in computer vision — the focus of this site.',
-  },
-  {
-    name: 'Meta AI / FAIR',
-    href: 'https://ai.meta.com/blog/v-jepa-yann-lecun-ai-model-video-joint-embedding-predictive-architecture/',
-    year: '',
-    note: 'Origin of the JEPA family — I-JEPA, MC-JEPA, V-JEPA, and V-JEPA 2 were all developed and open-sourced out of FAIR under Yann LeCun.',
-  },
-  {
-    name: 'AMI Labs (Advanced Machine Intelligence)',
-    href: 'https://www.wired.com/story/yann-lecun-raises-dollar1-billion-to-build-ai-that-understands-the-physical-world/',
-    note: "Paris-based startup founded by Yann LeCun and Alex LeBrun after LeCun's November 2025 departure from Meta. Raised $1B+ to build world models, explicitly betting against the LLM-first approach.",
-  },
-  {
-    name: 'World Labs',
-    href: 'https://www.worldlabs.ai/',
-    note: "Founded by Fei-Fei Li, Justin Johnson, Christoph Lassner, and Ben Mildenhall. Building 'spatial intelligence' world models (Marble) focused on generating and reasoning about consistent 3D environments — adjacent to JEPA-style world modeling, different emphasis (generative 3D vs. predictive latent representations).",
-  },
-];
-
 const READING: Reading[] = [
   {
     title: 'I-JEPA: The First AI Model Based on Yann LeCun\'s Vision for More Human-Like AI',
@@ -298,7 +268,6 @@ const VIDEOS: Video[] = [
 
 const SECTIONS = [
   { id: 'papers', label: 'Papers', count: PAPERS.length },
-  { id: 'orgs', label: 'Companies', count: ORGS.length },
   { id: 'analysis', label: 'Landscape', count: ANALYSIS.length },
   { id: 'reading', label: 'Reading', count: READING.length },
   { id: 'videos', label: 'Videos', count: VIDEOS.length },
@@ -344,21 +313,6 @@ const SECTIONS = [
             </div>
             <p class="card-authors">{p.authors}</p>
             <p class="card-note">{p.note}</p>
-          </a>
-        ))}
-      </div>
-    </section>
-
-    <section class="group" id="orgs">
-      <h2>Companies &amp; Organizations <span class="group-count">{ORGS.length}</span></h2>
-      <p class="group-sub">Who's building on this architecture.</p>
-      <div class="card-grid">
-        {ORGS.map((o) => (
-          <a class="card" href={o.href} target={o.href.startsWith('/') ? undefined : '_blank'} rel={o.href.startsWith('/') ? undefined : 'noopener'}>
-            <div class="card-top">
-              <span class="card-title">{o.name}</span>
-            </div>
-            <p class="card-note">{o.note}</p>
           </a>
         ))}
       </div>
