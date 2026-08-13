@@ -33,6 +33,21 @@ const ASSET_ALLOWLIST = new Set([
   '/favicon.ico',
 ]);
 
+// llms.txt / llms-full.txt (+ .well-known alias) are machine-readable docs
+// artifacts meant to be publicly fetchable without auth — that's the whole
+// point of the llms.txt convention (agent discoverability, PRI-499). Gating
+// them behind the dev password broke two CI jobs in primate-intelligence-api
+// (doc-tests.mjs / run-samples.mjs fetch DOCS_SITE/llms-full.txt unauthenticated
+// to build the doc-test corpus) — 401s there were failing the dev branch's
+// required checks and blocking Railway auto-deploy (caught 2026-08-13).
+// These paths carry no secrets, so exempting them from the gate on dev/preview
+// hosts is safe and matches how they already behave in production.
+const DOCS_ARTIFACT_ALLOWLIST = new Set([
+  '/llms.txt',
+  '/llms-full.txt',
+  '/.well-known/llms.txt',
+]);
+
 async function sha256Hex(input: string): Promise<string> {
   const data = new TextEncoder().encode(input);
   const digest = await crypto.subtle.digest('SHA-256', data);
@@ -161,7 +176,7 @@ export default async function middleware(request: Request) {
     return undefined;
   }
 
-  if (ASSET_ALLOWLIST.has(url.pathname)) {
+  if (ASSET_ALLOWLIST.has(url.pathname) || DOCS_ARTIFACT_ALLOWLIST.has(url.pathname)) {
     return undefined;
   }
 
