@@ -10,7 +10,7 @@
  */
 import { getDocsPages, docMarkdownTwin, API } from './docsCorpus';
 import { referenceMarkdown } from './openapiRef';
-import { getPublishedPosts, toMarkdownTwin } from './blog';
+import { getStrictlyPublishedPosts, toMarkdownTwin } from './blog';
 import { getCompareEntries, toMarkdownTwin as compareMarkdownTwin } from './compare';
 import { PREVIEW_PRICING_LLMS_LINE } from './pricingCopy';
 
@@ -21,7 +21,11 @@ const SITE = 'https://primateintelligence.ai';
 
 export async function llmsTxt(): Promise<string> {
   const pages = await getDocsPages();
-  const posts = await getPublishedPosts();
+  // Always strictly-published here, even on dev: llms.txt/llms-full.txt are
+  // machine-readable feeds whose links must resolve on the canonical prod
+  // host, unlike the human-facing blog pages which intentionally preview
+  // drafts on dev (2026-08-13, see getStrictlyPublishedPosts doc comment).
+  const posts = await getStrictlyPublishedPosts();
   const comparePosts = await getCompareEntries();
 
   const docLines = pages
@@ -112,7 +116,7 @@ ${postLines}
 
 export async function llmsFullTxt(): Promise<string> {
   const pages = await getDocsPages();
-  const posts = await getPublishedPosts();
+  const posts = await getStrictlyPublishedPosts();
   const comparePosts = await getCompareEntries();
 
   const segments: string[] = [
