@@ -6,6 +6,11 @@
 #   Failure means the docs no longer match the contract; a human reviews and
 #   runs scripts/refresh-snapshots.mjs (the contract is FROZEN for MCP
 #   scoring, so unexpected drift is an escalation, not a routine bump).
+# changelog-gate: every PR (PRI-576/PRI-578) — blocks internal-process leaks
+#   and competitively sensitive usage/performance numbers from landing in the
+#   public changelog or /performance page. Failure quotes the flagged line;
+#   fix the content or add the `changelog-override` label after explicit
+#   human review to bypass.
 name: docs-integrity
 
 on:
@@ -29,6 +34,20 @@ jobs:
       - run: npm ci
       - run: npm run build
       - run: node scripts/check-docs-twins.mjs
+
+  changelog-gate:
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - env:
+          PR_LABELS: ${{ join(github.event.pull_request.labels.*.name, ',') }}
+        run: node scripts/check-changelog-gate.mjs --base "origin/${{ github.base_ref }}" --head HEAD
 
   spec-drift:
     if: github.event_name == 'schedule' || github.event_name == 'workflow_dispatch'
