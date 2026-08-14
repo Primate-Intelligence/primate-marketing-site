@@ -21,7 +21,7 @@ jobs:
       image: semgrep/semgrep
     continue-on-error: true
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       - name: semgrep ci (p/default + p/owasp-top-ten)
         run: semgrep ci --config p/default --config p/owasp-top-ten
         env:
