@@ -4,10 +4,16 @@
  */
 import rss from '@astrojs/rss';
 import type { APIContext } from 'astro';
-import { getPublishedPosts } from '../lib/blog';
+import { getStrictlyPublishedPosts } from '../lib/blog';
 
 export async function GET(context: APIContext) {
-  const posts = await getPublishedPosts();
+  // Strictly-published, not getPublishedPosts: `site` below is hardcoded to
+  // the prod host regardless of which environment built this feed, so a dev
+  // build's draft-preview posts would emit permanent RSS entries linking to
+  // prod URLs that 404 (drafts are excluded from prod). Same class of bug as
+  // llms.txt (2026-08-13) — any machine feed with an absolute/canonical link
+  // must use the strict variant; only the human blog pages preview drafts.
+  const posts = await getStrictlyPublishedPosts();
   return rss({
     title: 'Primate Intelligence Blog',
     description: 'Research notes and perspectives from the Primate Intelligence team.',
