@@ -38,7 +38,7 @@ curl -s https://api.primateintelligence.ai/v1/test-fixture
 ```json
 {
   "name": "presence",
-  "test_video_url": "https://primateintelligence.ai/empty-state/forklift-demo.mp4",
+  "test_video_url": "https://app.primateintelligence.ai/empty-state/forklift-demo.mp4",
   "test_prompt": "Is there a forklift in this video?",
   "expected_answer": "yes",
   "expected_confidence_min": 0.8

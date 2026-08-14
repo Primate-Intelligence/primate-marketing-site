@@ -122,7 +122,7 @@ export async function llmsFullTxt(): Promise<string> {
   const segments: string[] = [
     `# Primate Vision API — full docs corpus (llms-full.txt)
 
-> Every docs page in one file. Canonical per-page markdown lives at ${DOCS_HOST}/docs/<slug>.md. The OpenAPI 3.1 contract is the source of truth: ${API}/v1/openapi.json
+> Every docs page in one file. Canonical per-page markdown lives at ${DOCS_HOST}/docs/{slug}.md. The OpenAPI 3.1 contract is the source of truth: ${API}/v1/openapi.json
 `,
   ];
 
