@@ -13,8 +13,8 @@
   },
   "dependencies": {
     "@astrojs/rss": "^4.0.19",
-    "@astrojs/sitemap": "^3.7.3",
-    "astro": "^7.1.6",
+    "@astrojs/sitemap": "^3.7.4",
+    "astro": "^7.3.1",
     "marked": "^15.0.12",
     "pagefind": "^1.5.2"
   },
