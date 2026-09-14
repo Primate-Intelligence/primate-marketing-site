@@ -13,8 +13,8 @@
   },
   "dependencies": {
     "@astrojs/rss": "^4.0.19",
-    "@astrojs/sitemap": "^3.7.3",
-    "astro": "^7.1.6",
+    "@astrojs/sitemap": "^3.7.4",
+    "astro": "^7.3.2",
     "marked": "^15.0.12",
     "pagefind": "^1.5.2"
   },
@@ -23,6 +23,6 @@
     "fsevents@2.3.3": true
   },
   "devDependencies": {
-    "@playwright/test": "^1.62.1"
+    "@playwright/test": "^1.63.0"
   }
 }
