@@ -1,636 +1,110 @@
 ---
-import Base from '../layouts/Base.astro';
-import Carousel from '../components/Carousel.astro';
-import { APP_HREF } from '../lib/appUrl';
+// PRI-607: temporary stealth landing page. Replaces the normal homepage on
+// primateintelligence.ai + www. only — static, no nav, no links, no CTA,
+// no footer. Approved copy + visual spec locked in #marketing-guy
+// 2026-10-30 (Matt: "1 is great, go with that"). Original homepage content
+// lives in git history (this file, prior commits) — revert is a one-line
+// `git revert` of the commit that introduced this page.
+import '../styles/tokens.css';
 
-const websiteLd = {
-  '@context': 'https://schema.org',
-  '@type': 'WebSite',
-  name: 'Primate Intelligence',
-  url: 'https://primateintelligence.ai/',
-  potentialAction: {
-    '@type': 'SearchAction',
-    target: {
-      '@type': 'EntryPoint',
-      urlTemplate: 'https://primateintelligence.ai/search?q={search_term_string}',
-    },
-    'query-input': 'required name=search_term_string',
-  },
-};
-
-const productLd = {
-  '@context': 'https://schema.org',
-  '@type': 'SoftwareApplication',
-  name: 'Primate Vision',
-  applicationCategory: 'DeveloperApplication',
-  operatingSystem: 'Web',
-  description:
-    'Real-time video intelligence API. Point Primate Vision at any camera or video and ask questions in plain language — deterministic answers, structured data, and live alerts with no training or labeling.',
-  offers: {
-    '@type': 'Offer',
-    price: '0.0000015',
-    priceCurrency: 'USD',
-    priceValidUntil: '2027-12-31',
-    availability: 'https://schema.org/InStock',
-    url: 'https://primateintelligence.ai/pricing',
-    description: '$0.0000015 per processed frame, metered credits. Free signup grant available.',
-  },
-  publisher: { '@type': 'Organization', name: 'Primate Intelligence' },
-};
-
-const codeSnippet = `# Get a key — no email, no card
-curl -s -X POST https://api.primateintelligence.ai/v1/sandbox
-
-# Ask a question about video
-curl -s -X POST https://api.primateintelligence.ai/v1/analyses \\
-  -H "Authorization: Bearer $PRIMATE_API_KEY" \\
-  -H "Content-Type: application/json" \\
-  -H "Prefer: wait=60" \\
-  -d '{"video_id": "video_…", "prompt": "Is there a person in this video?"}'`;
+const title = 'Primate Intelligence';
+const description = 'Natural Intelligence for Robots — learners, not snapshots.';
+const site = Astro.site ?? new URL('https://primateintelligence.ai');
+const canonical = new URL('/', site).href;
+const ogImageAbs = new URL('/Darwin_v3_vinyl_transparent.png', site).href;
 ---
 
-<Base
-  title="Real-time video intelligence"
-  description="Watch Primate Vision understand video live. Point it at any camera, ask questions in plain language, and get deterministic answers — no training, no labeling."
-  canonicalPath="/"
-  jsonLd={[websiteLd, productLd]}
->
-  <!-- ── Hero: JEPA video model — Darwin ── -->
-  <section class="hero">
-    <div class="hero-inner">
-      <div class="hero-copy">
-        <p class="jepa-callout">
-          <span class="pulse" aria-hidden="true"></span>
-          <span class="txt">Preview the first <b>commercially available JEPA video model</b> today?</span>
-          <a href="/technology/how-jepa-works" class="jepa-link"> - Why JEPA</a>
-        </p>
-        <h1>Darwin is our JEPA video model. He recognizes Actions &amp; Objects in real-time video.</h1>
-        <p class="lede">
-          Darwin learns directly from video. This is fundamentally different to LLM based video models.
-          They understand video by predicting tokens derived from text labels on single frames,
-          which enables hallucinations. Darwin can't hallucinate &amp; results are <b>deterministic</b>. Darwin is also orders
-          of magnitude more efficient than LLMs. <span class="price">$0.0000015/frame</span> —
-          about 16&cent; per camera hour at 30fps.
-        </p>
-        <p class="chips">
-          <span class="chip"><span class="ic" aria-hidden="true">&#9654;</span> Live Stream or Batch File upload</span>
-          <span class="chip"><span class="ic" aria-hidden="true">&#9670;</span> Update your prompt mid-stream, responding to live results</span>
-          <a class="chip chip-link" href="/technology/benchmarks"><span class="ic" aria-hidden="true">&#9632;</span> Benchmarks &rarr;</a>
-        </p>
-        <p class="cta-row">
-          <a class="cta" href={APP_HREF}>Try Primate Vision</a>
-          <a class="cta agent" href="/agents"><span class="agent-ico">&gt;_</span> Use your Agent</a>
-        </p>
-        <p class="sdk-waitlist">
-          <span class="headline">Cloud level accuracy benchmarks, real-time on edge hardware: Jetson, MacOS, iOS, SnapDragon — CPU or GPU</span>
-          <button class="sdk-cta" type="button" id="sdk-waitlist-open" aria-haspopup="dialog" aria-controls="sdk-waitlist-modal">Join the SDK waitlist &rarr;</button>
-        </p>
-      </div>
-      <div class="hero-visual">
-        <div class="visual-card">
-          <div class="frame-label">
-            <span class="l">Live query</span>
-            <span class="live"><span class="live-dot"></span> streaming</span>
-          </div>
-          <div class="darwin-frame">
-            <img src="/Darwin_v3_vinyl_transparent.png" alt="Darwin, the Primate Intelligence mascot, being detected by the JEPA video model" />
-            <div class="cv-box" style="top:22%; left:30%; width:42%; height:58%;">
-              <span class="cv-label">primate &middot; watching &middot; 0.99</span>
-              <span class="corner tl"></span><span class="corner tr"></span>
-              <span class="corner bl"></span><span class="corner br"></span>
-            </div>
-          </div>
-          <div class="caption"><b>Query:</b> "is anything watching the camera"<br/><b>Answer:</b> object: primate (0.99) &middot; action: watching (0.97)</div>
-        </div>
-      </div>
-    </div>
-  </section>
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" type="image/png" href="/Darwin_v3_vinyl_transparent.png" />
+    <meta name="generator" content={Astro.generator} />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
 
-  <!-- ── SDK waitlist modal ── -->
-  <div class="sdk-modal-overlay" id="sdk-waitlist-modal" hidden>
-    <div class="sdk-modal" role="dialog" aria-modal="true" aria-labelledby="sdk-modal-title">
-      <button class="sdk-modal-close" type="button" aria-label="Close">&times;</button>
-      <div class="sdk-modal-form-view">
-        <h3 id="sdk-modal-title">Join the SDK waitlist</h3>
-        <p class="sdk-modal-sub">Darwin on your edge hardware — Jetson, macOS, iOS, Snapdragon. CPU or GPU.</p>
-        <form id="sdk-waitlist-form" novalidate>
-          <label>
-            <span>Name</span>
-            <input type="text" name="full_name" required autocomplete="name" placeholder="Jane Goodall" />
-          </label>
-          <label>
-            <span>Email</span>
-            <input type="email" name="email" required autocomplete="email" placeholder="jane@company.com" />
-          </label>
-          <label>
-            <span>Device target</span>
-            <select name="device_target" required>
-              <option value="" disabled selected>Where do you want to run Darwin?</option>
-              <option value="jetson">Jetson</option>
-              <option value="macos">macOS</option>
-              <option value="ios">iOS</option>
-              <option value="snapdragon">Snapdragon</option>
-              <option value="other">Other</option>
-            </select>
-          </label>
-          <label>
-            <span>Company <em>(optional)</em></span>
-            <input type="text" name="company" autocomplete="organization" placeholder="Acme Robotics" />
-          </label>
-          <p class="sdk-modal-error" role="alert" hidden></p>
-          <button class="sdk-modal-submit" type="submit">Join waitlist</button>
-        </form>
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Primate Intelligence" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={ogImageAbs} />
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImageAbs} />
+  </head>
+  <body>
+    <main class="stealth">
+      <div class="brand">
+        <img src="/Darwin_v3_vinyl_transparent.png" alt="Primate Intelligence" width="56" height="56" />
+        <span class="brand-text">
+          <span class="brand-primate">Primate</span>
+          <span class="brand-intelligence">Intelligence</span>
+        </span>
       </div>
-      <div class="sdk-modal-success-view" hidden>
-        <h3>You're on the list 🦍</h3>
-        <p>We'll email you as soon as the SDK is ready for your device. Check your inbox for a confirmation.</p>
-        <button class="sdk-modal-submit sdk-modal-done" type="button">Done</button>
-      </div>
-    </div>
-  </div>
-
-  <!-- ── Code snippet immediately below hero ── -->
-  <section class="code-section">
-    <div class="section-inner">
-      <p class="section-eyebrow">For developers</p>
-      <h2>First answer in one minute. No signup required.</h2>
-      <pre><code>{codeSnippet}</code></pre>
-      <p class="code-footnote">
-        Full API docs at <a href="https://primateintelligence.ai/docs">primateintelligence.ai/docs</a> ·
-        OpenAPI spec at <a href="https://api.primateintelligence.ai/v1/openapi.json">api.primateintelligence.ai</a>
-      </p>
-    </div>
-  </section>
-
-  <!-- ── Darwin carousel — migrated verbatim ── -->
-  <section class="carousel-section">
-    <div class="section-inner">
-      <p class="section-eyebrow">Platform</p>
-      <h2>One model. Every video workflow.</h2>
-      <Carousel />
-    </div>
-  </section>
-
-  <!-- ── Bottom CTA ── -->
-  <section class="bottom-cta">
-    <div class="section-inner center">
-      <h2>Ready to test it on your footage?</h2>
-      <p>Upload a short video. Ask a question. See the result in ~10 seconds.</p>
-      <p class="cta-row center">
-        <a class="cta" href={APP_HREF}>Try Primate Vision →</a>
-        <a class="cta agent" href="/agents"><span class="agent-ico">&gt;_</span> Use your Agent</a>
-        <a class="cta-link" href="https://cal.com/mattmiesnieks/customer-discovery">Talk to us about your use case →</a>
-      </p>
-    </div>
-  </section>
-</Base>
+      <p class="tagline">Natural Intelligence for Robots — learners, not snapshots.</p>
+    </main>
+  </body>
+</html>
 
 <style>
-  .hero {
+  html,
+  body {
+    margin: 0;
+    height: 100%;
+  }
+  body {
     background: var(--color-bg-primary);
-    padding: 72px 24px 112px;
+    font-family: var(--font-sans);
   }
-  .hero-inner {
-    max-width: 1120px;
-    margin: 0 auto;
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 96px 48px;
-    align-items: center;
-  }
-  h1 {
-    font-size: var(--fs-display-l);
-    line-height: 1.07;
-    letter-spacing: -0.028em;
-    font-weight: 800;
-    margin: 0 0 20px;
-  }
-  .lede {
-    font-size: var(--fs-body-lg);
-    line-height: 1.7;
-    color: var(--color-text-muted);
-    max-width: 620px;
-    margin: 0 0 24px;
-  }
-  .lede b { color: var(--color-text); font-weight: 700; }
-  .lede .price {
-    font-family: var(--font-mono);
-    font-weight: 600;
-    color: var(--color-text);
-    background: var(--color-bg-secondary);
-    padding: 1px 6px;
-    border-radius: 3px;
-  }
-  .jepa-callout {
-    display: inline-flex;
-    align-items: center;
-    gap: 10px;
-    padding: 9px 14px 9px 10px;
-    border: 1px solid var(--color-border);
-    border-radius: 6px;
-    background: var(--color-bg-primary);
-    font-size: var(--fs-caption-1, 13.5px);
-    font-weight: 500;
-    margin-bottom: 24px;
-  }
-  .jepa-callout .pulse {
-    width: 7px;
-    height: 7px;
-    border-radius: 50%;
-    background: var(--color-signal);
-    box-shadow: 0 0 0 3px rgba(27, 79, 224, 0.16);
-    flex-shrink: 0;
-  }
-  .jepa-callout .jepa-link { color: var(--color-signal); text-decoration: underline; font-weight: 600; white-space: nowrap; }
-  .chips { display: flex; flex-direction: column; align-items: flex-start; gap: 10px; margin: 0 0 28px; list-style: none; }
-  .chip {
-    display: flex;
-    align-items: center;
-    gap: 9px;
-    background: var(--color-bg-primary);
-    border: 1px solid var(--color-border);
-    border-radius: 6px;
-    padding: 9px 13px;
-    font-size: var(--fs-caption-1, 13.5px);
-    font-weight: 500;
-    color: var(--color-text);
-    text-decoration: none;
-    line-height: 1.3;
-  }
-  .chip .ic { color: var(--color-signal); font-size: 13px; flex-shrink: 0; width: 14px; text-align: center; }
-  .chip-link { color: var(--color-signal); }
-  .chip-link:hover { border-color: var(--color-signal); }
-  .cta-row { display: flex; gap: 14px; margin-top: 0; margin-bottom: 16px; align-items: center; flex-wrap: wrap; }
-  .cta-row.center { justify-content: center; }
-  .cta {
-    display: inline-block;
-    background: var(--color-signal);
-    color: #fff;
-    padding: 12px 26px;
-    border-radius: var(--radius-lg);
-    font-weight: 600;
-    font-size: var(--fs-body);
-    transition: background var(--duration-fast) var(--ease-standard);
-  }
-  .cta:hover { background: var(--color-signal-hover); color: #fff; }
-  .cta.secondary {
-    background: transparent;
-    color: var(--color-signal);
-    border: 1px solid var(--color-border);
-  }
-  .cta.secondary:hover { border-color: var(--color-signal); }
-  .cta.agent {
-    background: var(--ink, #1A1916);
-    color: #fff;
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-  }
-  .cta.agent:hover { background: #0f0e0c; color: #fff; }
-  .agent-ico { font-family: var(--font-mono); font-size: 13px; opacity: 0.75; }
-  .cta-link { color: var(--color-signal); font-weight: 500; font-size: var(--fs-body); }
-  .sdk-waitlist {
-    background: var(--color-bg-secondary);
-    border: 1px solid var(--color-border);
-    border-left: 4px solid var(--color-signal);
-    border-radius: 10px;
-    padding: 24px 28px;
+  .stealth {
+    min-height: 100vh;
     display: flex;
     flex-direction: column;
-    align-items: flex-start;
-    gap: 16px;
-    margin: 0;
-    max-width: 600px;
-  }
-  .sdk-waitlist .headline {
-    color: var(--color-text-primary);
-    font-weight: 700;
-    font-size: 18px;
-    line-height: 1.35;
-  }
-  .sdk-waitlist .sdk-cta {
-    color: #fff;
-    background: var(--color-signal);
-    font-weight: 700;
-    font-size: 15px;
-    text-decoration: none;
-    padding: 11px 20px;
-    border-radius: 6px;
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-  }
-  .sdk-waitlist .sdk-cta:hover { background: var(--color-signal-hover); color: #fff; }
-  .sdk-waitlist button.sdk-cta { border: none; cursor: pointer; font-family: inherit; }
-
-  /* ── SDK waitlist modal ── */
-  .sdk-modal-overlay {
-    position: fixed;
-    inset: 0;
-    background: rgba(26, 25, 22, 0.55);
-    display: flex;
     align-items: center;
     justify-content: center;
-    padding: 20px;
-    z-index: 1000;
+    gap: 28px;
+    padding: 24px;
+    text-align: center;
   }
-  .sdk-modal-overlay[hidden] { display: none; }
-  .sdk-modal {
-    position: relative;
-    background: var(--color-bg-primary, #fff);
-    border: 1px solid var(--color-border);
-    border-radius: 12px;
-    padding: 32px;
-    width: 100%;
-    max-width: 440px;
-    max-height: 90vh;
-    overflow-y: auto;
-    box-shadow: 0 24px 64px rgba(0, 0, 0, 0.25);
-  }
-  .sdk-modal h3 { margin: 0 0 8px; font-size: 22px; letter-spacing: -0.01em; }
-  .sdk-modal-sub { margin: 0 0 20px; color: var(--color-text-muted); font-size: 14.5px; line-height: 1.5; }
-  .sdk-modal-close {
-    position: absolute;
-    top: 14px;
-    right: 14px;
-    background: none;
-    border: none;
-    font-size: 26px;
-    line-height: 1;
-    color: var(--color-text-muted);
-    cursor: pointer;
-    padding: 4px 8px;
-  }
-  .sdk-modal-close:hover { color: var(--color-text-primary); }
-  .sdk-modal form { display: flex; flex-direction: column; gap: 14px; }
-  .sdk-modal label { display: flex; flex-direction: column; gap: 5px; font-size: 13.5px; font-weight: 600; }
-  .sdk-modal label em { font-weight: 400; color: var(--color-text-muted); font-style: normal; }
-  .sdk-modal input,
-  .sdk-modal select {
-    font: inherit;
-    font-weight: 400;
-    padding: 10px 12px;
-    border: 1px solid var(--color-border);
-    border-radius: 6px;
-    background: var(--color-bg-primary, #fff);
+  .brand {
+    display: flex;
+    align-items: center;
+    gap: 14px;
     color: var(--color-text-primary);
   }
-  .sdk-modal input:focus,
-  .sdk-modal select:focus { outline: 2px solid var(--color-signal); outline-offset: 1px; border-color: var(--color-signal); }
-  .sdk-modal-error {
-    margin: 0;
-    color: #b91c1c;
-    font-size: 13.5px;
-    line-height: 1.45;
-  }
-  .sdk-modal-submit {
-    margin-top: 4px;
-    background: var(--color-signal);
-    color: #fff;
-    border: none;
-    border-radius: 6px;
-    font: inherit;
-    font-weight: 700;
-    font-size: 15px;
-    padding: 12px 20px;
-    cursor: pointer;
-  }
-  .sdk-modal-submit:hover { background: var(--color-signal-hover); }
-  .sdk-modal-submit[disabled] { opacity: 0.6; cursor: wait; }
-  .sdk-modal-success-view p { color: var(--color-text-muted); font-size: 14.5px; line-height: 1.55; margin: 0 0 20px; }
-  .hero-visual {
-    position: relative;
-    padding-top: 6px;
-  }
-  .visual-card {
-    position: relative;
-    background: var(--color-bg-primary);
-    border: 1px solid var(--color-border);
-    border-radius: 4px;
-    padding: 18px;
-    max-width: 340px;
-  }
-  .visual-card .frame-label {
+  .brand-text {
     display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-bottom: 12px;
-  }
-  .visual-card .frame-label .l {
-    font-family: var(--font-mono);
-    font-size: 10.5px;
-    font-weight: 600;
-    letter-spacing: 0.04em;
-    text-transform: uppercase;
-    color: var(--color-text-muted);
-  }
-  .visual-card .frame-label .live {
-    display: flex;
-    align-items: center;
-    gap: 5px;
-    font-family: var(--font-mono);
-    font-size: 10.5px;
-    font-weight: 600;
-    color: var(--color-success, #166534);
-  }
-  .live-dot {
-    width: 5px;
-    height: 5px;
-    border-radius: 50%;
-    background: var(--color-success, #166534);
-  }
-  .darwin-frame {
-    position: relative;
-    border-radius: 3px;
-    overflow: hidden;
-    background: var(--color-bg-secondary);
-    aspect-ratio: 4/5;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-  .darwin-frame img {
-    width: 78%;
-    height: auto;
-    object-fit: contain;
-  }
-  .cv-box {
-    position: absolute;
-    border: 1.5px solid var(--color-signal);
-    border-radius: 2px;
-  }
-  .cv-box .corner {
-    position: absolute;
-    width: 9px;
-    height: 9px;
-    border: 2px solid var(--color-signal);
-  }
-  .cv-box .corner.tl { top: -2px; left: -2px; border-right: none; border-bottom: none; }
-  .cv-box .corner.tr { top: -2px; right: -2px; border-left: none; border-bottom: none; }
-  .cv-box .corner.bl { bottom: -2px; left: -2px; border-right: none; border-top: none; }
-  .cv-box .corner.br { bottom: -2px; right: -2px; border-left: none; border-top: none; }
-  .cv-label {
-    position: absolute;
-    top: -24px;
-    left: -1.5px;
-    background: var(--color-signal);
-    color: #fff;
-    font-family: var(--font-mono);
-    font-size: 10px;
-    font-weight: 600;
-    padding: 3px 7px;
-    border-radius: 2px 2px 0 0;
-    white-space: nowrap;
-  }
-  .visual-card .caption {
-    margin-top: 12px;
-    font-size: 12.5px;
-    color: var(--color-text-muted);
-    line-height: 1.5;
-  }
-  .visual-card .caption b { color: var(--color-text); }
-
-  .section-inner { max-width: 1120px; margin: 0 auto; }
-  .section-inner.center { text-align: center; }
-  .section-eyebrow {
-    font-family: var(--font-mono);
-    font-size: var(--fs-caption-1);
-    font-weight: 600;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    color: var(--color-signal);
-    margin: 0 0 20px;
-  }
-  h2 {
-    font-size: var(--fs-h3);
+    flex-direction: column;
+    line-height: 1.12;
+    font-size: var(--fs-h4);
+    font-weight: 500;
     letter-spacing: -0.02em;
-    font-weight: 700;
-    margin: 0 0 48px;
   }
-
-  .code-section {
-    background: var(--color-bg-secondary);
-    border-top: 1px solid var(--color-border);
-    border-bottom: 1px solid var(--color-border);
-    padding: 112px 24px;
+  .brand-primate {
+    color: var(--color-text-primary);
   }
-  .code-section pre {
-    background: #1a1916;
-    color: #e6e9f4;
-    border-radius: 8px;
-    padding: 22px 24px;
-    overflow-x: auto;
-    font-family: var(--font-mono);
-    font-size: var(--fs-subhead);
-    line-height: 1.65;
+  .brand-intelligence {
+    color: #2058f0;
+  }
+  .tagline {
+    max-width: 640px;
+    font-size: var(--fs-title-1);
+    font-weight: 400;
+    color: var(--color-text-primary);
     margin: 0;
+    line-height: 1.4;
   }
-  .code-section pre code { background: none; padding: 0; color: inherit; font-size: inherit; }
-  .code-footnote { font-size: var(--fs-subhead); color: var(--color-text-muted); margin: 14px 0 0; }
-
-  .carousel-section { padding: 128px 24px; }
-
-  .bottom-cta {
-    border-top: 1px solid var(--color-border);
-    padding: 144px 24px 176px;
-  }
-  .bottom-cta p { color: var(--color-text-muted); font-size: var(--fs-body); }
-
-  @media (max-width: 860px) {
-    .hero-inner { grid-template-columns: 1fr; gap: 32px; }
-    h1 { font-size: var(--fs-h2); }
-    h2 { font-size: var(--fs-h4); }
-    .hero { padding: 80px 20px 80px; }
+  @media (max-width: 480px) {
+    .brand img {
+      width: 44px;
+      height: 44px;
+    }
+    .tagline {
+      font-size: var(--fs-title-2);
+    }
   }
 </style>
-
-<script>
-  // SDK waitlist modal — posts to the existing /v1/waitlist endpoint with
-  // source:'sdk' + device_target (same waitlist table, source discriminator).
-  const API_BASE = import.meta.env.PUBLIC_API_URL || 'https://api.primateintelligence.ai';
-
-  const overlay = document.getElementById('sdk-waitlist-modal') as HTMLElement | null;
-  const openBtn = document.getElementById('sdk-waitlist-open');
-  const form = document.getElementById('sdk-waitlist-form') as HTMLFormElement | null;
-
-  if (overlay && openBtn && form) {
-    const closeBtn = overlay.querySelector('.sdk-modal-close') as HTMLButtonElement;
-    const doneBtn = overlay.querySelector('.sdk-modal-done') as HTMLButtonElement;
-    const formView = overlay.querySelector('.sdk-modal-form-view') as HTMLElement;
-    const successView = overlay.querySelector('.sdk-modal-success-view') as HTMLElement;
-    const errorEl = overlay.querySelector('.sdk-modal-error') as HTMLElement;
-    const submitBtn = form.querySelector('.sdk-modal-submit') as HTMLButtonElement;
-
-    let lastFocused: Element | null = null;
-
-    function openModal() {
-      lastFocused = document.activeElement;
-      overlay!.hidden = false;
-      document.body.style.overflow = 'hidden';
-      (form!.querySelector('input[name="full_name"]') as HTMLInputElement)?.focus();
-    }
-
-    function closeModal() {
-      overlay!.hidden = true;
-      document.body.style.overflow = '';
-      (lastFocused as HTMLElement | null)?.focus?.();
-    }
-
-    openBtn.addEventListener('click', openModal);
-    closeBtn.addEventListener('click', closeModal);
-    doneBtn.addEventListener('click', closeModal);
-    overlay.addEventListener('click', (e) => { if (e.target === overlay) closeModal(); });
-    document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && !overlay.hidden) closeModal(); });
-
-    form.addEventListener('submit', async (e) => {
-      e.preventDefault();
-      errorEl.hidden = true;
-
-      if (!form.reportValidity()) return;
-
-      const data = new FormData(form);
-      const payload: Record<string, string> = {
-        email: String(data.get('email') || '').trim(),
-        full_name: String(data.get('full_name') || '').trim(),
-        source: 'sdk',
-        device_target: String(data.get('device_target') || ''),
-      };
-      const company = String(data.get('company') || '').trim();
-      if (company) payload.company = company;
-
-      submitBtn.disabled = true;
-      submitBtn.textContent = 'Joining…';
-
-      try {
-        const res = await fetch(`${API_BASE}/v1/waitlist`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(payload),
-        });
-
-        if (res.status === 201) {
-          formView.hidden = true;
-          successView.hidden = false;
-          return;
-        }
-
-        if (res.status === 409) {
-          errorEl.textContent = "You're already on the waitlist — we'll be in touch soon.";
-        } else if (res.status === 400) {
-          errorEl.textContent = 'Please check your details — something looks invalid.';
-        } else if (res.status === 429) {
-          errorEl.textContent = 'Too many attempts from this network. Please try again in a little while.';
-        } else {
-          errorEl.textContent = 'Something went wrong on our end. Please try again, or email matt@primateintelligence.ai.';
-        }
-        errorEl.hidden = false;
-      } catch {
-        errorEl.textContent = 'Network error — please check your connection and try again.';
-        errorEl.hidden = false;
-      } finally {
-        submitBtn.disabled = false;
-        submitBtn.textContent = 'Join waitlist';
-      }
-    });
-  }
-</script>
