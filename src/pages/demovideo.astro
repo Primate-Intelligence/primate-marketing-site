@@ -1,25 +1,82 @@
 ---
-import Base from '../layouts/Base.astro';
+import '../styles/tokens.css';
 
 const VIDEO_URL =
   'https://dpqqdfo8p9efcp8w.public.blob.vercel-storage.com/demo/darwin-learn-and-recall-on-device-cropped-CHlsRNPr9QSu4eRFtn2LmJZu64RkKQ.mov';
+
+const title = 'Demo Video · Primate Intelligence';
+const description = 'Darwin learn & recall, on-device.';
+const site = Astro.site ?? new URL('https://primateintelligence.ai');
+const canonical = new URL('/demovideo/', site).href;
+const isDevEnv = import.meta.env.PUBLIC_SITE_ENV === 'dev';
 ---
 
-<Base
-  title="Demo Video"
-  description="Darwin learn & recall, on-device."
-  canonicalPath="/demovideo"
->
-  <div class="demovideo-page">
-    <video controls playsinline src={VIDEO_URL}>
-      Your browser does not support the video tag.
-    </video>
-  </div>
-</Base>
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" type="image/png" href="/Darwin_v3_vinyl_transparent.png" />
+    <meta name="generator" content={Astro.generator} />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    {isDevEnv && <meta name="robots" content="noindex, nofollow" />}
+
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Primate Intelligence" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+  </head>
+  <body>
+    <a class="brand" href="/">
+      <img src="/Darwin_v3_vinyl_transparent.png" alt="Primate Intelligence" width="36" height="36" />
+      <span class="brand-text">
+        <span class="brand-primate">Primate</span>
+        <span class="brand-intelligence">Intelligence</span>
+      </span>
+    </a>
+
+    <main class="demovideo-page">
+      <video controls playsinline src={VIDEO_URL}>
+        Your browser does not support the video tag.
+      </video>
+    </main>
+  </body>
+</html>
 
 <style>
+  :global(html, body) {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    background: var(--color-bg-page, #F2F0EB);
+  }
+
+  .brand {
+    position: fixed;
+    top: 20px;
+    left: 24px;
+    z-index: 10;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: var(--color-text-primary, #1A1916);
+  }
+  .brand-text {
+    display: flex;
+    flex-direction: column;
+    line-height: 1.12;
+    font-size: var(--fs-body-sm, 14px);
+    font-weight: 400;
+    letter-spacing: -0.02em;
+  }
+  .brand-primate { color: var(--color-text-primary, #1A1916); }
+  .brand-intelligence { color: #2058f0; }
+
   .demovideo-page {
-    min-height: calc(100vh - var(--header-height, 0px));
+    min-height: 100vh;
     display: flex;
     align-items: center;
     justify-content: center;
