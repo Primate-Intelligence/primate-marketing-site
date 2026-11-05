@@ -4,11 +4,23 @@ import '../styles/tokens.css';
 const VIDEO_URL =
   'https://dpqqdfo8p9efcp8w.public.blob.vercel-storage.com/demo/darwin-learn-and-recall-on-device-cropped-CHlsRNPr9QSu4eRFtn2LmJZu64RkKQ.mov';
 
-const title = 'Demo Video · Primate Intelligence';
-const description = 'Darwin learn & recall, on-device.';
+const title = 'Darwin learns on the job — Primate Intelligence demo';
+const description =
+  'A robot model that learns a new action from one observation, on a Jetson, with no network and no training run. Watch it learn, recall and keep it.';
 const site = Astro.site ?? new URL('https://primateintelligence.ai');
 const canonical = new URL('/demovideo/', site).href;
+const ogImage = new URL('/images/demovideo/storyboard.jpg', site).href;
 const isDevEnv = import.meta.env.PUBLIC_SITE_ENV === 'dev';
+
+const storyboardAlt = [
+  'Storyboard of the demo clip, six frames.',
+  'Frame 1, 00:03: peek-a-boo, an action learned before this clip; Darwin says "peek-a-boo" (recalled).',
+  'Frame 2, 00:14: shown once — "this is pick up", the small box; Darwin says "learned: pick up" (learning).',
+  'Frame 3, 00:41: pick up, on objects it has never seen — a jar, a paper bag, a tin; Darwin says "pick up" (recalled).',
+  'Frame 4, 01:14: shown once — "this is reach", toward the tin; Darwin says "learned: reach" (learning).',
+  'Frame 5, 01:38: reach again — new object, new angle, toward the camera; Darwin says "reach" (recalled).',
+  'Frame 6, 01:46: what it keeps — peek-a-boo (before), pick up (00:14, one look), reach (01:14, one look); nothing left the desk.',
+].join(' ');
 ---
 
 <!doctype html>
@@ -28,6 +40,20 @@ const isDevEnv = import.meta.env.PUBLIC_SITE_ENV === 'dev';
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
     <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={ogImage} />
+    <meta property="og:image:width" content="1376" />
+    <meta property="og:image:height" content="768" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImage} />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;800&family=JetBrains+Mono:wght@400;500&display=swap"
+    />
   </head>
   <body>
     <a class="brand" href="/">
@@ -38,11 +64,163 @@ const isDevEnv = import.meta.env.PUBLIC_SITE_ENV === 'dev';
       </span>
     </a>
 
-    <main class="demovideo-page">
-      <video controls playsinline src={VIDEO_URL}>
-        Your browser does not support the video tag.
-      </video>
+    <main class="page">
+      <!-- §1.1 Hero -->
+      <section class="hero">
+        <p class="eyebrow">PRIMATE INTELLIGENCE · DARWIN · DEMO</p>
+        <h1>Darwin learns on the job. Watch&nbsp;it.</h1>
+        <p class="sub">
+          What you're about to see: a person shows Darwin a new action once. Darwin learns it,
+          names it when it sees it again, and keeps it, on a Jetson on a desk, with no network
+          and no training run.
+        </p>
+
+        <div class="video-wrap">
+          <video id="demo-video" controls playsinline preload="metadata" src={VIDEO_URL}>
+            Your browser does not support the video tag.
+          </video>
+          <div class="overlay" id="caption-overlay" aria-hidden="true">
+            <span class="overlay-tag" id="caption-tag"></span>
+            <span class="overlay-caption" id="caption-text"></span>
+          </div>
+        </div>
+
+        <ul class="chips">
+          <li class="chip">
+            <span class="chip-term">one observation</span>
+            <span class="chip-note">that is all it gets</span>
+          </li>
+          <li class="chip">
+            <span class="chip-term">on the device</span>
+            <span class="chip-note">a Jetson, no cloud, no network</span>
+          </li>
+          <li class="chip">
+            <span class="chip-term">nothing pre-trained on these actions</span>
+            <span class="chip-note">no data set, no labels, no retraining run</span>
+          </li>
+        </ul>
+      </section>
+
+      <!-- §1.2 Storyboard -->
+      <section class="storyboard">
+        <h2>What you're watching</h2>
+        <img
+          src="/images/demovideo/storyboard.jpg"
+          width="1376"
+          height="768"
+          alt={storyboardAlt}
+          loading="lazy"
+        />
+        <p class="caption">
+          Two new actions, one look each, learned and recalled on a Jetson on a desk, with no
+          network. The timestamps match the video above.
+        </p>
+      </section>
+
+      <!-- §1.3 Why this is hard -->
+      <section class="why-hard">
+        <h2>Why no funded robot model can do this.</h2>
+        <p>
+          Every robot model shipping today is trained once, on a huge data set, and then frozen
+          before it meets the world. Teaching one of them a new action means collecting new data
+          and running a new training cycle, offline, weeks later. Darwin learns the way a new
+          hire does: you show it, it gets it, and it remembers tomorrow.
+        </p>
+        <blockquote class="pull-quote">
+          The test for any robot model: does it learn a new task after it ships, with no training
+          cycle, and keep it?
+        </blockquote>
+      </section>
+
+      <!-- §1.4 How to check what you saw -->
+      <section class="check">
+        <h2>How to check what you saw</h2>
+        <ul class="facts">
+          <li>It runs on a Jetson Thor at 60 fps, offline. The network is unplugged on camera.</li>
+          <li>Each action was shown exactly once. The clip shows the showing and the recalling, uncut.</li>
+          <li>A second device recognised what the first learned. Nothing was uploaded; the memory moved.</li>
+        </ul>
+      </section>
+
+      <!-- §1.5 What's next on this page -->
+      <section class="next">
+        <p class="muted">
+          This clip shows learning and recall. The next clip on this page shows the same memory
+          driving a humanoid: a person performs an action once, the robot performs it, offline.
+          When it is posted, it replaces the video above and this paragraph.
+        </p>
+      </section>
+
+      <!-- §1.6 Footer -->
+      <footer class="page-footer">
+        <p>
+          Primate Intelligence builds Darwin, the robot foundation model that learns on the job.
+          Raising a $10M priced seed. →
+          <a href="mailto:matt@primateintelligence.ai">matt@primateintelligence.ai</a>
+        </p>
+        <p><a href="/one-pager.pdf">One-pager (PDF)</a></p>
+      </footer>
     </main>
+
+    <script>
+      // Progressive enhancement: lower-third captions synced to the clip.
+      // The page works fully without this; nothing here is required reading.
+      const cues: { t: number; text: string; tag: string }[] = [
+        { t: 0, text: 'Darwin, on a Jetson. No network, no training run.', tag: '' },
+        { t: 2, text: 'An action it learned earlier. Watch it recognise it.', tag: 'RECALLED' },
+        { t: 12, text: 'Showing it a new action. Once.', tag: 'LEARNING' },
+        { t: 16, text: 'Learned, on the device. Just now.', tag: 'LEARNING' },
+        { t: 30, text: 'Same action, again.', tag: '' },
+        { t: 33, text: 'It remembered.', tag: 'RECALLED' },
+        { t: 40, text: 'Objects it has never seen. Still "pick up".', tag: 'RECALLED' },
+        { t: 72, text: 'A second new action. Once.', tag: 'LEARNING' },
+        { t: 82, text: 'It remembered.', tag: 'RECALLED' },
+        { t: 96, text: 'New object, new angle. Still "reach".', tag: 'RECALLED' },
+        { t: 104, text: 'Show it once. It learns it. It keeps it. Every other Darwin knows it.', tag: '' },
+      ];
+
+      const video = document.getElementById('demo-video') as HTMLVideoElement | null;
+      const overlay = document.getElementById('caption-overlay');
+      const captionEl = document.getElementById('caption-text');
+      const tagEl = document.getElementById('caption-tag');
+
+      if (video && overlay && captionEl && tagEl) {
+        let started = false;
+        let currentIdx = -1;
+
+        const update = () => {
+          if (!started) return;
+          const t = video.currentTime;
+          let idx = -1;
+          for (let i = 0; i < cues.length; i++) {
+            if (t >= cues[i].t) idx = i;
+            else break;
+          }
+          if (idx !== currentIdx) {
+            currentIdx = idx;
+            if (idx >= 0) {
+              captionEl.textContent = cues[idx].text;
+              if (cues[idx].tag) {
+                tagEl.textContent = cues[idx].tag;
+                tagEl.style.display = 'inline-block';
+              } else {
+                tagEl.style.display = 'none';
+              }
+              overlay.classList.add('visible');
+            } else {
+              overlay.classList.remove('visible');
+            }
+          }
+        };
+
+        video.addEventListener('play', () => {
+          started = true;
+          update();
+        });
+        video.addEventListener('timeupdate', update);
+        video.addEventListener('ended', () => overlay.classList.remove('visible'));
+      }
+    </script>
   </body>
 </html>
 
@@ -50,10 +228,12 @@ const isDevEnv = import.meta.env.PUBLIC_SITE_ENV === 'dev';
   :global(html, body) {
     margin: 0;
     padding: 0;
-    height: 100%;
-    background: var(--color-bg-page, #F2F0EB);
+    background: var(--color-bg-primary, #f2f0eb);
+    color: var(--color-text-primary, #1a1916);
+    font-family: var(--font-sans);
   }
 
+  /* Brand mark, fixed top-left (no header/nav on this page by design) */
   .brand {
     position: fixed;
     top: 20px;
@@ -62,7 +242,7 @@ const isDevEnv = import.meta.env.PUBLIC_SITE_ENV === 'dev';
     display: flex;
     align-items: center;
     gap: 10px;
-    color: var(--color-text-primary, #1A1916);
+    color: var(--color-text-primary, #1a1916);
   }
   .brand-text {
     display: flex;
@@ -72,22 +252,206 @@ const isDevEnv = import.meta.env.PUBLIC_SITE_ENV === 'dev';
     font-weight: 400;
     letter-spacing: -0.02em;
   }
-  .brand-primate { color: var(--color-text-primary, #1A1916); }
-  .brand-intelligence { color: #2058f0; }
+  .brand-primate { color: var(--color-text-primary, #1a1916); }
+  .brand-intelligence { color: var(--color-signal, #1b4fe0); }
 
-  .demovideo-page {
-    min-height: 100vh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 2rem;
-    box-sizing: border-box;
+  .page {
+    max-width: 960px;
+    margin: 0 auto;
+    padding: 108px 24px 48px;
   }
 
-  .demovideo-page video {
-    max-width: 100%;
-    max-height: 85vh;
-    width: auto;
+  section { margin: 0 0 72px; }
+
+  h2 {
+    font-weight: 700;
+    font-size: var(--fs-h3, 28px);
+    letter-spacing: -0.01em;
+    margin: 0 0 20px;
+  }
+
+  /* §1.1 Hero */
+  .eyebrow {
+    font-family: var(--font-mono);
+    font-size: var(--fs-subhead, 13px);
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    color: var(--color-signal, #1b4fe0);
+    margin: 0 0 16px;
+  }
+  h1 {
+    font-weight: 800;
+    font-size: clamp(34px, 6vw, var(--fs-h1, 48px));
+    letter-spacing: -0.02em;
+    line-height: 1.08;
+    margin: 0 0 20px;
+  }
+  .sub {
+    font-size: var(--fs-body-lg, 18px);
+    font-weight: 400;
+    line-height: 1.55;
+    max-width: 44em;
+    margin: 0 0 32px;
+    font-style: italic;
+  }
+
+  .video-wrap {
+    position: relative;
+    width: 100%;
+    background: var(--color-text-primary, #1a1916);
+    border: 1px solid var(--color-border, #d4d0c8);
+    border-radius: 0;
+  }
+  .video-wrap video {
+    display: block;
+    width: 100%;
+    max-height: 80vh;
+    margin: 0 auto;
+  }
+  .overlay {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+  }
+  .overlay-caption,
+  .overlay-tag {
+    position: absolute;
+    opacity: 0;
+    transition: opacity 180ms var(--ease-standard, ease);
+    border-radius: 0;
+  }
+  .overlay.visible .overlay-caption,
+  .overlay.visible .overlay-tag {
+    opacity: 1;
+  }
+  .overlay-caption {
+    left: 12px;
+    bottom: 52px;
+    max-width: min(70%, 32em);
+    background: rgba(26, 25, 22, 0.9);
+    color: #f2f0eb;
+    font-weight: 700;
+    font-size: clamp(13px, 2.2vw, 17px);
+    line-height: 1.35;
+    padding: 10px 14px;
+  }
+  .overlay-tag {
+    display: none;
+    top: 12px;
+    left: 12px;
+    font-family: var(--font-mono);
+    font-size: var(--fs-footnote, 12px);
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    color: var(--color-signal, #1b4fe0);
+    background: rgba(242, 240, 235, 0.92);
+    padding: 4px 8px;
+  }
+
+  .chips {
+    list-style: none;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+    margin: 20px 0 0;
+    padding: 0;
+  }
+  .chip {
+    background: var(--color-bg-surface, #fafaf7);
+    border: 1px solid var(--color-border, #d4d0c8);
+    border-radius: 0;
+    padding: 14px 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+  .chip-term {
+    font-family: var(--font-mono);
+    font-size: var(--fs-body-sm, 14px);
+    font-weight: 500;
+    color: var(--color-text-primary, #1a1916);
+  }
+  .chip-note {
+    font-size: var(--fs-subhead, 13px);
+    color: var(--color-text-muted, #7a7669);
+    line-height: 1.4;
+  }
+
+  /* §1.2 Storyboard */
+  .storyboard img {
+    display: block;
+    width: 100%;
+    max-width: 1600px;
     height: auto;
+    border: 1px solid var(--color-border, #d4d0c8);
+    border-radius: 0;
+  }
+  .caption {
+    font-size: var(--fs-body-sm, 14px);
+    color: var(--color-text-muted, #7a7669);
+    line-height: 1.5;
+    margin: 12px 0 0;
+    font-style: italic;
+  }
+
+  /* §1.3 Why this is hard */
+  .why-hard p {
+    font-size: var(--fs-body-lg, 18px);
+    line-height: 1.6;
+    max-width: 44em;
+    margin: 0 0 28px;
+  }
+  .pull-quote {
+    margin: 0;
+    padding: 24px 28px;
+    background: var(--color-bg-secondary, #e8e5de);
+    border: 1px solid var(--color-border, #d4d0c8);
+    border-left: 3px solid var(--color-signal, #1b4fe0);
+    border-radius: 0;
+    color: var(--color-signal, #1b4fe0);
+    font-weight: 700;
+    font-size: var(--fs-title-1, 20px);
+    line-height: 1.45;
+  }
+
+  /* §1.4 Checkable facts */
+  .facts {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    border-top: 1px solid var(--color-border, #d4d0c8);
+  }
+  .facts li {
+    padding: 16px 0;
+    border-bottom: 1px solid var(--color-border, #d4d0c8);
+    font-size: var(--fs-body, 16px);
+    line-height: 1.55;
+    max-width: 44em;
+  }
+
+  /* §1.5 What's next */
+  .next .muted {
+    color: var(--color-text-muted, #7a7669);
+    font-size: var(--fs-body, 16px);
+    line-height: 1.6;
+    max-width: 44em;
+    margin: 0;
+  }
+
+  /* §1.6 Footer */
+  .page-footer {
+    border-top: 1px solid var(--color-border, #d4d0c8);
+    padding-top: 28px;
+    color: var(--color-text-muted, #7a7669);
+    font-size: var(--fs-body-sm, 14px);
+    line-height: 1.6;
+  }
+  .page-footer p { margin: 0 0 10px; max-width: 44em; }
+  .page-footer a { color: var(--color-signal, #1b4fe0); }
+
+  @media (max-width: 720px) {
+    .page { padding: 96px 16px 40px; }
+    section { margin-bottom: 56px; }
+    .chips { grid-template-columns: 1fr; }
   }
 </style>
