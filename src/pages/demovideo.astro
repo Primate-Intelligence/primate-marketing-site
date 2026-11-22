@@ -1,26 +1,34 @@
 ---
 import '../styles/tokens.css';
 
-const VIDEO_URL =
-  'https://dpqqdfo8p9efcp8w.public.blob.vercel-storage.com/demo/darwin-learn-and-recall-on-device-cropped-CHlsRNPr9QSu4eRFtn2LmJZu64RkKQ.mov';
+const VIDEOS = [
+  {
+    id: 'mop',
+    title: 'Darwin learns to mop',
+    url: 'https://dpqqdfo8p9efcp8w.public.blob.vercel-storage.com/demo/darwin-learns-to-mop.mp4',
+    poster: '/images/demovideo/mop-poster.jpg',
+  },
+  {
+    id: 'pack-the-shelf',
+    title: 'Darwin learns to pack the shelf',
+    url: 'https://dpqqdfo8p9efcp8w.public.blob.vercel-storage.com/demo/darwin-learns-to-pack-the-shelf.mp4',
+    poster: '/images/demovideo/pack-poster.jpg',
+  },
+  {
+    id: 'pickup',
+    title: 'Darwin learns to pickup',
+    url: 'https://dpqqdfo8p9efcp8w.public.blob.vercel-storage.com/demo/darwin-learns-to-pickup.mp4',
+    poster: '/images/demovideo/pickup-poster.jpg',
+  },
+];
 
 const title = 'Darwin learns on the job — Primate Intelligence demo';
 const description =
-  'A robot model that learns a new action from one observation, on a Jetson, with no network and no training run. Watch it learn, recall and keep it.';
+  'Three clips, one take each, entirely at 1x speed: Darwin learns to mop, pack a shelf, and pick things up. No teleoperation, no pre- or post-training, weights updating live.';
 const site = Astro.site ?? new URL('https://primateintelligence.ai');
 const canonical = new URL('/demovideo/', site).href;
-const ogImage = new URL('/images/demovideo/storyboard.jpg', site).href;
+const ogImage = new URL('/images/demovideo/og.jpg', site).href;
 const isDevEnv = import.meta.env.PUBLIC_SITE_ENV === 'dev';
-
-const storyboardAlt = [
-  'Storyboard of the demo clip, six frames.',
-  'Frame 1, 00:03: peek-a-boo, an action learned before this clip; Darwin says "peek-a-boo" (recalled).',
-  'Frame 2, 00:14: shown once — "this is pick up", the small box; Darwin says "learned: pick up" (learning).',
-  'Frame 3, 00:41: pick up, on objects it has never seen — a jar, a paper bag, a tin; Darwin says "pick up" (recalled).',
-  'Frame 4, 01:14: shown once — "this is reach", toward the tin; Darwin says "learned: reach" (learning).',
-  'Frame 5, 01:38: reach again — new object, new angle, toward the camera; Darwin says "reach" (recalled).',
-  'Frame 6, 01:46: what it keeps — peek-a-boo (before), pick up (00:14, one look), reach (01:14, one look); nothing left the desk.',
-].join(' ');
 ---
 
 <!doctype html>
@@ -41,8 +49,8 @@ const storyboardAlt = [
     <meta property="og:description" content={description} />
     <meta property="og:url" content={canonical} />
     <meta property="og:image" content={ogImage} />
-    <meta property="og:image:width" content="1376" />
-    <meta property="og:image:height" content="768" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content={title} />
     <meta name="twitter:description" content={description} />
@@ -68,77 +76,61 @@ const storyboardAlt = [
       <!-- §1.1 Hero -->
       <section class="hero">
         <p class="eyebrow">PRIMATE INTELLIGENCE · DARWIN · DEMO</p>
-        <h1>Darwin learns on the job. Watch&nbsp;it.</h1>
+        <h1>Darwin learns on the job. Watch it, three times.</h1>
         <p class="sub">
-          What you're about to see: a person shows Darwin a new action once. Darwin learns it,
-          names it when it sees it again, and keeps it, on a Jetson on a desk, with no network
-          and no training run.
+          Three clips, one take each: a person shows Darwin a new action once — mop, pack a
+          shelf, pick things up — and it does it.
         </p>
-
-        <div class="video-wrap">
-          <video id="demo-video" controls playsinline preload="metadata" poster="/images/demovideo/poster.png" src={VIDEO_URL}>
-            Your browser does not support the video tag.
-          </video>
-          <div class="overlay" id="caption-overlay" aria-hidden="true">
-            <span class="overlay-tag" id="caption-tag"></span>
-            <span class="overlay-caption" id="caption-text"></span>
-          </div>
-        </div>
 
         <ul class="chips">
           <li class="chip">
-            <span class="chip-term">one observation</span>
-            <span class="chip-note">that is all it gets</span>
+            <span class="chip-term">entirely 1X speed</span>
           </li>
           <li class="chip">
-            <span class="chip-term">on the device</span>
-            <span class="chip-note">a Jetson, no cloud, no network</span>
+            <span class="chip-term">weights are being updated</span>
+            <span class="chip-note">as it learns in real-time</span>
           </li>
           <li class="chip">
-            <span class="chip-term">nothing pre-trained on these actions</span>
-            <span class="chip-note">no data set, no labels, no retraining run</span>
+            <span class="chip-term">no teleoperation</span>
+          </li>
+          <li class="chip">
+            <span class="chip-term">no pre or post-training</span>
+          </li>
+          <li class="chip">
+            <span class="chip-term">take 1 of 1</span>
           </li>
         </ul>
       </section>
 
-      <!-- §1.2 Storyboard -->
-      <section class="storyboard">
-        <h2>What you're watching</h2>
-        <img
-          src="/images/demovideo/storyboard.jpg"
-          width="1376"
-          height="768"
-          alt={storyboardAlt}
-          loading="lazy"
-        />
-        <p class="caption">
-          Two new actions, one look each, learned and recalled on a Jetson on a desk, with no
-          network. The timestamps match the video above.
-        </p>
-      </section>
+      <!-- §1.2 The three clips -->
+      {VIDEOS.map((v) => (
+        <section class="clip" id={v.id}>
+          <h2>{v.title}</h2>
+          <div class="video-wrap">
+            <video controls playsinline preload="metadata" poster={v.poster} src={v.url}>
+              Your browser does not support the video tag.
+            </video>
+          </div>
+        </section>
+      ))}
 
       <!-- §1.3 Why this is hard -->
       <section class="why-hard">
-        <h2>Why no funded robot model can do this.</h2>
-        <p>
-          Every robot model shipping today is trained once, on a huge data set, and then frozen
-          before it meets the world. Teaching one of them a new action means collecting new data
-          and running a new training cycle, offline, weeks later. Darwin learns the way a new
-          hire does: you show it, it gets it, and it remembers tomorrow.
-        </p>
+        <h2>Darwin powers the fastest learning robots</h2>
+        <p class="lede">You just saw, in real-time, with no speedups:</p>
+        <ol class="steps">
+          <li>Darwin is asked to do something it doesn't know how to do.</li>
+          <li>
+            It asks to be shown how, then watches a non-technical person with no equipment, one
+            time.
+          </li>
+          <li>It learns the new action locally on-device, and updates its weights.</li>
+          <li>It's ready to share that learning with all other Darwin robots.</li>
+        </ol>
         <blockquote class="pull-quote">
           The test for any robot model: does it learn a new task after it ships, with no training
           cycle, and keep it?
         </blockquote>
-      </section>
-
-      <!-- §1.4 How to check what you saw -->
-      <section class="check">
-        <h2>How to check what you saw</h2>
-        <ul class="facts">
-          <li>It runs on a Jetson Thor at 60 fps, offline. The network is unplugged on camera.</li>
-          <li>Each action was shown exactly once. The clip shows the showing and the recalling, uncut.</li>
-        </ul>
       </section>
 
       <!-- §1.6 Footer -->
@@ -151,66 +143,6 @@ const storyboardAlt = [
         <p><a href="/one-pager.pdf">One-pager (PDF)</a></p>
       </footer>
     </main>
-
-    <script>
-      // Progressive enhancement: lower-third captions synced to the clip.
-      // The page works fully without this; nothing here is required reading.
-      const cues: { t: number; text: string; tag: string }[] = [
-        { t: 0, text: 'Darwin, on a Jetson. No network, no training run.', tag: '' },
-        { t: 2, text: 'An action it learned earlier. Watch it recognise it.', tag: 'RECALLED' },
-        { t: 12, text: 'Showing it a new action. Once.', tag: 'LEARNING' },
-        { t: 16, text: 'Learned, on the device. Just now.', tag: 'LEARNING' },
-        { t: 30, text: 'Same action, again.', tag: '' },
-        { t: 33, text: 'It remembered.', tag: 'RECALLED' },
-        { t: 40, text: 'Objects it has never seen. Still "pick up".', tag: 'RECALLED' },
-        { t: 72, text: 'A second new action. Once.', tag: 'LEARNING' },
-        { t: 82, text: 'It remembered.', tag: 'RECALLED' },
-        { t: 96, text: 'New object, new angle. Still "reach".', tag: 'RECALLED' },
-        { t: 104, text: 'Show it once. It learns it. It keeps it. Every other Darwin knows it.', tag: '' },
-      ];
-
-      const video = document.getElementById('demo-video') as HTMLVideoElement | null;
-      const overlay = document.getElementById('caption-overlay');
-      const captionEl = document.getElementById('caption-text');
-      const tagEl = document.getElementById('caption-tag');
-
-      if (video && overlay && captionEl && tagEl) {
-        let started = false;
-        let currentIdx = -1;
-
-        const update = () => {
-          if (!started) return;
-          const t = video.currentTime;
-          let idx = -1;
-          for (let i = 0; i < cues.length; i++) {
-            if (t >= cues[i].t) idx = i;
-            else break;
-          }
-          if (idx !== currentIdx) {
-            currentIdx = idx;
-            if (idx >= 0) {
-              captionEl.textContent = cues[idx].text;
-              if (cues[idx].tag) {
-                tagEl.textContent = cues[idx].tag;
-                tagEl.style.display = 'inline-block';
-              } else {
-                tagEl.style.display = 'none';
-              }
-              overlay.classList.add('visible');
-            } else {
-              overlay.classList.remove('visible');
-            }
-          }
-        };
-
-        video.addEventListener('play', () => {
-          started = true;
-          update();
-        });
-        video.addEventListener('timeupdate', update);
-        video.addEventListener('ended', () => overlay.classList.remove('visible'));
-      }
-    </script>
   </body>
 </html>
 
@@ -285,65 +217,12 @@ const storyboardAlt = [
     font-style: italic;
   }
 
-  .video-wrap {
-    position: relative;
-    width: 100%;
-    background: var(--color-text-primary, #1a1916);
-    border: 1px solid var(--color-border, #d4d0c8);
-    border-radius: 0;
-  }
-  .video-wrap video {
-    display: block;
-    width: 100%;
-    max-height: 80vh;
-    margin: 0 auto;
-  }
-  .overlay {
-    position: absolute;
-    inset: 0;
-    pointer-events: none;
-  }
-  .overlay-caption,
-  .overlay-tag {
-    position: absolute;
-    opacity: 0;
-    transition: opacity 180ms var(--ease-standard, ease);
-    border-radius: 0;
-  }
-  .overlay.visible .overlay-caption,
-  .overlay.visible .overlay-tag {
-    opacity: 1;
-  }
-  .overlay-caption {
-    left: 12px;
-    bottom: 52px;
-    max-width: min(70%, 32em);
-    background: rgba(26, 25, 22, 0.9);
-    color: #f2f0eb;
-    font-weight: 700;
-    font-size: clamp(13px, 2.2vw, 17px);
-    line-height: 1.35;
-    padding: 10px 14px;
-  }
-  .overlay-tag {
-    display: none;
-    top: 12px;
-    left: 12px;
-    font-family: var(--font-mono);
-    font-size: var(--fs-footnote, 12px);
-    font-weight: 500;
-    letter-spacing: 0.08em;
-    color: var(--color-signal, #1b4fe0);
-    background: rgba(242, 240, 235, 0.92);
-    padding: 4px 8px;
-  }
-
   .chips {
     list-style: none;
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
     gap: 12px;
-    margin: 20px 0 0;
+    margin: 0;
     padding: 0;
   }
   .chip {
@@ -367,29 +246,42 @@ const storyboardAlt = [
     line-height: 1.4;
   }
 
-  /* §1.2 Storyboard */
-  .storyboard img {
-    display: block;
+  /* §1.2 Clips */
+  .clip h2 {
+    font-size: var(--fs-h4, 22px);
+  }
+  .video-wrap {
+    position: relative;
     width: 100%;
-    max-width: 1600px;
-    height: auto;
+    max-width: 480px;
+    margin: 0 auto;
+    background: var(--color-text-primary, #1a1916);
     border: 1px solid var(--color-border, #d4d0c8);
     border-radius: 0;
   }
-  .caption {
-    font-size: var(--fs-body-sm, 14px);
-    color: var(--color-text-muted, #7a7669);
-    line-height: 1.5;
-    margin: 12px 0 0;
-    font-style: italic;
+  .video-wrap video {
+    display: block;
+    width: 100%;
+    max-height: 85vh;
+    margin: 0 auto;
   }
 
   /* §1.3 Why this is hard */
-  .why-hard p {
+  .why-hard .lede {
     font-size: var(--fs-body-lg, 18px);
     line-height: 1.6;
     max-width: 44em;
+    margin: 0 0 20px;
+  }
+  .steps {
     margin: 0 0 28px;
+    padding-left: 1.3em;
+    max-width: 44em;
+  }
+  .steps li {
+    font-size: var(--fs-body, 16px);
+    line-height: 1.6;
+    margin: 0 0 14px;
   }
   .pull-quote {
     margin: 0;
@@ -402,30 +294,6 @@ const storyboardAlt = [
     font-weight: 700;
     font-size: var(--fs-title-1, 20px);
     line-height: 1.45;
-  }
-
-  /* §1.4 Checkable facts */
-  .facts {
-    list-style: none;
-    margin: 0;
-    padding: 0;
-    border-top: 1px solid var(--color-border, #d4d0c8);
-  }
-  .facts li {
-    padding: 16px 0;
-    border-bottom: 1px solid var(--color-border, #d4d0c8);
-    font-size: var(--fs-body, 16px);
-    line-height: 1.55;
-    max-width: 44em;
-  }
-
-  /* §1.5 What's next */
-  .next .muted {
-    color: var(--color-text-muted, #7a7669);
-    font-size: var(--fs-body, 16px);
-    line-height: 1.6;
-    max-width: 44em;
-    margin: 0;
   }
 
   /* §1.6 Footer */
@@ -442,6 +310,6 @@ const storyboardAlt = [
   @media (max-width: 720px) {
     .page { padding: 96px 16px 40px; }
     section { margin-bottom: 56px; }
-    .chips { grid-template-columns: 1fr; }
+    .chips { grid-template-columns: 1fr 1fr; }
   }
 </style>
